@@ -13,14 +13,8 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 /**
- * <p>Copied from the jExam project: <a href="http://www.jexam.de">www.jexam.de</a>
+ * <p>Provides the functionality of a <code>ResourceBundle</code> for this plugin.
  * </p>
- * <p>Provides the functionality of a <code>ResourceBundle</code> for this plugin. This class
- * can not be initialized.
- * </p> 
- * 
- * @author Thomas Förster - Thomas.Foerster@jexam.de
- * @author Dirk Buchhorn - Dirk.Buchhorn@jexam.de
  */
 public class Messages
 {
@@ -45,7 +39,7 @@ public class Messages
      */
     public String format(final String key, final Object[] args)
     {
-        final MessageFormat format = new MessageFormat(this.getString(key));
+        final MessageFormat format = new MessageFormat(getString(key));
         return format.format(args);
     }
 
@@ -125,8 +119,20 @@ public class Messages
      */
     public List<String> getList(final String key)
     {
+        return getList(key, ","); //$NON-NLS-1$
+    }
+
+    /**
+     * Returns the resource object with the given key in
+     * the resource bundle. This is a comma-separated list. 
+     * 
+     * @param key
+     * @return List - the list
+     */
+    public List<String> getList(final String key, final String delim)
+    {
         final String value = this.getString(key);
-        final StringTokenizer tokenizer = new StringTokenizer(value, ","); //$NON-NLS-1$
+        final StringTokenizer tokenizer = new StringTokenizer(value, delim);
         final List<String> list = new ArrayList<String>();
         while(tokenizer.hasMoreElements())
         {
