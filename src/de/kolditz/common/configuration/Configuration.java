@@ -10,9 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 /**
  * 
@@ -48,7 +48,7 @@ public class Configuration
 
     /**
      * 
-     * @param filename the config file's name (without the file extension)
+     * @param baseName the config file's base name (without the file extension)
      * @param defaults the Properties defaults
      * 
      * @throws CreateConfigurationFileException
@@ -58,12 +58,12 @@ public class Configuration
      * @see {@link #CONFIG_FILE_EXT}
      * @see Properties
      */
-    public Configuration(String filename, Properties defaults) throws FileNotFoundException, IOException
+    public Configuration(String baseName, Properties defaults) throws FileNotFoundException, IOException
     {
-        assert filename != null;
-        assert filename.isEmpty() == false;
+        assert baseName != null;
+        assert baseName.isEmpty() == false;
 
-        this.filename = filename + CONFIG_FILE_EXT;
+        this.filename = baseName + CONFIG_FILE_EXT;
         String currentPath = System.getProperty("user.dir");
         System.out.println(currentPath);
         File appDir = new File(currentPath);
@@ -77,7 +77,9 @@ public class Configuration
         checkConfFileExistence();
 
         properties = new Properties(defaults);
-        properties.load(new FileReader(confFile));
+        FileReader fd = new FileReader(confFile);
+        properties.load(fd);
+        fd.close();
     }
 
     private void checkConfFileExistence()
@@ -95,19 +97,74 @@ public class Configuration
         }
     }
 
-    public String getProperty(String key)
+    public String get(String key)
     {
         return properties.getProperty(key);
     }
 
-    public String getProperty(String key, String defaultValue)
+    public long getLong(String key)
+    {
+        return Long.valueOf(get(key));
+    }
+
+    public int getInt(String key)
+    {
+        return Integer.valueOf(get(key));
+    }
+
+    public char getChar(String key)
+    {
+        return get(key).charAt(0);
+    }
+
+    public boolean getBool(String key)
+    {
+        return Boolean.parseBoolean(get(key));
+    }
+
+    public float getFloat(String key)
+    {
+        return Float.valueOf(get(key));
+    }
+
+    public double getDouble(String key)
+    {
+        return Double.valueOf(get(key));
+    }
+
+    public String get(String key, String defaultValue)
     {
         return properties.getProperty(key, defaultValue);
     }
 
-    public String setProperty(String key, String value)
+    public void set(String key, String value)
     {
-        return (String)properties.setProperty(key, value);
+        properties.setProperty(key, value);
+    }
+
+    public void set(String key, int value)
+    {
+        properties.setProperty(key, Integer.toString(value));
+    }
+
+    public void set(String key, long value)
+    {
+        properties.setProperty(key, Long.toString(value));
+    }
+
+    public void set(String key, boolean value)
+    {
+        properties.setProperty(key, Boolean.toString(value));
+    }
+
+    public void set(String key, float value)
+    {
+        properties.setProperty(key, Float.toString(value));
+    }
+
+    public void set(String key, double value)
+    {
+        properties.setProperty(key, Double.toString(value));
     }
 
     public Set<String> getPropertyNames()
