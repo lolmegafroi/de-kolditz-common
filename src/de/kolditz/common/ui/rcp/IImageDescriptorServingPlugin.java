@@ -6,16 +6,16 @@ package de.kolditz.common.ui.rcp;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
- * This denotes an eclipse plugin instance that offers a method to get the image descriptor
- * for the given image path.
+ * This denotes an eclipse plugin instance that offers a method to get the image descriptor for the given image path.
  * 
  * @author <a href="mailto:Till.Kolditz@GoogleMail.com">Till Kolditz &lt;Till.Kolditz@GoogleMail.com&gt;</a>
- * 
+ * @see ImagesInitializer
+ * @see ImageConstant
  */
-public interface IImageDescriptorServingPlugin
-{
+public interface IImageDescriptorServingPlugin {
     /**
-     * @param path the path to the image file
+     * @param path
+     *            the path to the image file
      * @return the image file's {@link ImageDescriptor}
      */
     ImageDescriptor getImageDescriptor(String path);

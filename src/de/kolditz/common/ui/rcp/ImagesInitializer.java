@@ -20,8 +20,7 @@ import de.kolditz.common.ui.rcp.ImageConstant.RefType;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public final class ImagesInitializer
-{
+public final class ImagesInitializer {
     private static final Logger logger = Logger.getLogger(ImagesInitializer.class);
 
     /**
@@ -31,88 +30,66 @@ public final class ImagesInitializer
      * @param clazz
      *            the {@link Class} to be initialized
      * @return an {@link ImageRegistry}
+     * @see ImageConstant
+     * @see IImageDescriptorServingPlugin
      */
-    public static ImageRegistry init(Class<?> clazz, IImageDescriptorServingPlugin plugin)
-    {
+    public static ImageRegistry init(Class<?> clazz, IImageDescriptorServingPlugin plugin) {
         ImageRegistry imageRegistry = new ImageRegistry();
-        try
-        {
+        try {
             int mod;
             String path;
             ImageConstant refType;
             String constant;
-            for(Field f : clazz.getFields())
-            {
+            for (Field f : clazz.getFields()) {
                 mod = f.getModifiers();
-                if(Modifier.isStatic(mod) && Modifier.isPublic(mod) && Modifier.isFinal(mod))
-                {
-                    try
-                    {
+                if (Modifier.isStatic(mod) && Modifier.isPublic(mod) && Modifier.isFinal(mod)) {
+                    try {
                         constant = String.valueOf(f.get(null));
-                    }
-                    catch(Throwable exception)
-                    {
+                    } catch (Throwable exception) {
                         logger.log(Level.ERROR, "Could not access image constant \"" + clazz.getName() //$NON-NLS-1$
                                 + ImageConstant.SEPERATOR + f.getName() + "\""); //$NON-NLS-1$
                         continue;
                     }
                     refType = f.getAnnotation(ImageConstant.class);
                     // ONLY accept ref-typed fields!
-                    if(refType == null)
-                    {
+                    if (refType == null) {
                         logger.log(Level.WARN, "No ImageRefType annotation for image constant \"" + clazz.getName() //$NON-NLS-1$
                                 + ImageConstant.SEPERATOR + f.getName() + "\" set! Found:"); //$NON-NLS-1$
-                        for(Annotation a : f.getAnnotations())
-                        {
+                        for (Annotation a : f.getAnnotations()) {
                             System.out.println(a.toString());
                         }
                         continue;
                     }
-                    try
-                    {
-                        if(refType.value() == RefType.LOCAL)
-                        {
+                    try {
+                        if (refType.value() == RefType.LOCAL) {
                             path = refType.folder() + constant;
-                        }
-                        else if(refType.value() == RefType.PLATFORM_PLUGIN)
-                        {
-                            if(refType.remotePlugin().equals("")){ //$NON-NLS-1$
+                        } else if (refType.value() == RefType.PLATFORM_PLUGIN) {
+                            if (refType.remotePlugin().equals("")) { //$NON-NLS-1$
                                 logger.log(Level.ERROR,
                                         "no remotePlugin parameter set for ImageRefType annotation for image constant \"" //$NON-NLS-1$
                                                 + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + "\" set!"); //$NON-NLS-1$
                                 continue;
-                            }
-                            else
-                            {
+                            } else {
                                 path = ImageConstant.PLATFORM_PLUGIN_PATH + refType.remotePlugin()
                                         + ImageConstant.SEPERATOR + refType.folder() + ImageConstant.SEPERATOR
                                         + constant;
                             }
-                        }
-                        else
-                        {
+                        } else {
                             logger.log(Level.ERROR, "Unknown ImageRefType annotation for image constant \"" //$NON-NLS-1$
                                     + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + "\" set!"); //$NON-NLS-1$
                             continue;
                         }
-                        try
-                        {
+                        try {
                             imageRegistry.put(constant, plugin.getImageDescriptor(path).createImage());
-                        }
-                        catch(RuntimeException e)
-                        {
+                        } catch (RuntimeException e) {
                             logger.log(Level.ERROR, e.getMessage(), e);
                         }
-                    }
-                    catch(Throwable e)
-                    {
+                    } catch (Throwable e) {
                         logger.log(Level.ERROR, e.getClass().getSimpleName(), e);
                     }
                 }
             }
-        }
-        catch(Throwable exception)
-        {
+        } catch (Throwable exception) {
             exception.printStackTrace();
         }
         return imageRegistry;

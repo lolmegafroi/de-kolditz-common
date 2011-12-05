@@ -33,11 +33,11 @@ public @interface ImageConstant {
      * </tr>
      * <tr>
      * <td>LOCAL</td>
-     * <td>the annotated string denotes a plugin's local path. No assumptions are made</td>
+     * <td>The annotated string denotes a plugin's local path. No assumptions are made.</td>
      * </tr>
      * <tr>
-     * <td>PLATFORM_PLUGIN</td>
-     * <td>reference to a plugin in the current platform. "platform:/plugin/" and the value of remotePlugin() will be
+     * <td style="vertical-align:top;">PLATFORM_PLUGIN</td>
+     * <td>Reference to a plugin in the current platform. "platform:/plugin/" and the value of remotePlugin() will be
      * prepended to the base string. Example:<br>
      * Annotated String: <code>pin_editor.gif</code><br>
      * remotePlugin(): <code>org.eclipse.ui</code><br>
