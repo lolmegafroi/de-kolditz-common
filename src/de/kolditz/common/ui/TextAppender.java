@@ -1,7 +1,6 @@
 package de.kolditz.common.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
@@ -25,7 +24,7 @@ public class TextAppender extends AppenderSkeleton {
 
         @Override
         public void run() {
-            if (tfLog != null) {
+            if (tfLog != null && !tfLog.isDisposed()) {
                 if (text != null) {
                     tfLog.append(text);
                 } else {
@@ -44,7 +43,7 @@ public class TextAppender extends AppenderSkeleton {
     private final PatternLayout SIMPLE_LAYOUT = new PatternLayout(SIMPLE);
 
     private StyledText tfLog;
-    private List<LoggingEvent> events;
+    private ArrayList<LoggingEvent> events;
 
     public TextAppender() {
         this(null);
@@ -92,6 +91,8 @@ public class TextAppender extends AppenderSkeleton {
 
     public void clear() {
         update(null);
+        events.clear();
+        System.gc();
     }
 
     private void recreate() {

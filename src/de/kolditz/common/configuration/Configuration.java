@@ -19,8 +19,7 @@ import java.util.Set;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class Configuration
-{
+public class Configuration {
     /**
      * the file extension of the configuration file (".conf")
      */
@@ -32,7 +31,8 @@ public class Configuration
 
     /**
      * 
-     * @param filename the config file's name (without the file extension)
+     * @param filename
+     *            the config file's name (without the file extension)
      * 
      * @throws CreateConfigurationFileException
      * @throws FileNotFoundException
@@ -41,15 +41,16 @@ public class Configuration
      * @see {@link #CONFIG_FILE_EXT}
      * @see Properties
      */
-    public Configuration(String filename) throws FileNotFoundException, IOException
-    {
+    public Configuration(String filename) throws FileNotFoundException, IOException {
         this(filename, null);
     }
 
     /**
      * 
-     * @param baseName the config file's base name (without the file extension)
-     * @param defaults the Properties defaults
+     * @param baseName
+     *            the config file's base name (without the file extension)
+     * @param defaults
+     *            the Properties defaults
      * 
      * @throws CreateConfigurationFileException
      * @throws FileNotFoundException
@@ -58,8 +59,7 @@ public class Configuration
      * @see {@link #CONFIG_FILE_EXT}
      * @see Properties
      */
-    public Configuration(String baseName, Properties defaults) throws FileNotFoundException, IOException
-    {
+    public Configuration(String baseName, Properties defaults) throws FileNotFoundException, IOException {
         assert baseName != null;
         assert baseName.isEmpty() == false;
 
@@ -68,8 +68,7 @@ public class Configuration
         System.out.println(currentPath);
         File appDir = new File(currentPath);
 
-        if(!appDir.exists())
-        {
+        if (!appDir.exists()) {
             throw new RuntimeException("the environment variable \"user.dir\" does not point to a directory");
         }
 
@@ -82,101 +81,79 @@ public class Configuration
         fd.close();
     }
 
-    private void checkConfFileExistence()
-    {
-        if(!confFile.exists())
-        {
-            try
-            {
+    private void checkConfFileExistence() {
+        if (!confFile.exists()) {
+            try {
                 confFile.createNewFile();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new CreateConfigurationFileException(confFile, ex);
             }
         }
     }
 
-    public String get(String key)
-    {
+    public String get(String key) {
         return properties.getProperty(key);
     }
 
-    public long getLong(String key)
-    {
+    public long getLong(String key) {
         return Long.valueOf(get(key));
     }
 
-    public int getInt(String key)
-    {
+    public int getInt(String key) {
         return Integer.valueOf(get(key));
     }
 
-    public char getChar(String key)
-    {
+    public char getChar(String key) {
         return get(key).charAt(0);
     }
 
-    public boolean getBool(String key)
-    {
+    public boolean getBool(String key) {
         return Boolean.parseBoolean(get(key));
     }
 
-    public float getFloat(String key)
-    {
+    public float getFloat(String key) {
         return Float.valueOf(get(key));
     }
 
-    public double getDouble(String key)
-    {
+    public double getDouble(String key) {
         return Double.valueOf(get(key));
     }
 
-    public String get(String key, String defaultValue)
-    {
+    public String get(String key, String defaultValue) {
         return properties.getProperty(key, defaultValue);
     }
 
-    public void set(String key, String value)
-    {
+    public void set(String key, String value) {
         properties.setProperty(key, value);
     }
 
-    public void set(String key, int value)
-    {
+    public void set(String key, int value) {
         properties.setProperty(key, Integer.toString(value));
     }
 
-    public void set(String key, long value)
-    {
+    public void set(String key, long value) {
         properties.setProperty(key, Long.toString(value));
     }
 
-    public void set(String key, boolean value)
-    {
+    public void set(String key, boolean value) {
         properties.setProperty(key, Boolean.toString(value));
     }
 
-    public void set(String key, float value)
-    {
+    public void set(String key, float value) {
         properties.setProperty(key, Float.toString(value));
     }
 
-    public void set(String key, double value)
-    {
+    public void set(String key, double value) {
         properties.setProperty(key, Double.toString(value));
     }
 
-    public Set<String> getPropertyNames()
-    {
+    public Set<String> getPropertyNames() {
         return properties.stringPropertyNames();
     }
 
-    public Map<String, String> getProperties()
-    {
+    public Map<String, String> getProperties() {
         Map<String, String> result = new HashMap<String, String>();
-        for(Entry<Object, Object> entry : properties.entrySet())
-        {
+        for (Entry<Object, Object> entry : properties.entrySet()) {
             result.put(entry.getKey().toString(), entry.getValue().toString());
         }
         return result;
@@ -185,22 +162,20 @@ public class Configuration
     /**
      * store the configuration in the file specified in the constructor
      * 
-     * @param comment may be null
+     * @param comment
+     *            may be null
      */
-    public void save(String comment) throws IOException
-    {
+    public void save(String comment) throws IOException {
         checkConfFileExistence();
         FileWriter writer = new FileWriter(confFile);
         properties.store(writer, comment);
     }
 
-    public void reload()
-    {
+    public void reload() {
     }
 
     @Override
-    protected void finalize() throws Throwable
-    {
+    protected void finalize() throws Throwable {
         super.finalize();
     }
 }

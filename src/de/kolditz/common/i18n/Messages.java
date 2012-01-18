@@ -20,16 +20,15 @@ import org.eclipse.core.runtime.ListenerList;
 import de.kolditz.common.ui.UIUtils;
 
 /**
- * <p>Provides the functionality of a <code>ResourceBundle</code> for this plugin.
+ * <p>
+ * Provides the functionality of a <code>ResourceBundle</code> for this plugin.
  * </p>
  */
-public class Messages
-{
-    public static interface ResourceBundleUpdatedListener
-    {
+public class Messages {
+    public static interface ResourceBundleUpdatedListener {
         /**
-         * Just a notification without any data since this is assumed to be used
-         * on updating labels in a UI. Beware that this might happen in any thread!
+         * Just a notification without any data since this is assumed to be used on updating labels in a UI. Beware that
+         * this might happen in any thread!
          */
         void resourceBundleUpdated();
     }
@@ -48,8 +47,7 @@ public class Messages
     /**
      * 
      */
-    public Messages(final ResourceBundle b)
-    {
+    public Messages(final ResourceBundle b) {
         super();
         bundle = b;
     }
@@ -60,18 +58,13 @@ public class Messages
      * @param baseName
      * @param locale
      */
-    public void setLocale(String baseName, Locale locale)
-    {
-        synchronized(lock)
-        {
-            try
-            {
+    public void setLocale(String baseName, Locale locale) {
+        synchronized (lock) {
+            try {
                 ResourceBundle newRB = ResourceBundle.getBundle(baseName, locale);
                 bundle = newRB;
                 notifyResourceBundleUpdatedListeners();
-            }
-            catch(MissingResourceException e)
-            {
+            } catch (MissingResourceException e) {
                 logger.log(Level.ERROR, e.getMessage(), e);
                 UIUtils.openError(e);
             }
@@ -79,134 +72,119 @@ public class Messages
     }
 
     /**
-     * Returns the formatted message for the given key in
-     * the resource bundle. 
-     *
-     * @param key the resource name
-     * @param args the message arguments
+     * Returns the formatted message for the given key in the resource bundle.
+     * 
+     * @param key
+     *            the resource name
+     * @param args
+     *            the message arguments
      * @return the string
      */
-    public String format(final String key, final Object... args)
-    {
+    public String format(final String key, final Object... args) {
         final MessageFormat format = new MessageFormat(getString(key));
         return format.format(args);
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. If there isn't any value under
-     * the given key, the key is returned.
-     *
-     * @param key the resource name
+     * Returns the resource object with the given key in the resource bundle. If there isn't any value under the given
+     * key, the key is returned.
+     * 
+     * @param key
+     *            the resource name
      * @return the string
      */
-    public String getString(final String key)
-    {
-        try
-        {
+    public String getString(final String key) {
+        try {
             return bundle.getString(key);
-        }
-        catch(final MissingResourceException e)
-        {
+        } catch (final MissingResourceException e) {
             logger.log(Level.WARN, e.getMessage(), e);
             return key;
         }
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. If there isn't any value under
-     * the given key, the default value is returned.
-     *
-     * @param key the resource name
-     * @param def the default value
+     * Returns the resource object with the given key in the resource bundle. If there isn't any value under the given
+     * key, the default value is returned.
+     * 
+     * @param key
+     *            the resource name
+     * @param def
+     *            the default value
      * @return the string
      */
-    public String getString(final String key, final String def)
-    {
-        try
-        {
+    public String getString(final String key, final String def) {
+        try {
             return bundle.getString(key);
-        }
-        catch(final MissingResourceException e)
-        {
+        } catch (final MissingResourceException e) {
             return def;
         }
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. This is a comma-separated list. An Array of
-     * this is returned.
+     * Returns the resource object with the given key in the resource bundle. This is a comma-separated list. An Array
+     * of this is returned.
      * 
-     * @param key the key
+     * @param key
+     *            the key
      * @return Object[] - the list as array
      */
-    public Object[] getArray(final String key)
-    {
+    public Object[] getArray(final String key) {
         return getList(key).toArray();
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. This is a comma-separated list. An Array of
-     * Strings is returned.
+     * Returns the resource object with the given key in the resource bundle. This is a comma-separated list. An Array
+     * of Strings is returned.
      * 
-     * @param key the key
+     * @param key
+     *            the key
      * @return String[] - the list as String-array
      */
-    public String[] getStringArray(final String key)
-    {
+    public String[] getStringArray(final String key) {
         return getList(key).toArray(new String[getList(key).size()]);
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. This is a comma-separated list. 
+     * Returns the resource object with the given key in the resource bundle. This is a comma-separated list.
      * 
-     * @param key the key
+     * @param key
+     *            the key
      * @return List - the list
      */
-    public List<String> getList(final String key)
-    {
+    public List<String> getList(final String key) {
         return getList(key, ","); //$NON-NLS-1$
     }
 
     /**
-     * Returns the resource object with the given key in
-     * the resource bundle. This is a delim-separated list. 
+     * Returns the resource object with the given key in the resource bundle. This is a delim-separated list.
      * 
-     * @param key the key
-     * @param delim the entry delimiter
+     * @param key
+     *            the key
+     * @param delim
+     *            the entry delimiter
      * @return List - the list
      */
-    public List<String> getList(final String key, final String delim)
-    {
+    public List<String> getList(final String key, final String delim) {
         final String value = this.getString(key);
         final StringTokenizer tokenizer = new StringTokenizer(value, delim);
         final List<String> list = new ArrayList<String>();
-        while(tokenizer.hasMoreElements())
-        {
+        while (tokenizer.hasMoreElements()) {
             list.add(tokenizer.nextToken());
         }
         return list;
     }
 
-    private void notifyResourceBundleUpdatedListeners()
-    {
-        for(Object o : resourceBundleUpdatedListeners.getListeners())
-        {
-            ((ResourceBundleUpdatedListener)o).resourceBundleUpdated();
+    private void notifyResourceBundleUpdatedListeners() {
+        for (Object o : resourceBundleUpdatedListeners.getListeners()) {
+            ((ResourceBundleUpdatedListener) o).resourceBundleUpdated();
         }
     }
 
-    public void addResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener)
-    {
+    public void addResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener) {
         resourceBundleUpdatedListeners.add(listener);
     }
 
-    public void removeResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener)
-    {
+    public void removeResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener) {
         resourceBundleUpdatedListeners.remove(listener);
     }
 }

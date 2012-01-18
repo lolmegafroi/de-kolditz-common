@@ -3,6 +3,7 @@
  */
 package de.kolditz.common;
 
+import org.apache.log4j.BasicConfigurator;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -23,6 +24,7 @@ public class Activator extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         instance = this;
+        BasicConfigurator.configure();
     }
 
     @Override

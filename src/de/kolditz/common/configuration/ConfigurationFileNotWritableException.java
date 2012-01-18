@@ -10,8 +10,7 @@ import java.io.File;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class ConfigurationFileNotWritableException extends RuntimeException
-{
+public class ConfigurationFileNotWritableException extends RuntimeException {
     /**
      * 
      */
@@ -22,13 +21,11 @@ public class ConfigurationFileNotWritableException extends RuntimeException
     /**
      * 
      */
-    public ConfigurationFileNotWritableException(File confFile)
-    {
+    public ConfigurationFileNotWritableException(File confFile) {
         super(MESSAGE + confFile.getAbsolutePath());
     }
 
-    public ConfigurationFileNotWritableException(File confFile, Throwable cause)
-    {
+    public ConfigurationFileNotWritableException(File confFile, Throwable cause) {
         super(MESSAGE + confFile.getAbsolutePath(), cause);
     }
 }

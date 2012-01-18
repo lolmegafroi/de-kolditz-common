@@ -10,8 +10,7 @@ import java.io.File;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class CreateConfigurationFileException extends RuntimeException
-{
+public class CreateConfigurationFileException extends RuntimeException {
     /**
      * 
      */
@@ -22,13 +21,11 @@ public class CreateConfigurationFileException extends RuntimeException
     /**
      * 
      */
-    public CreateConfigurationFileException(File confFile)
-    {
+    public CreateConfigurationFileException(File confFile) {
         super(MESSAGE + confFile.getAbsolutePath());
     }
 
-    public CreateConfigurationFileException(File confFile, Throwable cause)
-    {
+    public CreateConfigurationFileException(File confFile, Throwable cause) {
         super(MESSAGE + confFile.getAbsolutePath(), cause);
     }
 }

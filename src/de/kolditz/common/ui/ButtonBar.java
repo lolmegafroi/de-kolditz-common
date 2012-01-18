@@ -52,6 +52,11 @@ public class ButtonBar extends Composite {
     protected SelectionListener selectionListener = new InternalSelectionListener();
 
     /**
+     * This may be used to control enabled state on newly created buttons.
+     */
+    protected boolean defaultEnabled = true;
+
+    /**
      * Constructs a new instance of this class given its parent and a style value describing its behavior and
      * appearance.
      * <p>
@@ -186,6 +191,10 @@ public class ButtonBar extends Composite {
         return (ButtonBarLayout) super.getLayout();
     }
 
+    public Button createButton(int id, String label) {
+        return createButton(id, label, null, false, SWT.PUSH);
+    }
+
     public Button createButton(int id, String label, boolean defaultButton) {
         return createButton(id, label, null, defaultButton, SWT.PUSH);
     }
@@ -215,6 +224,7 @@ public class ButtonBar extends Composite {
                 shell.setDefaultButton(button);
             }
         }
+        button.setEnabled(defaultEnabled);
         return button;
     }
 
@@ -251,5 +261,20 @@ public class ButtonBar extends Composite {
 
     public void setDebug(boolean debug) {
         ((ButtonBarLayout) getLayout()).setDebug(debug);
+    }
+
+    /**
+     * @return the default enabled state for newly created buttons
+     */
+    public boolean isDefaultEnabled() {
+        return defaultEnabled;
+    }
+
+    /**
+     * @param defaultEnabled
+     *            the default enabled state for newly created buttons
+     */
+    public void setDefaultEnabled(boolean defaultEnabled) {
+        this.defaultEnabled = defaultEnabled;
     }
 }
