@@ -1,8 +1,13 @@
-/*
- * jExam 2003
- * Created on 24.11.2003
- *
- */
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ * 
+ *  Contributors:
+ *     Till Kolditz
+ *******************************************************************************/
 package de.kolditz.common.i18n;
 
 import java.text.MessageFormat;
@@ -15,8 +20,8 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.ListenerList;
 
+import de.kolditz.common.ui.GenericListenerList;
 import de.kolditz.common.ui.UIUtils;
 
 /**
@@ -42,7 +47,8 @@ public class Messages {
 
     protected Object lock;
 
-    protected volatile ListenerList resourceBundleUpdatedListeners = new ListenerList();
+    protected volatile GenericListenerList<ResourceBundleUpdatedListener> resourceBundleUpdatedListeners = new GenericListenerList<ResourceBundleUpdatedListener>(
+            ResourceBundleUpdatedListener.class);
 
     /**
      * 
@@ -81,8 +87,7 @@ public class Messages {
      * @return the string
      */
     public String format(final String key, final Object... args) {
-        final MessageFormat format = new MessageFormat(getString(key));
-        return format.format(args);
+        return new MessageFormat(getString(key)).format(args);
     }
 
     /**

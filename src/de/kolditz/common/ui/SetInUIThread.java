@@ -1,10 +1,18 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ *  Contributors:
+ *     Till Kolditz
+ *******************************************************************************/
 package de.kolditz.common.ui;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
@@ -29,19 +37,42 @@ public abstract class SetInUIThread<E> implements Runnable {
      * Convenience class. Use a {@link Pair} the following way: first is the text, second is the tool tip.
      * 
      * @see Pair
+     * @see Pair#first(Object)
+     * @see Pair#second(Object)
      * @author Till Kolditz - Till.Kolditz@GoogleMail.com
      */
-    public static class SetTextValue extends SetInUIThread<Pair<String, String>> {
+    public static class SetText extends SetInUIThread<Pair<String, String>> {
         private Text text;
 
-        public SetTextValue(Text text) {
+        public SetText(Text text) {
             this.text = text;
         }
 
         @Override
         public void run() {
-            text.setText(value.getKey());
-            text.setToolTipText(value.getValue());
+            text.setText(value.first());
+            text.setToolTipText(value.second());
+        }
+    }
+
+    /**
+     * Convenience class. Use a {@link Boolean} to set the selection on one of the following widgets:
+     * <ul>
+     * <li>{@link Button}</li>
+     * </ul>
+     * 
+     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     */
+    public static class SetSelection extends SetInUIThread<Boolean> {
+        private Button button;
+
+        public SetSelection(Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public void run() {
+            button.setSelection(value);
         }
     }
 

@@ -1,6 +1,13 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
  * 
- */
+ *  Contributors:
+ *     Till Kolditz
+ *******************************************************************************/
 package de.kolditz.common.ui.rcp;
 
 import java.lang.annotation.Annotation;
@@ -12,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
+import de.kolditz.common.SystemProperties;
 import de.kolditz.common.ui.rcp.ImageConstant.RefType;
 
 /**
@@ -62,7 +70,7 @@ public final class ImagesInitializer {
                     }
                     try {
                         if (refType.value() == RefType.LOCAL) {
-                            path = refType.folder() + constant;
+                            path = refType.folder() + SystemProperties.FILE_SEP + constant;
                         } else if (refType.value() == RefType.PLATFORM_PLUGIN) {
                             if (refType.remotePlugin().equals("")) { //$NON-NLS-1$
                                 logger.log(Level.ERROR,
@@ -82,7 +90,7 @@ public final class ImagesInitializer {
                         try {
                             imageRegistry.put(constant, plugin.getImageDescriptor(path).createImage());
                         } catch (RuntimeException e) {
-                            logger.log(Level.ERROR, e.getMessage(), e);
+                            logger.log(Level.ERROR, constant + '=' + path, e);
                         }
                     } catch (Throwable e) {
                         logger.log(Level.ERROR, e.getClass().getSimpleName(), e);

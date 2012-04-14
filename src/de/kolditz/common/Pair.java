@@ -1,6 +1,13 @@
-/**
- * created on 13.12.2011 at 15:12:06
- */
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ * 
+ *  Contributors:
+ *     Till Kolditz
+ *******************************************************************************/
 package de.kolditz.common;
 
 import java.util.Map.Entry;
@@ -23,15 +30,19 @@ public class Pair<K, V> implements Entry<K, V> {
         return first;
     }
 
+    /**
+     * @see #getKey()
+     */
     public K first() {
         return first;
     }
 
     /**
-     * Set the {@link #first} value and return this pair.
+     * Set the {@link #first} value and return this pair. Can be used for command chaining.
      * 
      * @param first
-     * @return
+     *            the first value/key
+     * @return this object
      */
     public Pair<K, V> first(K first) {
         this.first = first;
@@ -43,10 +54,20 @@ public class Pair<K, V> implements Entry<K, V> {
         return second;
     }
 
+    /**
+     * @see #getValue()
+     */
     public V second() {
         return second;
     }
 
+    /**
+     * Set the {@link #second} value and return this pair. Can be used for command chaining.
+     * 
+     * @param second
+     *            the (second) value
+     * @return this object
+     */
     public Pair<K, V> second(V second) {
         this.second = second;
         return this;

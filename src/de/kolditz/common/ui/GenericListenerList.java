@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Till Kolditz - generic code
  *******************************************************************************/
 package de.kolditz.common.ui;
 
@@ -14,7 +15,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
- * The code is copied from {@link org.eclipse.core.runtime.ListenerList} but with generics...
+ * The code is copied from {@link org.eclipse.core.runtime.ListenerList} using generics...
  * 
  * This class is a thread safe list that is designed for storing lists of listeners. The implementation is optimized for
  * minimal memory footprint, frequent reads and infrequent writes. Modification of the list is synchronized and

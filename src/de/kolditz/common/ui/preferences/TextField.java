@@ -1,6 +1,13 @@
-/**
- * created on 13.12.2011 at 14:31:07
- */
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ * 
+ *  Contributors:
+ *     Till Kolditz
+ *******************************************************************************/
 package de.kolditz.common.ui.preferences;
 
 import org.eclipse.swt.SWT;
@@ -14,33 +21,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.kolditz.common.IObservable;
-import de.kolditz.common.IObservableBackend;
-import de.kolditz.common.IObserver;
 import de.kolditz.common.Pair;
-import de.kolditz.common.ui.GetInUIThread.GetTextValue;
-import de.kolditz.common.ui.SetInUIThread.SetTextValue;
+import de.kolditz.common.ui.GetInUIThread.GetText;
+import de.kolditz.common.ui.SetInUIThread.SetText;
 
 /**
  * Preferences Text field
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class TextField extends Composite implements IObservable<String>, ModifyListener, FocusListener {
+public class TextField extends PreferenceField<String> implements ModifyListener, FocusListener {
     protected Label label;
     protected Text text;
     protected String labelString;
     protected String null_hint;
-    protected IObservableBackend<String> backEnd;
     protected boolean doUpdateBackEnd;
     protected Pair<String, String> pair;
-    protected SetTextValue setter;
-    protected GetTextValue getter;
+    protected SetText setter;
+    protected GetText getter;
 
     /**
      * @param parent
+     *            parent Composite
      * @param style
+     *            Composite style
      * @param label
+     *            label text
      */
     public TextField(Composite parent, int style, String label) {
         this(parent, style, label, "");
@@ -48,9 +54,13 @@ public class TextField extends Composite implements IObservable<String>, ModifyL
 
     /**
      * @param parent
+     *            parent Composite
      * @param style
+     *            Composite style
      * @param label
+     *            label text
      * @param null_hint
+     *            hint text shown when no text is entered
      */
     public TextField(Composite parent, int style, String label, String null_hint) {
         super(parent, style);
@@ -61,11 +71,10 @@ public class TextField extends Composite implements IObservable<String>, ModifyL
         setLabels();
         addListeners();
 
-        backEnd = new IObservableBackend<String>(this);
         doUpdateBackEnd = true;
         pair = new Pair<String, String>(null, null);
-        setter = new SetTextValue(text);
-        getter = new GetTextValue(text);
+        setter = new SetText(text);
+        getter = new GetText(text);
     }
 
     protected void create() {
@@ -90,48 +99,16 @@ public class TextField extends Composite implements IObservable<String>, ModifyL
         text.addFocusListener(this);
     }
 
-    public void setValue(String value) {
-        setValue(value, true);
-    }
-
-    public void setValue(String value, boolean triggerUpdate) {
-        String actualVal = value;
-        if (value == null || value.length() == 0) {
-            actualVal = null_hint;
+    @Override
+    public void modifyText(ModifyEvent e) {
+        if (text.getText().equals(null_hint)) {
+            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_GRAY));
+        } else {
+            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
         }
-        doUpdateBackEnd = triggerUpdate;
-        setter.setValue(getDisplay(), pair.first(actualVal).second(actualVal), false);
-        doUpdateBackEnd = true;
-    }
-
-    public String getValue() {
-        String str = getter.get();
-        if (str.equals(null_hint)) {
-            return null;
+        if (doUpdateBackEnd) {
+            notifyObservers(getValue());
         }
-        return str;
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        text.setEnabled(enabled);
-        // super.setEnabled(enabled);
-    }
-
-    /**
-     * Registers an {@link IObserver} for modification events. The data object is the new text.
-     */
-    @Override
-    public boolean registerObserver(IObserver<String> observer) {
-        return backEnd.registerObserver(observer);
-    }
-
-    /**
-     * Unregisters an {@link IObserver} from modification events.
-     */
-    @Override
-    public boolean unregisterObserver(IObserver<String> observer) {
-        return backEnd.unregisterObserver(observer);
     }
 
     @Override
@@ -152,32 +129,29 @@ public class TextField extends Composite implements IObservable<String>, ModifyL
         doUpdateBackEnd = true;
     }
 
+    public String setValue(String value, boolean doNotifyObservers) {
+        String old = getValue();
+        String actualVal = value;
+        if (value == null || value.length() == 0) {
+            actualVal = null_hint;
+        }
+        doUpdateBackEnd = doNotifyObservers;
+        setter.setValue(getDisplay(), pair.first(actualVal).second(actualVal), false);
+        doUpdateBackEnd = true;
+        return old;
+    }
+
+    public String getValue() {
+        String str = getter.get();
+        if (str.equals(null_hint)) {
+            return null;
+        }
+        return str;
+    }
+
     @Override
-    public void modifyText(ModifyEvent e) {
-        if (text.getText().equals(null_hint)) {
-            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_GRAY));
-        } else {
-            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
-        }
-        if (doUpdateBackEnd) {
-            backEnd.update(getValue());
-        }
-    }
-
-    /**
-     * Sets this {@link TextField}'s text
-     * 
-     * @param text
-     *            the text
-     */
-    public void setText(String text) {
-        this.text.setText(text);
-    }
-
-    /**
-     * @return this {@link TextField}'s text
-     */
-    public String getText() {
-        return text.getText();
+    public void setEnabled(boolean enabled) {
+        label.setEnabled(enabled);
+        text.setEnabled(enabled);
     }
 }
