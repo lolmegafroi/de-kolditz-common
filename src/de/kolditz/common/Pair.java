@@ -13,6 +13,7 @@ package de.kolditz.common;
 import java.util.Map.Entry;
 
 /**
+ * Implementation for {@link Entry}
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
@@ -20,6 +21,14 @@ public class Pair<K, V> implements Entry<K, V> {
     protected K first;
     protected V second;
 
+    /**
+     * Constructor.
+     * 
+     * @param first
+     *            first value or key
+     * @param second
+     *            (second) value
+     */
     public Pair(K first, V second) {
         this.first = first;
         this.second = second;

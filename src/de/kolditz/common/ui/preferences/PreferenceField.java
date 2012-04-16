@@ -34,6 +34,7 @@ public abstract class PreferenceField<E> extends Composite implements IObservabl
      */
     public PreferenceField(Composite parent, int style) {
         super(parent, style);
+        observableBackEnd = createBackend();
     }
 
     /**
@@ -55,6 +56,17 @@ public abstract class PreferenceField<E> extends Composite implements IObservabl
     protected void notifyObservers(E value) {
         observableBackEnd.update(value);
     }
+
+    /**
+     * Needed to create the generic backend. Client code should look like
+     * 
+     * <pre>
+     * return new IObservableBackend&lt;TYPE&gt;(this);
+     * </pre>
+     * 
+     * @return the IObservableBackend
+     */
+    protected abstract IObservableBackend<E> createBackend();
 
     /**
      * "Protocol" method that must be called by the client. This shall ensure same method names for better code
