@@ -114,9 +114,9 @@ public class TextAppender extends AppenderSkeleton {
                     if (tfLog != null && !tfLog.isDisposed()) {
                         tfLog.setRedraw(false);
                         tfLog.setText("");
-                        for (LoggingEvent e : events) {
-                            if (isAsSevereAsThreshold(e.getLevel()))
-                                tfLog.append(layout.format(e));
+                        for (LoggingEvent le : events) {
+                            if (isAsSevereAsThreshold(le.getLevel()))
+                                tfLog.append(layout.format(le));
                         }
                         tfLog.setRedraw(true);
                     }
@@ -138,5 +138,22 @@ public class TextAppender extends AppenderSkeleton {
             setLayout(SIMPLE_LAYOUT);
         }
         recreate();
+    }
+
+    /**
+     * @return the log with the current logging level and style, or null if nothing is present
+     */
+    public String getLog() {
+        if (tfLog != null && !tfLog.isDisposed()) {
+            return tfLog.getText();
+        } else if (events != null) {
+            StringBuilder sb = new StringBuilder();
+            for (LoggingEvent le : events) {
+                if (isAsSevereAsThreshold(le.getLevel()))
+                    sb.append(layout.format(le));
+            }
+            return sb.toString();
+        }
+        return null;
     }
 }
