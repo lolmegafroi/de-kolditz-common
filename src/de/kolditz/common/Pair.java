@@ -17,7 +17,7 @@ import java.util.Map.Entry;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class Pair<K, V> implements Entry<K, V> {
+public class Pair<K, V> implements Entry<K, V>, Cloneable {
     protected K first;
     protected V second;
 
@@ -87,5 +87,11 @@ public class Pair<K, V> implements Entry<K, V> {
         V old = this.second;
         this.second = value;
         return old;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Pair<K, V> clone() throws CloneNotSupportedException {
+        return (Pair<K, V>) super.clone();
     }
 }
