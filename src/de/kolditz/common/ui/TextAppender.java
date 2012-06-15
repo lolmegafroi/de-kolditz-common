@@ -44,7 +44,7 @@ public class TextAppender extends AppenderSkeleton {
         }
     }
 
-    public static final String COMPLEX = PatternLayout.TTCC_CONVERSION_PATTERN;
+    public static final String COMPLEX = "%r [%t] %p %c (%C{1}:%L %M) %x - %m %n"; //$NON-NLS-1$
     public static final String COMPLEX_NAME = "Complex";
     public static final String SIMPLE = "%-5p - %m%n"; //$NON-NLS-1$
     public static final String SIMPLE_NAME = "Simple";

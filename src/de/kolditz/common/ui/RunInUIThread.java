@@ -28,27 +28,28 @@ public abstract class RunInUIThread implements Runnable {
     protected Logger log = Logger.getLogger(getClass().getSimpleName());
 
     /**
-     * The run method will either be called directly when the current thread is the UI thread or, otherwise,
-     * asynchronously in the UI thread.
+     * The {@link #inUIThread()} method will either be called directly when the current thread is the UI thread or,
+     * otherwise, asynchronously in the UI thread.
      */
-    public void execute() {
-        execute(null, true);
+    @Override
+    public final void run() {
+        run(null, true);
     }
 
     /**
-     * The run method will either be called directly when the current thread is the UI thread or, otherwise,
-     * asynchronously in the UI thread.
+     * The {@link #inUIThread()} method will either be called directly when the current thread is the UI thread or,
+     * otherwise, asynchronously in the UI thread.
      * 
      * @param display
      *            the {@link Display}
      */
-    public void execute(Display display) {
-        execute(display, true);
+    public void run(Display display) {
+        run(display, true);
     }
 
     /**
-     * The run method will either be called directly when the current thread is the UI thread or, otherwise, depending
-     * on async (a)synchronously in the UI thread.
+     * The {@link #inUIThread()} method will either be called directly when the current thread is the UI thread or,
+     * otherwise, depending on async (a)synchronously in the UI thread.
      * 
      * @param display
      *            The {@link Display}.
@@ -57,7 +58,7 @@ public abstract class RunInUIThread implements Runnable {
      *            method. Otherwise the {@link #run()} method will be called by the display's
      *            {@link Display#asyncExec(Runnable)} method.
      */
-    public void execute(Display display, boolean async) {
+    public void run(Display display, boolean async) {
         Display d = display;
         if (d == null) {
             log.trace("display is null");
@@ -69,7 +70,7 @@ public abstract class RunInUIThread implements Runnable {
         }
         if (d.getThread() == Thread.currentThread()) {
             log.trace("running in UI thread");
-            run();
+            inUIThread();
         } else if (async) {
             log.trace("running async");
             d.asyncExec(this);
@@ -78,4 +79,9 @@ public abstract class RunInUIThread implements Runnable {
             d.syncExec(this);
         }
     }
+
+    /**
+     * Derived from {@link Runnable} this is the run method which is ensured to run in the UI Thread.
+     */
+    protected abstract void inUIThread();
 }
