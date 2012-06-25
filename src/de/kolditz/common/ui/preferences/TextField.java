@@ -69,8 +69,8 @@ public class TextField extends PreferenceField<String> implements ModifyListener
         this.null_hint = null_hint != null ? null_hint : ""; //$NON-NLS-1$
 
         create();
-        setLabels();
         addListeners();
+        setLabels();
 
         doUpdateBackEnd = true;
         pair = new Pair<String, String>(null, null);

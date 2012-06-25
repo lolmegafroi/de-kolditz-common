@@ -70,7 +70,7 @@ public abstract class PreferenceField<E> extends Composite implements IObservabl
 
     /**
      * "Protocol" method that must be called by the client. This shall ensure same method names for better code
-     * readability.
+     * readability. "this" is the Composite for adding widgets.
      */
     protected abstract void create();
 
