@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.kolditz.common.IObservableBackend;
 import de.kolditz.common.Pair;
 import de.kolditz.common.ui.GetInUIThread.GetText;
 import de.kolditz.common.ui.SetInUIThread.SetText;
@@ -154,10 +153,5 @@ public class TextField extends PreferenceField<String> implements ModifyListener
     public void setEnabled(boolean enabled) {
         label.setEnabled(enabled);
         text.setEnabled(enabled);
-    }
-
-    @Override
-    protected IObservableBackend<String> createBackend() {
-        return new IObservableBackend<String>(this);
     }
 }

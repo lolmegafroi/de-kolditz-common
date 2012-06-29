@@ -23,8 +23,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import de.kolditz.common.IObservableBackend;
-
 /**
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
@@ -107,11 +105,6 @@ public class TabField<K> extends PreferenceField<K> {
         create();
         setLabels();
         addListeners();
-    }
-
-    @Override
-    protected IObservableBackend<K> createBackend() {
-        return new IObservableBackend<K>(this);
     }
 
     @Override

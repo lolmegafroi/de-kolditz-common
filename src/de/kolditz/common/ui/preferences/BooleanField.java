@@ -16,7 +16,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import de.kolditz.common.IObservableBackend;
 import de.kolditz.common.ui.GetInUIThread.GetSelection;
 import de.kolditz.common.ui.SetInUIThread.SetSelection;
 
@@ -81,10 +80,5 @@ public class BooleanField extends PreferenceField<Boolean> {
         }
         setter.setValue(getDisplay(), actualVal);
         return old;
-    }
-
-    @Override
-    protected IObservableBackend<Boolean> createBackend() {
-        return new IObservableBackend<Boolean>(this);
     }
 }
