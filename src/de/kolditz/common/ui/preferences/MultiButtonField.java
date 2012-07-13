@@ -16,10 +16,13 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+
+import de.kolditz.common.ui.ButtonBar;
 
 /**
  * A {@link PreferenceField} containing several {@link Button}s.
@@ -28,18 +31,26 @@ import org.eclipse.swt.widgets.Group;
  */
 public class MultiButtonField<E> extends PreferenceField<E> {
     protected int groupStyle;
-    protected String label;
+    protected int buttonStyle;
+    protected String labelString;
     protected int columns;
     protected E[] values;
     protected String[] labels;
+    protected Label label;
     protected Group group;
+    protected ButtonBar buttonBar;
     protected Button[] buttons;
+    protected boolean asGroup;
 
     /**
      * @param parent
      *            this widget's parent {@link Composite}
+     * @param asGroup
+     *            whether this multi button field should be organized as a group or not
      * @param groupStyle
      *            this {@link Composite}'s style
+     * @param label
+     *            the label string
      * @param buttonStyle
      *            the style of the created {@link Button}s
      * @param columns
@@ -49,8 +60,8 @@ public class MultiButtonField<E> extends PreferenceField<E> {
      * @param labels
      *            the buttons' text labels
      */
-    public MultiButtonField(Composite parent, int groupStyle, String label, int buttonStyle, int columns, E[] values,
-            String[] labels) {
+    public MultiButtonField(PreferencesComposite parent, boolean asGroup, int groupStyle, String label,
+            int buttonStyle, int columns, E[] values, String[] labels) {
         super(parent, SWT.NONE);
 
         assert values != null : new IllegalArgumentException("values = null"); //$NON-NLS-1$
@@ -58,9 +69,12 @@ public class MultiButtonField<E> extends PreferenceField<E> {
         assert labels != null : new IllegalArgumentException("labels = null"); //$NON-NLS-1$
         assert values.length == labels.length : new IllegalArgumentException("values.length != labels.length"); //$NON-NLS-1$
 
+        this.asGroup = asGroup;
         this.groupStyle = buttonStyle;
 
-        this.label = label;
+        this.buttonStyle = buttonStyle;
+
+        this.labelString = label;
         this.columns = columns;
         this.values = values;
         this.labels = labels;
@@ -72,27 +86,49 @@ public class MultiButtonField<E> extends PreferenceField<E> {
 
     @Override
     protected void create() {
-        GridLayout gl = new GridLayout(1, false);
-        gl.marginHeight = 0;
-        gl.marginWidth = 0;
-        setLayout(gl);
+        Composite buttonComp;
+        if (asGroup) {
+            group = new Group(getComposite(), groupStyle);
+            group.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
+            buttonComp = group;
+        } else {
+            label = new Label(getComposite(), SWT.NONE);
+            buttonComp = getComposite();
+        }
 
-        group = new Group(this, groupStyle);
-        group.setLayout(new GridLayout(columns, false));
-
+        buttonBar = new ButtonBar(buttonComp, SWT.NONE);
+        buttonBar.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
         Button b;
         buttons = new Button[values.length];
         for (int i = 0; i < values.length; ++i) {
-            b = new Button(group, groupStyle);
+            b = buttonBar.createButton(i, "", false, buttonStyle);
             b.setData(values[i]);
             buttons[i] = b;
         }
     }
 
     @Override
+    protected int getColumnsRequired() {
+        return asGroup ? 1 : columns + 1;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        if (asGroup) {
+            ((GridData) group.getLayoutData()).horizontalSpan = columns;
+        } else {
+            ((GridData) buttonBar.getLayoutData()).horizontalSpan = columns - 1;
+        }
+    }
+
+    @Override
     protected void setLabels() {
-        if (label != null) {
-            group.setText(label);
+        if (labelString != null) {
+            if (asGroup) {
+                group.setText(labelString);
+            } else {
+                label.setText(labelString);
+            }
         }
         for (int i = 0; i < values.length; ++i) {
             buttons[i].setText(labels[i]);
@@ -175,8 +211,6 @@ public class MultiButtonField<E> extends PreferenceField<E> {
 
     @Override
     public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        group.setEnabled(enabled);
         for (Button b : buttons) {
             b.setEnabled(enabled);
         }

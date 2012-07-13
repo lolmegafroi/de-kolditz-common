@@ -17,8 +17,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -31,7 +29,7 @@ public class TabField<K> extends PreferenceField<K> {
     public final class TabFieldItem {
         private K key = null;
         private TabItem ti = null;
-        private Composite comp = null;
+        private PreferencesComposite comp = null;
 
         private TabFieldItem(K key) {
             this.key = key;
@@ -50,11 +48,10 @@ public class TabField<K> extends PreferenceField<K> {
             ti.setToolTipText(tooltip);
         }
 
-        public Composite getComposite() {
+        public PreferencesComposite getPreferencesComposite() {
             if (comp == null) {
-                comp = new Composite(folder, SWT.NONE);
-                comp.setLayout(new GridLayout());
-                ti.setControl(comp);
+                comp = new PreferencesComposite(folder, SWT.NONE);
+                ti.setControl(comp.getComposite());
             }
             return comp;
         }
@@ -76,6 +73,11 @@ public class TabField<K> extends PreferenceField<K> {
     private String labelString;
 
     /**
+     * The TabFolder's style
+     */
+    private int tabStyle;
+
+    /**
      * The currently selected key
      */
     private K currentKey;
@@ -94,13 +96,32 @@ public class TabField<K> extends PreferenceField<K> {
      * @param labels
      *            the labels for the {@link TabItem}s
      */
-    public TabField(Composite parent, int style, String label) {
+    public TabField(PreferencesComposite parent, int style, String label) {
+        this(parent, style, label, SWT.TOP);
+    }
+
+    /**
+     * @param parent
+     *            parent Composite
+     * @param style
+     *            composite style
+     * @param label
+     *            label text
+     * @param keys
+     *            the keys for the {@link TabItem}s
+     * @param labels
+     *            the labels for the {@link TabItem}s
+     * @param tabStyle
+     *            {@link SWT#TOP} or {@link SWT#BOTTOM}
+     */
+    public TabField(PreferencesComposite parent, int style, String label, int tabStyle) {
         super(parent, style);
 
         assert parent != null : new IllegalArgumentException("parent = null"); //$NON-NLS-1$
         assert label != null : new IllegalArgumentException("label = null"); //$NON-NLS-1$
 
         this.labelString = label;
+        this.tabStyle = tabStyle;
 
         create();
         setLabels();
@@ -109,14 +130,8 @@ public class TabField<K> extends PreferenceField<K> {
 
     @Override
     protected void create() {
-        GridLayout gl = new GridLayout(2, false);
-        gl.marginWidth = 0;
-        gl.marginHeight = 0;
-        setLayout(gl);
-
-        label = new Label(this, SWT.NONE);
-
-        folder = new TabFolder(this, getStyle());
+        label = new Label(getComposite(), SWT.NONE);
+        folder = new TabFolder(getComposite(), tabStyle);
         folder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
     }
 
@@ -139,6 +154,20 @@ public class TabField<K> extends PreferenceField<K> {
                 }
             }
         });
+    }
+
+    @Override
+    protected int getColumnsRequired() {
+        return 2;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        ((GridData) folder.getLayoutData()).horizontalSpan = columns - 1;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
     }
 
     @Override
@@ -182,7 +211,7 @@ public class TabField<K> extends PreferenceField<K> {
         TabFieldItem tfi = new TabFieldItem(key);
         tfi.ti.setData(key);
         items.put(key, tfi);
-        tfi.getComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        tfi.getPreferencesComposite().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         return tfi;
     }
 

@@ -24,7 +24,8 @@ import de.kolditz.common.concurrent.MultiThreaded;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public abstract class PreferenceField<E> extends Composite implements IObservable<E> {
+public abstract class PreferenceField<E> implements IObservable<E> {
+    protected PreferencesComposite parent;
     protected IObservableBackend<E> observableBackEnd;
     protected boolean doUpdateBackEnd;
 
@@ -34,9 +35,10 @@ public abstract class PreferenceField<E> extends Composite implements IObservabl
      * @param style
      *            Composite style
      */
-    public PreferenceField(Composite parent, int style) {
-        super(parent, style);
+    public PreferenceField(PreferencesComposite parent, int style) {
+        this.parent = parent;
         observableBackEnd = createBackend();
+        parent.registerField(this);
     }
 
     /**
@@ -89,6 +91,28 @@ public abstract class PreferenceField<E> extends Composite implements IObservabl
      * readability.
      */
     protected abstract void addListeners();
+
+    /**
+     * This method is called by the {@link PreferencesComposite} to find out how many columns this field required.
+     * 
+     * @return how many columns this field required
+     */
+    protected abstract int getColumnsRequired();
+
+    /**
+     * This method is called by the {@link PreferencesComposite} to notify how many columns there will be in the layout.
+     * It is guaranteed to be called after {@link #create()}.
+     * 
+     * @param columns
+     *            the number of columns the parent layout will have
+     */
+    protected abstract void setColumns(int columns);
+
+    protected Composite getComposite() {
+        return parent.getComposite();
+    }
+
+    public abstract void setEnabled(boolean enabled);
 
     /**
      * @return this PreferenceField's value

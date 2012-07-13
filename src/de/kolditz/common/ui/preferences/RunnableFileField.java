@@ -14,9 +14,7 @@ import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 
 /**
  * A {@link FileField} that points to an executable file and contains an additional button for running it.
@@ -31,20 +29,18 @@ public class RunnableFileField extends FileField {
      * @param style
      * @param label
      */
-    public RunnableFileField(Composite parent, int style, String label) {
+    public RunnableFileField(PreferencesComposite parent, int style, String label) {
         super(parent, style, label);
     }
 
-    public RunnableFileField(Composite parent, int style, String label, String null_hint) {
+    public RunnableFileField(PreferencesComposite parent, int style, String label, String null_hint) {
         super(parent, style, label, null_hint);
     }
 
     @Override
     protected void create() {
         super.create();
-        ++((GridLayout) getLayout()).numColumns;
-
-        btnRun = new Button(this, SWT.PUSH);
+        btnRun = new Button(getComposite(), SWT.PUSH);
     }
 
     @Override
@@ -57,6 +53,16 @@ public class RunnableFileField extends FileField {
     protected void addListeners() {
         super.addListeners();
         btnRun.addSelectionListener(this);
+    }
+
+    @Override
+    protected int getColumnsRequired() {
+        return super.getColumnsRequired() + 1;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        super.setColumns(columns - 1);
     }
 
     @Override

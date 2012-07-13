@@ -16,8 +16,6 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -48,7 +46,7 @@ public class TextField extends PreferenceField<String> implements ModifyListener
      * @param label
      *            label text
      */
-    public TextField(Composite parent, int style, String label) {
+    public TextField(PreferencesComposite parent, int style, String label) {
         this(parent, style, label, "");
     }
 
@@ -62,7 +60,7 @@ public class TextField extends PreferenceField<String> implements ModifyListener
      * @param null_hint
      *            hint text shown when no text is entered
      */
-    public TextField(Composite parent, int style, String label, String null_hint) {
+    public TextField(PreferencesComposite parent, int style, String label, String null_hint) {
         super(parent, style);
         labelString = label;
         this.null_hint = null_hint != null ? null_hint : ""; //$NON-NLS-1$
@@ -78,12 +76,8 @@ public class TextField extends PreferenceField<String> implements ModifyListener
     }
 
     protected void create() {
-        GridLayout gl = new GridLayout(2, false);
-        gl.marginWidth = 0;
-        gl.marginHeight = 0;
-        setLayout(gl);
-        label = new Label(this, SWT.NONE);
-        text = new Text(this, SWT.BORDER);
+        label = new Label(getComposite(), SWT.NONE);
+        text = new Text(getComposite(), SWT.BORDER);
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
@@ -100,11 +94,21 @@ public class TextField extends PreferenceField<String> implements ModifyListener
     }
 
     @Override
+    protected int getColumnsRequired() {
+        return 2;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        ((GridData) text.getLayoutData()).horizontalSpan = columns - 1;
+    }
+
+    @Override
     public void modifyText(ModifyEvent e) {
         if (text.getText().equals(null_hint)) {
-            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_GRAY));
+            text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_GRAY));
         } else {
-            text.setForeground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
+            text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_BLACK));
         }
         if (doUpdateBackEnd) {
             notifyObservers(getValue());
@@ -136,7 +140,7 @@ public class TextField extends PreferenceField<String> implements ModifyListener
             actualVal = null_hint;
         }
         doUpdateBackEnd = doNotifyObservers;
-        setter.setValue(getDisplay(), pair.first(actualVal).second(actualVal), false);
+        setter.setValue(text.getDisplay(), pair.first(actualVal).second(actualVal), false);
         doUpdateBackEnd = true;
         return old;
     }
@@ -151,7 +155,6 @@ public class TextField extends PreferenceField<String> implements ModifyListener
 
     @Override
     public void setEnabled(boolean enabled) {
-        label.setEnabled(enabled);
         text.setEnabled(enabled);
     }
 }

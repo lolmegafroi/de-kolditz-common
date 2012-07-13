@@ -13,8 +13,8 @@ package de.kolditz.common.ui.preferences;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 
 import de.kolditz.common.ui.GetInUIThread.GetSelection;
 import de.kolditz.common.ui.SetInUIThread.SetSelection;
@@ -35,7 +35,7 @@ public class BooleanField extends PreferenceField<Boolean> {
      * @param parent
      * @param style
      */
-    public BooleanField(Composite parent, int style, String label) {
+    public BooleanField(PreferencesComposite parent, int style, String label) {
         super(parent, style);
         this.label = label;
         create();
@@ -45,7 +45,7 @@ public class BooleanField extends PreferenceField<Boolean> {
     }
 
     protected void create() {
-        button = new Button(this, SWT.CHECK);
+        button = new Button(getComposite(), SWT.CHECK);
     }
 
     @Override
@@ -67,6 +67,21 @@ public class BooleanField extends PreferenceField<Boolean> {
     }
 
     @Override
+    protected int getColumnsRequired() {
+        return 1;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        button.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false, columns, 1));
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        button.setEnabled(enabled);
+    }
+
+    @Override
     public Boolean getValue() {
         return getter.get();
     }
@@ -78,7 +93,7 @@ public class BooleanField extends PreferenceField<Boolean> {
         if (actualVal == null) {
             value = Boolean.FALSE;
         }
-        setter.setValue(getDisplay(), actualVal);
+        setter.setValue(button.getDisplay(), actualVal);
         return old;
     }
 }

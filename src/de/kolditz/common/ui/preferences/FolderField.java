@@ -11,7 +11,6 @@
 package de.kolditz.common.ui.preferences;
 
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 
 import de.kolditz.common.SystemProperties;
@@ -27,7 +26,7 @@ public class FolderField extends FileField {
      * @param label
      * @param null_hint
      */
-    public FolderField(Composite parent, int style, String label) {
+    public FolderField(PreferencesComposite parent, int style, String label) {
         this(parent, style, label, "");
     }
 
@@ -37,14 +36,13 @@ public class FolderField extends FileField {
      * @param label
      * @param null_hint
      */
-    public FolderField(Composite parent, int style, String label, String null_hint) {
+    public FolderField(PreferencesComposite parent, int style, String label, String null_hint) {
         super(parent, style, label, null_hint);
     }
 
     /**
      * Not used for {@link FolderField}
      */
-    @Deprecated
     @Override
     public void setFilter(String[] extensions, String[] names, int index) {
     }
@@ -52,7 +50,7 @@ public class FolderField extends FileField {
     @Override
     public void widgetSelected(SelectionEvent e) {
         if (e.widget == btnSet) {
-            DirectoryDialog dd = new DirectoryDialog(getShell());
+            DirectoryDialog dd = new DirectoryDialog(text.getShell());
             String str = text.getText();
             dd.setMessage(null_hint);
             dd.setFilterPath(str.equals(null_hint) ? SystemProperties.USER_DIR : str);

@@ -21,7 +21,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -49,7 +48,7 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
      * @param label
      *            the {@link Label}'s text
      */
-    public FileField(Composite parent, int style, String label) {
+    public FileField(PreferencesComposite parent, int style, String label) {
         this(parent, style, label, "");
     }
 
@@ -63,7 +62,7 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
      * @param null_hint
      *            the hint text that is displayed when text field is empty
      */
-    public FileField(Composite parent, int style, String label, String null_hint) {
+    public FileField(PreferencesComposite parent, int style, String label, String null_hint) {
         super(parent, style, label, null_hint);
         setFilter(null, null, -1);
     }
@@ -107,14 +106,14 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
     @Override
     protected void create() {
         super.create();
-        ((GridLayout) getLayout()).numColumns = 4;
-        cdFile = new ControlDecoration(text, SWT.TOP | SWT.RIGHT, this);
+        Composite comp = getComposite();
+        cdFile = new ControlDecoration(text, SWT.TOP | SWT.RIGHT, comp);
         cdFile.setDescriptionText("The file does not exist");
         cdFile.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_WARNING)
                 .getImage());
         cdFile.hide();
-        btnSet = new Button(this, SWT.PUSH);
-        btnClear = new Button(this, SWT.PUSH);
+        btnSet = new Button(comp, SWT.PUSH);
+        btnClear = new Button(comp, SWT.PUSH);
     }
 
     @Override
@@ -132,6 +131,16 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
     }
 
     @Override
+    protected int getColumnsRequired() {
+        return super.getColumnsRequired() + 2;
+    }
+
+    @Override
+    protected void setColumns(int columns) {
+        super.setColumns(columns - 2);
+    }
+
+    @Override
     public void setEnabled(boolean enabled) {
         if (btnSet != null && !btnSet.isDisposed())
             btnSet.setEnabled(enabled);
@@ -143,7 +152,7 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
     @Override
     public void widgetSelected(SelectionEvent e) {
         if (e.widget == btnSet) {
-            FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
+            FileDialog fd = new FileDialog(text.getShell(), SWT.OPEN);
             String filterPath = text.getText();
             String fileName = "";
             if (filterPath.equals(null_hint)) {
