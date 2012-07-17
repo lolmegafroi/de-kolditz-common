@@ -23,6 +23,7 @@ public interface SystemProperties {
     public static final String JAVA_COMPILER = System.getProperty("java.compiler"); //$NON-NLS-1$
     public static final String JAVA_HOME = System.getProperty("java.home"); //$NON-NLS-1$
     public static final String JAVA_IO_TMPDIR = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+    public static final String JAVA_LIBRARY_PATH = System.getProperty("java.library.path"); //$NON-NLS-1$
     public static final String JAVA_VERSION = System.getProperty("java.version"); //$NON-NLS-1$
     public static final String JAVA_VENDOR = System.getProperty("java.vendor"); //$NON-NLS-1$
     public static final String JAVA_VENDOR_URL = System.getProperty("java.vendor.url"); //$NON-NLS-1$
