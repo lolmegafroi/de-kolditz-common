@@ -55,7 +55,7 @@ public final class ImagesInitializer {
                         constant = String.valueOf(f.get(null));
                     } catch (Throwable exception) {
                         logger.log(Level.ERROR, "Could not access image constant \"" + clazz.getName() //$NON-NLS-1$
-                                + ImageConstant.SEPERATOR + f.getName() + "\""); //$NON-NLS-1$
+                                + ImageConstant.SEPERATOR + f.getName() + '"');
                         continue;
                     }
                     refType = f.getAnnotation(ImageConstant.class);
@@ -74,8 +74,8 @@ public final class ImagesInitializer {
                         } else if (refType.value() == RefType.PLATFORM_PLUGIN) {
                             if (refType.remotePlugin().equals("")) { //$NON-NLS-1$
                                 logger.log(Level.ERROR,
-                                        "no remotePlugin parameter set for ImageRefType annotation for image constant \"" //$NON-NLS-1$
-                                                + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + "\" set!"); //$NON-NLS-1$
+                                        "remotePlugin parameter is not set for ImageRefType annotation for image constant \"" //$NON-NLS-1$
+                                                + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
                                 continue;
                             } else {
                                 path = ImageConstant.PLATFORM_PLUGIN_PATH + refType.remotePlugin()
@@ -84,7 +84,7 @@ public final class ImagesInitializer {
                             }
                         } else {
                             logger.log(Level.ERROR, "Unknown ImageRefType annotation for image constant \"" //$NON-NLS-1$
-                                    + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + "\" set!"); //$NON-NLS-1$
+                                    + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
                             continue;
                         }
                         try {
