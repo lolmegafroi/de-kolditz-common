@@ -4,6 +4,7 @@ Bundle-Name: Common Utility Plug-in
 Bundle-SymbolicName: de.kolditz.common;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Export-Package: de.kolditz.common,
+ de.kolditz.common.action,
  de.kolditz.common.concurrent,
  de.kolditz.common.configuration,
  de.kolditz.common.i18n,

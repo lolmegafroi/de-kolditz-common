@@ -19,6 +19,8 @@ import org.apache.log4j.Priority;
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.swt.custom.StyledText;
 
+import de.kolditz.common.SystemProperties;
+
 /**
  * An appender that logs to a text field. Does not handle Exceptions.
  * 
@@ -44,7 +46,7 @@ public class TextAppender extends AppenderSkeleton {
         }
     }
 
-    public static final String COMPLEX_PATTERN = "%r [%t] %p %c (%C{1}:%L %M) %x - %m %n"; //$NON-NLS-1$
+    public static final String COMPLEX_PATTERN = "[%10r] [%t] %p %c (%C{1}:%L %M) - %m%n"; //$NON-NLS-1$
     public static final String COMPLEX_NAME = "Complex";
     public static final String SIMPLE_PATTERN = "%-5p - %m%n"; //$NON-NLS-1$
     public static final String SIMPLE_NAME = "Simple";
@@ -89,7 +91,15 @@ public class TextAppender extends AppenderSkeleton {
 
     @Override
     protected synchronized void append(LoggingEvent event) {
-        update(layout.format(event));
+        if (event.getThrowableInformation() == null || getLayout() == SIMPLE_LAYOUT) {
+            update(layout.format(event));
+        } else {
+            StringBuilder sb = new StringBuilder(layout.format(event));
+            for (String s : event.getThrowableStrRep()) {
+                sb.append(s).append(SystemProperties.LINE_SEP);
+            }
+            update(sb.toString());
+        }
     }
 
     private void update(String text) {
@@ -115,8 +125,7 @@ public class TextAppender extends AppenderSkeleton {
                         tfLog.setRedraw(false);
                         tfLog.setText("");
                         for (LoggingEvent le : events) {
-                            if (isAsSevereAsThreshold(le.getLevel()))
-                                tfLog.append(layout.format(le));
+                            TextAppender.super.doAppend(le);
                         }
                         tfLog.setRedraw(true);
                     }
@@ -131,6 +140,10 @@ public class TextAppender extends AppenderSkeleton {
         recreate();
     }
 
+    /**
+     * @param name
+     *            {@link #COMPLEX_NAME} or {@link #SIMPLE_NAME}
+     */
     public void setStyle(String name) {
         if (name.equalsIgnoreCase(COMPLEX_NAME)) {
             setLayout(COMPLEX_LAYOUT);
