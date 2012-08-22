@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 public class I18N extends Messages {
     public static final String UIUTILS_EMD_EXPCOMP_TITLE = "UIUTILS_EMD_EXPCOMP_TITLE"; //$NON-NLS-1$
 
+    public static final String IPTEXT_INVALID = "IPTEXT_INVALID"; //$NON-NLS-1$
+
     /**
      * the singleton instance
      */

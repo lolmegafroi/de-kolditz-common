@@ -56,4 +56,23 @@ public class IObservableBackend<E> implements IObservable<E> {
             e.getKey().update(frontEnd, data);
         }
     }
+
+    /**
+     * Updates all registered {@link IObserver}s except the one given.
+     * 
+     * @param data
+     *            the application-specific data object
+     * @param notToNotify
+     *            the observer which shall not be updated. may be null
+     */
+    public void update(E data, IObserver<E> notToNotify) {
+        if (notToNotify == null) {
+            update(data);
+        } else {
+            for (Entry<IObserver<E>, Integer> e : observables.entrySet()) {
+                if (e.getKey() != notToNotify)
+                    e.getKey().update(frontEnd, data);
+            }
+        }
+    }
 }
