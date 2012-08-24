@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *     Till Kolditz - generic code
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.util;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

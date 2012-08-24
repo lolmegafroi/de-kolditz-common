@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common;
+package de.kolditz.common.util;
 
 /**
  * An interface for objects that want to observer other objects, being {@link #update(IObservable, Object)}d upon

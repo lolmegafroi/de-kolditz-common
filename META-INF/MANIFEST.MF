@@ -3,19 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Common Utility Plug-in
 Bundle-SymbolicName: de.kolditz.common;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: de.kolditz.common,
- de.kolditz.common.action,
- de.kolditz.common.concurrent,
+Export-Package: de.kolditz.common.concurrent,
  de.kolditz.common.configuration,
  de.kolditz.common.i18n,
- de.kolditz.common.ui,
- de.kolditz.common.ui.preferences,
- de.kolditz.common.ui.rcp
+ de.kolditz.common.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
- org.eclipse.ui;bundle-version="3.7.0",
- org.eclipse.ui.forms;bundle-version="3.5.100",
  org.apache.log4j;bundle-version="1.2.0"
 Bundle-Vendor: Till Kolditz
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: de.kolditz.common.jar
+Bundle-Activator: de.kolditz.common.Activator

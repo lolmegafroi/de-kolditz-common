@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common;
+package de.kolditz.common.util;
 
 import java.util.HashMap;
 import java.util.Map;

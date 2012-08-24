@@ -21,8 +21,7 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import de.kolditz.common.ui.GenericListenerList;
-import de.kolditz.common.ui.UIUtils;
+import de.kolditz.common.util.GenericListenerList;
 
 /**
  * <p>
@@ -59,21 +58,20 @@ public class Messages {
     }
 
     /**
-     * Update the locale to be used.
+     * Update the locale to be used. Internally synchronized.
      * 
      * @param baseName
+     *            the resource bundle's base name
      * @param locale
+     *            the {@link Locale}
+     * @exception MissingResourceException
+     *                if no resource bundle for the specified base name can be found
      */
     public void setLocale(String baseName, Locale locale) {
         synchronized (lock) {
-            try {
-                ResourceBundle newRB = ResourceBundle.getBundle(baseName, locale);
-                bundle = newRB;
-                notifyResourceBundleUpdatedListeners();
-            } catch (MissingResourceException e) {
-                logger.log(Level.ERROR, e.getMessage(), e);
-                UIUtils.openError(e);
-            }
+            ResourceBundle newRB = ResourceBundle.getBundle(baseName, locale);
+            bundle = newRB;
+            notifyResourceBundleUpdatedListeners();
         }
     }
 
