@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Common UI Plug-in
+Bundle-SymbolicName: de.kolditz.common.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.kolditz.common.ui.activator.Activator
+Bundle-Vendor: Till Kolditz
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui;bundle-version="3.7.0",
+ org.eclipse.ui.forms;bundle-version="3.5.0",
+ org.apache.log4j;bundle-version="1.2.0",
+ de.kolditz.common;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: de.kolditz.common.ui,
+ de.kolditz.common.ui.action,
+ de.kolditz.common.ui.preferences,
+ de.kolditz.common.ui.rcp
