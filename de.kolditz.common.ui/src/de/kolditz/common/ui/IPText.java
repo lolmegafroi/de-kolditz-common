@@ -37,7 +37,7 @@ import de.kolditz.common.util.RegExpPatterns;
 /**
  * Full-fledged text field for entering an IP V4 including a control decoration.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  * @see InetAddress
  */
 public class IPText extends AbstractControl implements IFillViewAware, IValidationControl

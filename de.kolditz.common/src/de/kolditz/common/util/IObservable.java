@@ -12,7 +12,7 @@ package de.kolditz.common.util;
 
 /**
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public interface IObservable<E>
 {

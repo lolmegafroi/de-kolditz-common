@@ -15,7 +15,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 /**
  * This denotes an eclipse plugin instance that offers a method to get the image descriptor for the given image path.
  * 
- * @author <a href="mailto:Till.Kolditz@GoogleMail.com">Till Kolditz &lt;Till.Kolditz@GoogleMail.com&gt;</a>
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  * @see ImagesInitializer
  * @see ImageConstant
  */

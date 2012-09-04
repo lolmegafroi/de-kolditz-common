@@ -26,7 +26,7 @@ import de.kolditz.common.util.SystemProperties;
  * Utility class for initializing an {@link Image} serving class with {@link ImageConstant} annotated public static
  * final {@link String}s.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public final class ImagesInitializer
 {

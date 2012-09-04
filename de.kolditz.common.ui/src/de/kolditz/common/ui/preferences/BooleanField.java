@@ -23,7 +23,7 @@ import de.kolditz.common.ui.SetInUIThread.SetSelection;
 /**
  * Preferences Boolean field
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class BooleanField extends PreferenceField<Boolean>
 {

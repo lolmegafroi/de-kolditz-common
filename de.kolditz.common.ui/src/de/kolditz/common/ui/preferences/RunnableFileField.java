@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Button;
 /**
  * A {@link FileField} that points to an executable file and contains an additional button for running it.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class RunnableFileField extends FileField
 {

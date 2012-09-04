@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  * A scheduler utility class which internally uses a single {@link ScheduledThreadPoolExecutor} instance. It allows to
  * be shutdown and will recreate the executor when necessary.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public final class Scheduler
 {

@@ -14,8 +14,7 @@ import java.util.ResourceBundle;
 
 /**
  * 
- * @author <a href="mailto:Till.Kolditz@GoogleMail.com">Till Kolditz &lt;Till.Kolditz@GoogleMail.com&gt;</a>
- * 
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class I18N extends Messages
 {

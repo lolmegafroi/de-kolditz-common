@@ -15,7 +15,7 @@ import java.io.File;
 /**
  * 
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class ConfigurationFileNotWritableException extends RuntimeException
 {

@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
  * When using RefType LOCAL you only need to assign {@link #folder()}.<br>
  * When using RefType REMOTE_PLUGIN you must assign the plugin's name to {@link #remotePlugin()}.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  * 
  * @see RefType
  */
@@ -53,7 +53,7 @@ public @interface ImageConstant {
      * </tr>
      * </table>
      * 
-     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public enum RefType {
         LOCAL, PLATFORM_PLUGIN

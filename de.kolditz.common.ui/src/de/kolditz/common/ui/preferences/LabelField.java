@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class LabelField extends PreferenceField<String>
 {

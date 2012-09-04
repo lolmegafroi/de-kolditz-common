@@ -30,7 +30,7 @@ import de.kolditz.common.util.Pair;
  * Use the protected variable value
  * 
  * @see #value
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class SetInUIThread<E> implements Runnable
 {
@@ -40,7 +40,7 @@ public abstract class SetInUIThread<E> implements Runnable
      * @see Pair
      * @see Pair#first(Object)
      * @see Pair#second(Object)
-     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public static class SetText extends SetInUIThread<Pair<String, String>>
     {
@@ -65,7 +65,7 @@ public abstract class SetInUIThread<E> implements Runnable
      * <li>{@link Button}</li>
      * </ul>
      * 
-     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public static class SetSelection extends SetInUIThread<Boolean>
     {

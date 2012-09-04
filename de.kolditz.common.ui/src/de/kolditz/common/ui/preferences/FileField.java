@@ -29,7 +29,7 @@ import de.kolditz.common.util.SystemProperties;
 
 /**
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class FileField extends TextField
 {

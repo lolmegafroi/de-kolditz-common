@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Display;
  * This class is intended to be used for (highly) asynchronous or multi-threaded applications by giving a simple
  * abstract mechanism for running code appropriately in the {@link SWT} {@link Display}'s thread
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class RunInUIThread implements Runnable
 {

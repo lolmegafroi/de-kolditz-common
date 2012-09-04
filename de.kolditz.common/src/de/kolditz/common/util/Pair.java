@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 /**
  * Implementation for {@link Entry}
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class Pair<K, V> implements Entry<K, V>, Cloneable
 {

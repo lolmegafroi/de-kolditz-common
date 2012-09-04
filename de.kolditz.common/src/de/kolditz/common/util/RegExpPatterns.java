@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * Some common regular expression patterns.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public final class RegExpPatterns
 {

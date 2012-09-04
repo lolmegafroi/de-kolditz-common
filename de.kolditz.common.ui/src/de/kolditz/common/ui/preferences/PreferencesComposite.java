@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Display;
  * created or whenever widgets were added or removed dynamically.
  * <p>It is possible to add children which are not instances of PreferenceField.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  * @see #registerField(PreferenceField)
  */
 public class PreferencesComposite

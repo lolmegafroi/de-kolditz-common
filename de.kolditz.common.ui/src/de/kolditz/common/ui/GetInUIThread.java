@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
  * This class is intended to be used for (highly) asynchronous or multi-threaded applications by giving a simple
  * abstract mechanism for running code appropriately in the {@link SWT} {@link Display}'s thread
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class GetInUIThread<E> implements Runnable
 {
@@ -35,7 +35,7 @@ public abstract class GetInUIThread<E> implements Runnable
      * </ul>
      * 
      * @see GetInUIThread
-     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public static class GetText extends GetInUIThread<String>
     {
@@ -71,7 +71,7 @@ public abstract class GetInUIThread<E> implements Runnable
      * </ul>
      * 
      * @see GetInUIThread
-     * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+     * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public static class GetSelection extends GetInUIThread<Boolean>
     {

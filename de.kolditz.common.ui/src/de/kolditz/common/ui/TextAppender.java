@@ -24,7 +24,7 @@ import de.kolditz.common.util.SystemProperties;
 /**
  * An appender that logs to a text field. Does not handle Exceptions.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class TextAppender extends AppenderSkeleton
 {

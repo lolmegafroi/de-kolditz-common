@@ -5,21 +5,25 @@
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  * 
- * created on 21.08.2012 at 17:46:26
+ * created on 29.08.2012 at 20:21:21
  * 
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.util;
 
 /**
- * Interface for classes which are aware of the fillView concept
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public interface IFillViewAware
+public interface IValidator<E>
 {
-    void setFillView(boolean isFillView);
-
-    boolean isFillView();
+    /**
+     * Validates this object.
+     * 
+     * @param object
+     *            the object to validate, may be null
+     * @return null if this object is valid, any other string otherwise
+     */
+    public String validate(E object);
 }

@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Event;
 
 /**
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 abstract class AbstractControl
 {

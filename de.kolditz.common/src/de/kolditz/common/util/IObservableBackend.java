@@ -18,7 +18,7 @@ import java.util.Map.Entry;
  * A back-end implementation for {@link IObservable}s. This is intended to reduce implementation effort for front-end
  * classes by just delegating calls to an ObservableBackend object.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class IObservableBackend<E> implements IObservable<E>
 {

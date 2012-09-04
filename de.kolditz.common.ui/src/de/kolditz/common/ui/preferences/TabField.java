@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.TabItem;
 
 /**
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class TabField<K> extends PreferenceField<K>
 {

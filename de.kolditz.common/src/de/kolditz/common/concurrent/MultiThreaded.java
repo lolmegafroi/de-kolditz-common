@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  * <p>
  * Note: This is a hint for developers.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  * @see SWT
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -32,7 +32,7 @@ import de.kolditz.common.i18n.I18N;
 /**
  * 
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class UIUtils
 {

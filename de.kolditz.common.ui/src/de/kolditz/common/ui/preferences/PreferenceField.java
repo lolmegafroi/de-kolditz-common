@@ -22,7 +22,7 @@ import de.kolditz.common.util.IObserver;
 /**
  * Abstract base class for preference fields used in custom preference environments.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class PreferenceField<E> implements IObservable<E>
 {

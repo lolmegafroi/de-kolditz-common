@@ -14,7 +14,7 @@ package de.kolditz.common.util;
  * An interface for objects that want to observer other objects, being {@link #update(IObservable, Object)}d upon
  * changes in the {@link IObservable}
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public interface IObserver<E>
 {

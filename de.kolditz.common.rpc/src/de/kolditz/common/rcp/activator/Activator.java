@@ -1,16 +1,28 @@
-package de.kolditz.common.ui.activator;
+/*******************************************************************************
+ * Copyright (c) 2012 Till Kolditz.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * created on 04.09.2012 at 20:05:57
+ * 
+ *  Contributors:
+ *      Till Kolditz
+ *******************************************************************************/
+package de.kolditz.common.rcp.activator;
 
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  *
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class Activator extends AbstractUIPlugin
+public class Activator extends Plugin
 {
-    public static final String PLUGIN_ID = "de.kolditz.common.ui"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "de.kolditz.common.rcp"; //$NON-NLS-1$
 
     private static Activator plugin;
 

@@ -27,7 +27,7 @@ import de.kolditz.common.ui.ButtonBar;
 /**
  * A {@link PreferenceField} containing several {@link Button}s.
  * 
- * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class MultiButtonField<E> extends PreferenceField<E>
 {
