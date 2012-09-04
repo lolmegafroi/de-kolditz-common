@@ -17,7 +17,8 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:Till.Kolditz@GoogleMail.com">Till Kolditz &lt;Till.Kolditz@GoogleMail.com&gt;</a>
  * 
  */
-public class I18N extends Messages {
+public class I18N extends Messages
+{
     public static final String UIUTILS_EMD_EXPCOMP_TITLE = "UIUTILS_EMD_EXPCOMP_TITLE"; //$NON-NLS-1$
 
     public static final String IPTEXT_INVALID = "IPTEXT_INVALID"; //$NON-NLS-1$
@@ -30,14 +31,16 @@ public class I18N extends Messages {
     /**
      * not instantiable from outside
      */
-    private I18N() {
+    private I18N()
+    {
         super(ResourceBundle.getBundle(I18N.class.getName()));
     }
 
     /**
      * @return the instance
      */
-    public static I18N get() {
+    public static I18N get()
+    {
         return instance;
     }
 }

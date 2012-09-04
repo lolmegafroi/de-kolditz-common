@@ -14,7 +14,8 @@ package de.kolditz.common.util;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public interface SystemProperties {
+public interface SystemProperties
+{
     public static final String FILE_ENC = System.getProperty("file.encoding"); //$NON-NLS-1$
     public static final String FILE_ENC_PKG = System.getProperty("file.encoding.pkg"); //$NON-NLS-1$
     public static final String FILE_SEP = System.getProperty("file.separator"); //$NON-NLS-1$

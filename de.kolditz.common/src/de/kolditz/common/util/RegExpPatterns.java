@@ -19,10 +19,12 @@ import java.util.regex.Pattern;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public final class RegExpPatterns {
+public final class RegExpPatterns
+{
     public static final String IPV4 = "^(0|[1-9][0-9]?|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))(\\.(0|[1-9][0-9]?|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))){3}$"; //$NON-NLS-1$
 
-    public static Pattern ipV4() {
+    public static Pattern ipV4()
+    {
         return Pattern.compile(IPV4);
     }
 }

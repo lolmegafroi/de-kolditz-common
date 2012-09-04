@@ -20,27 +20,29 @@ import java.util.Map.Entry;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class IObservableBackend<E> implements IObservable<E> {
+public class IObservableBackend<E> implements IObservable<E>
+{
     private IObservable<E> frontEnd;
     private Map<IObserver<E>, Integer> observables;
 
-    public IObservableBackend(IObservable<E> frontEnd) {
+    public IObservableBackend(IObservable<E> frontEnd)
+    {
         this.frontEnd = frontEnd;
         observables = new HashMap<IObserver<E>, Integer>();
     }
 
     @Override
-    public boolean registerObserver(IObserver<E> observer) {
-        if (observer == null)
-            throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
+    public boolean registerObserver(IObserver<E> observer)
+    {
+        if(observer == null) throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
         observables.put(observer, Integer.valueOf(0));
         return true;
     }
 
     @Override
-    public boolean unregisterObserver(IObserver<E> observer) {
-        if (observer == null)
-            throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
+    public boolean unregisterObserver(IObserver<E> observer)
+    {
+        if(observer == null) throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
         observables.remove(observer);
         return true;
     }
@@ -51,8 +53,10 @@ public class IObservableBackend<E> implements IObservable<E> {
      * @param data
      *            the application-specific data object
      */
-    public void update(E data) {
-        for (Entry<IObserver<E>, Integer> e : observables.entrySet()) {
+    public void update(E data)
+    {
+        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        {
             e.getKey().update(frontEnd, data);
         }
     }
@@ -65,13 +69,17 @@ public class IObservableBackend<E> implements IObservable<E> {
      * @param notToNotify
      *            the observer which shall not be updated. may be null
      */
-    public void update(E data, IObserver<E> notToNotify) {
-        if (notToNotify == null) {
+    public void update(E data, IObserver<E> notToNotify)
+    {
+        if(notToNotify == null)
+        {
             update(data);
-        } else {
-            for (Entry<IObserver<E>, Integer> e : observables.entrySet()) {
-                if (e.getKey() != notToNotify)
-                    e.getKey().update(frontEnd, data);
+        }
+        else
+        {
+            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            {
+                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
             }
         }
     }

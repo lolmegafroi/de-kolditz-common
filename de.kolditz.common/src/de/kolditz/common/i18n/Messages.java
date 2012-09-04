@@ -28,8 +28,10 @@ import de.kolditz.common.util.GenericListenerList;
  * Provides the functionality of a <code>ResourceBundle</code> for this plugin.
  * </p>
  */
-public class Messages {
-    public static interface ResourceBundleUpdatedListener {
+public class Messages
+{
+    public static interface ResourceBundleUpdatedListener
+    {
         /**
          * Just a notification without any data since this is assumed to be used on updating labels in a UI. Beware that
          * this might happen in any thread!
@@ -52,7 +54,8 @@ public class Messages {
     /**
      * 
      */
-    public Messages(final ResourceBundle b) {
+    public Messages(final ResourceBundle b)
+    {
         super();
         bundle = b;
     }
@@ -67,8 +70,10 @@ public class Messages {
      * @exception MissingResourceException
      *                if no resource bundle for the specified base name can be found
      */
-    public void setLocale(String baseName, Locale locale) {
-        synchronized (lock) {
+    public void setLocale(String baseName, Locale locale)
+    {
+        synchronized(lock)
+        {
             ResourceBundle newRB = ResourceBundle.getBundle(baseName, locale);
             bundle = newRB;
             notifyResourceBundleUpdatedListeners();
@@ -84,7 +89,8 @@ public class Messages {
      *            the message arguments
      * @return the string
      */
-    public String format(final String key, final Object... args) {
+    public String format(final String key, final Object... args)
+    {
         return new MessageFormat(getString(key)).format(args);
     }
 
@@ -96,10 +102,14 @@ public class Messages {
      *            the resource name
      * @return the string
      */
-    public String getString(final String key) {
-        try {
+    public String getString(final String key)
+    {
+        try
+        {
             return bundle.getString(key);
-        } catch (final MissingResourceException e) {
+        }
+        catch(final MissingResourceException e)
+        {
             logger.log(Level.WARN, e.getMessage(), e);
             return key;
         }
@@ -115,10 +125,14 @@ public class Messages {
      *            the default value
      * @return the string
      */
-    public String getString(final String key, final String def) {
-        try {
+    public String getString(final String key, final String def)
+    {
+        try
+        {
             return bundle.getString(key);
-        } catch (final MissingResourceException e) {
+        }
+        catch(final MissingResourceException e)
+        {
             return def;
         }
     }
@@ -131,7 +145,8 @@ public class Messages {
      *            the key
      * @return Object[] - the list as array
      */
-    public Object[] getArray(final String key) {
+    public Object[] getArray(final String key)
+    {
         return getList(key).toArray();
     }
 
@@ -143,7 +158,8 @@ public class Messages {
      *            the key
      * @return String[] - the list as String-array
      */
-    public String[] getStringArray(final String key) {
+    public String[] getStringArray(final String key)
+    {
         return getList(key).toArray(new String[getList(key).size()]);
     }
 
@@ -154,7 +170,8 @@ public class Messages {
      *            the key
      * @return List - the list
      */
-    public List<String> getList(final String key) {
+    public List<String> getList(final String key)
+    {
         return getList(key, ","); //$NON-NLS-1$
     }
 
@@ -167,27 +184,33 @@ public class Messages {
      *            the entry delimiter
      * @return List - the list
      */
-    public List<String> getList(final String key, final String delim) {
+    public List<String> getList(final String key, final String delim)
+    {
         final String value = this.getString(key);
         final StringTokenizer tokenizer = new StringTokenizer(value, delim);
         final List<String> list = new ArrayList<String>();
-        while (tokenizer.hasMoreElements()) {
+        while(tokenizer.hasMoreElements())
+        {
             list.add(tokenizer.nextToken());
         }
         return list;
     }
 
-    private void notifyResourceBundleUpdatedListeners() {
-        for (Object o : resourceBundleUpdatedListeners.getListeners()) {
-            ((ResourceBundleUpdatedListener) o).resourceBundleUpdated();
+    private void notifyResourceBundleUpdatedListeners()
+    {
+        for(Object o : resourceBundleUpdatedListeners.getListeners())
+        {
+            ((ResourceBundleUpdatedListener)o).resourceBundleUpdated();
         }
     }
 
-    public void addResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener) {
+    public void addResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener)
+    {
         resourceBundleUpdatedListeners.add(listener);
     }
 
-    public void removeResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener) {
+    public void removeResoruceBundleUpdatedListener(ResourceBundleUpdatedListener listener)
+    {
         resourceBundleUpdatedListeners.remove(listener);
     }
 }

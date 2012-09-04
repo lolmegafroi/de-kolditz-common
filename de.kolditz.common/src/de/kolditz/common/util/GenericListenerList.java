@@ -44,7 +44,8 @@ import java.util.Arrays;
  * 
  * @since org.eclipse.equinox.common 3.2
  */
-public class GenericListenerList<ListenerType> {
+public class GenericListenerList<ListenerType>
+{
 
     /**
      * The empty array singleton instance.
@@ -77,7 +78,8 @@ public class GenericListenerList<ListenerType> {
     /**
      * Creates a listener list in which listeners are compared using equality.
      */
-    public GenericListenerList(Class<ListenerType> clazz) {
+    public GenericListenerList(Class<ListenerType> clazz)
+    {
         this(clazz, EQUALITY);
     }
 
@@ -88,11 +90,11 @@ public class GenericListenerList<ListenerType> {
      *            The mode used to determine if listeners are the <a href="#same">same</a>.
      */
     @SuppressWarnings("unchecked")
-    public GenericListenerList(Class<ListenerType> clazz, int mode) {
-        EmptyArray = (ListenerType[]) Array.newInstance(clazz, 0);
+    public GenericListenerList(Class<ListenerType> clazz, int mode)
+    {
+        EmptyArray = (ListenerType[])Array.newInstance(clazz, 0);
         listeners = EmptyArray;
-        if (mode != EQUALITY && mode != IDENTITY)
-            throw new IllegalArgumentException();
+        if(mode != EQUALITY && mode != IDENTITY) throw new IllegalArgumentException();
         this.identity = mode == IDENTITY;
     }
 
@@ -103,17 +105,17 @@ public class GenericListenerList<ListenerType> {
      * @param listener
      *            the non-<code>null</code> listener to add
      */
-    public synchronized void add(ListenerType listener) {
+    public synchronized void add(ListenerType listener)
+    {
         // This method is synchronized to protect against multiple threads adding
         // or removing listeners concurrently. This does not block concurrent readers.
-        if (listener == null)
-            throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
+        if(listener == null) throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
         // check for duplicates
         final int oldSize = listeners.length;
-        for (int i = 0; i < oldSize; ++i) {
+        for(int i = 0; i < oldSize; ++i)
+        {
             Object listener2 = listeners[i];
-            if (identity ? listener == listener2 : listener.equals(listener2))
-                return;
+            if(identity ? listener == listener2 : listener.equals(listener2)) return;
         }
         // Thread safety: create new array to avoid affecting concurrent readers
         // atomic assignment
@@ -131,7 +133,8 @@ public class GenericListenerList<ListenerType> {
      * 
      * @return the list of registered listeners
      */
-    public ListenerType[] getListeners() {
+    public ListenerType[] getListeners()
+    {
         return listeners;
     }
 
@@ -140,7 +143,8 @@ public class GenericListenerList<ListenerType> {
      * 
      * @return <code>true</code> if there are no registered listeners, and <code>false</code> otherwise
      */
-    public boolean isEmpty() {
+    public boolean isEmpty()
+    {
         return listeners.length == 0;
     }
 
@@ -151,18 +155,23 @@ public class GenericListenerList<ListenerType> {
      * @param listener
      *            the non-<code>null</code> listener to remove
      */
-    public synchronized void remove(ListenerType listener) {
+    public synchronized void remove(ListenerType listener)
+    {
         // This method is synchronized to protect against multiple threads adding
         // or removing listeners concurrently. This does not block concurrent readers.
-        if (listener == null)
-            throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
+        if(listener == null) throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
         int oldSize = listeners.length;
-        for (int i = 0; i < oldSize; ++i) {
+        for(int i = 0; i < oldSize; ++i)
+        {
             Object listener2 = listeners[i];
-            if (identity ? listener == listener2 : listener.equals(listener2)) {
-                if (oldSize == 1) {
+            if(identity ? listener == listener2 : listener.equals(listener2))
+            {
+                if(oldSize == 1)
+                {
                     listeners = EmptyArray;
-                } else {
+                }
+                else
+                {
                     // Thread safety: create new array to avoid affecting concurrent readers
                     ListenerType[] newListeners = Arrays.copyOfRange(listeners, 0, i);
                     System.arraycopy(listeners, i + 1, newListeners, i, oldSize - i - 1);
@@ -179,14 +188,16 @@ public class GenericListenerList<ListenerType> {
      * 
      * @return the number of registered listeners
      */
-    public int size() {
+    public int size()
+    {
         return listeners.length;
     }
 
     /**
      * Removes all listeners from this list.
      */
-    public synchronized void clear() {
+    public synchronized void clear()
+    {
         listeners = EmptyArray;
     }
 }

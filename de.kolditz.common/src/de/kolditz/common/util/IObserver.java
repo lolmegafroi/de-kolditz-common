@@ -16,7 +16,8 @@ package de.kolditz.common.util;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public interface IObserver<E> {
+public interface IObserver<E>
+{
     /**
      * Notifies observing {@link IObservable}s upon important state changes. The actual semantics are
      * application-specific.

@@ -14,7 +14,8 @@ package de.kolditz.common.util;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public interface IObservable<E> {
+public interface IObservable<E>
+{
     /**
      * Registers an observer to this object's list of observers.
      * 

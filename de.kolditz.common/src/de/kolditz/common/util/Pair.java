@@ -17,7 +17,8 @@ import java.util.Map.Entry;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class Pair<K, V> implements Entry<K, V>, Cloneable {
+public class Pair<K, V> implements Entry<K, V>, Cloneable
+{
     protected K first;
     protected V second;
 
@@ -29,20 +30,23 @@ public class Pair<K, V> implements Entry<K, V>, Cloneable {
      * @param second
      *            (second) value
      */
-    public Pair(K first, V second) {
+    public Pair(K first, V second)
+    {
         this.first = first;
         this.second = second;
     }
 
     @Override
-    public K getKey() {
+    public K getKey()
+    {
         return first;
     }
 
     /**
      * @see #getKey()
      */
-    public K first() {
+    public K first()
+    {
         return first;
     }
 
@@ -53,20 +57,23 @@ public class Pair<K, V> implements Entry<K, V>, Cloneable {
      *            the first value/key
      * @return this object
      */
-    public Pair<K, V> first(K first) {
+    public Pair<K, V> first(K first)
+    {
         this.first = first;
         return this;
     }
 
     @Override
-    public V getValue() {
+    public V getValue()
+    {
         return second;
     }
 
     /**
      * @see #getValue()
      */
-    public V second() {
+    public V second()
+    {
         return second;
     }
 
@@ -77,13 +84,15 @@ public class Pair<K, V> implements Entry<K, V>, Cloneable {
      *            the (second) value
      * @return this object
      */
-    public Pair<K, V> second(V second) {
+    public Pair<K, V> second(V second)
+    {
         this.second = second;
         return this;
     }
 
     @Override
-    public V setValue(V value) {
+    public V setValue(V value)
+    {
         V old = this.second;
         this.second = value;
         return old;
@@ -91,7 +100,8 @@ public class Pair<K, V> implements Entry<K, V>, Cloneable {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Pair<K, V> clone() throws CloneNotSupportedException {
-        return (Pair<K, V>) super.clone();
+    public Pair<K, V> clone() throws CloneNotSupportedException
+    {
+        return (Pair<K, V>)super.clone();
     }
 }
