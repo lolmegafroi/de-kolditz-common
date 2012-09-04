@@ -19,7 +19,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * @see ImagesInitializer
  * @see ImageConstant
  */
-public interface IImageDescriptorServingPlugin
+public interface IImageDescriptorProvider
 {
     /**
      * @param path

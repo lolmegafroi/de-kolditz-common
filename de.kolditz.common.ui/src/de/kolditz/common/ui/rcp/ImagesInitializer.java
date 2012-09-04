@@ -40,9 +40,9 @@ public final class ImagesInitializer
      *            the {@link Class} to be initialized
      * @return an {@link ImageRegistry}
      * @see ImageConstant
-     * @see IImageDescriptorServingPlugin
+     * @see IImageDescriptorProvider
      */
-    public static ImageRegistry init(Class<?> clazz, IImageDescriptorServingPlugin plugin)
+    public static ImageRegistry init(Class<?> clazz, IImageDescriptorProvider plugin)
     {
         ImageRegistry imageRegistry = new ImageRegistry();
         try
