@@ -40,7 +40,8 @@ import de.kolditz.common.util.RegExpPatterns;
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  * @see InetAddress
  */
-public class IPText extends AbstractControl implements IFillViewAware, IValidationControl {
+public class IPText extends AbstractControl implements IFillViewAware, IValidationControl
+{
     private static final int MODIFY_CHECK_DELAY = 500; // in ms
     private static final TimeUnit MOFIFY_CHECK_TU = TimeUnit.MILLISECONDS;
 
@@ -51,26 +52,34 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
     protected boolean ipValid = false;
     private ListenerList modifyListeners = new ListenerList(ListenerList.IDENTITY);
 
-    private RunInUIThread ipModifyRunner = new RunInUIThread() {
+    private RunInUIThread ipModifyRunner = new RunInUIThread()
+    {
         private Pattern pIPV4 = RegExpPatterns.ipV4();
 
         @Override
-        protected void inUIThread() {
-            BusyIndicator.showWhile(text.getDisplay(), new Runnable() {
+        protected void inUIThread()
+        {
+            BusyIndicator.showWhile(text.getDisplay(), new Runnable()
+            {
                 @Override
-                public void run() {
-                    if (text.isDisposed())
-                        return;
+                public void run()
+                {
+                    if(text.isDisposed()) return;
                     ipValid = pIPV4.matcher(text.getText()).find();
-                    if (!ipValid) {
-                        try {
+                    if(!ipValid)
+                    {
+                        try
+                        {
                             InetAddress.getByName(text.getText());
                             ipValid = true;
-                        } catch (UnknownHostException e1) {
+                        }
+                        catch(UnknownHostException e1)
+                        {
                         }
                     }
-                    if (cd != null) {
-                        if (ipValid)
+                    if(cd != null)
+                    {
+                        if(ipValid)
                             cd.hide();
                         else
                             cd.show();
@@ -79,45 +88,56 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
                     Event e = new Event();
                     e.widget = text;
                     e.display = text.getDisplay();
-                    e.time = (int) System.currentTimeMillis();
+                    e.time = (int)System.currentTimeMillis();
                     ModifyEvent me = new ModifyEvent(e);
-                    for (Object o : modifyListeners.getListeners()) {
-                        ((ModifyListener) o).modifyText(me);
+                    for(Object o : modifyListeners.getListeners())
+                    {
+                        ((ModifyListener)o).modifyText(me);
                     }
                 }
             });
         }
     };
 
-    public IPText(Composite parent, int style) {
+    public IPText(Composite parent, int style)
+    {
         text = new Text(parent, style);
         init();
     }
 
-    public IPText(Composite parent, int style, FormToolkit toolkit) {
+    public IPText(Composite parent, int style, FormToolkit toolkit)
+    {
         text = toolkit.createText(parent, "", style); //$NON-NLS-1$
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         setControl(text);
-        text.addModifyListener(new ModifyListener() {
+        text.addModifyListener(new ModifyListener()
+        {
             @Override
-            public void modifyText(ModifyEvent e) {
-                if (isFillView()) {
+            public void modifyText(ModifyEvent e)
+            {
+                if(isFillView())
+                {
                     ipModifyRunner.run(null, false);
-                } else if ((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone()) {
+                }
+                else if((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone())
+                {
                     ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                } else {
-                    if (ipFuture != null)
-                        ipFuture.cancel(false);
+                }
+                else
+                {
+                    if(ipFuture != null) ipFuture.cancel(false);
                     ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
                 }
             }
         });
     }
 
-    public String getIP() {
+    public String getIP()
+    {
         return text.getText();
     }
 
@@ -127,7 +147,8 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      *            a valid v4 IP
      * @throws IllegalArgumentException
      */
-    public void setIP(String ip) {
+    public void setIP(String ip)
+    {
         text.setText(ip);
         text.notifyListeners(SWT.Modify, null);
     }
@@ -137,8 +158,10 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      * 
      * @param position
      */
-    public void createControlDecoration(int position) {
-        if (cd != null) {
+    public void createControlDecoration(int position)
+    {
+        if(cd != null)
+        {
             cd = new ControlDecoration(text, position);
             adaptCD();
         }
@@ -150,14 +173,17 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      * @param position
      * @param drawComposite
      */
-    public void createControlDecoration(int position, Composite drawComposite) {
-        if (cd != null) {
+    public void createControlDecoration(int position, Composite drawComposite)
+    {
+        if(cd != null)
+        {
             cd = new ControlDecoration(text, position, drawComposite);
             adaptCD();
         }
     }
 
-    private void adaptCD() {
+    private void adaptCD()
+    {
         cd.setDescriptionText(I18N.get().getString(I18N.IPTEXT_INVALID));
         cd.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
                 .getImage());
@@ -170,26 +196,31 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      * 
      * @param listener
      */
-    public void addModifyListener(ModifyListener listener) {
+    public void addModifyListener(ModifyListener listener)
+    {
         modifyListeners.add(listener);
     }
 
-    public void removeModifyListener(ModifyListener listener) {
+    public void removeModifyListener(ModifyListener listener)
+    {
         modifyListeners.remove(listener);
     }
 
     @Override
-    public void setFillView(boolean isFillView) {
+    public void setFillView(boolean isFillView)
+    {
         fillView = isFillView;
     }
 
     @Override
-    public boolean isFillView() {
+    public boolean isFillView()
+    {
         return fillView;
     }
 
     @Override
-    public boolean isValid() {
+    public boolean isValid()
+    {
         return ipValid;
     }
 }

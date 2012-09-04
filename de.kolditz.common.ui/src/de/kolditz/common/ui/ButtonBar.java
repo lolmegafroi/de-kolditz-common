@@ -34,18 +34,24 @@ import de.kolditz.common.util.GenericListenerList;
  * @author Till Kolditz - till.kolditz@jexam.de
  * @version $Revision: 1.3 $; $Author: tkolditz $; $Date: 2010-07-28 14:25:53 $
  */
-public class ButtonBar extends Composite {
+public class ButtonBar extends Composite
+{
     public static final String BUTTON_ID = "BUTTON_ID"; //$NON-NLS-1$
 
-    private class InternalSelectionListener implements SelectionListener {
-        public void widgetDefaultSelected(SelectionEvent e) {
-            for (SelectionListener o : selectionListeners.getListeners()) {
+    private class InternalSelectionListener implements SelectionListener
+    {
+        public void widgetDefaultSelected(SelectionEvent e)
+        {
+            for(SelectionListener o : selectionListeners.getListeners())
+            {
                 o.widgetDefaultSelected(e);
             }
         }
 
-        public void widgetSelected(SelectionEvent e) {
-            for (SelectionListener o : selectionListeners.getListeners()) {
+        public void widgetSelected(SelectionEvent e)
+        {
+            for(SelectionListener o : selectionListeners.getListeners())
+            {
                 o.widgetSelected(e);
             }
         }
@@ -99,7 +105,8 @@ public class ButtonBar extends Composite {
      * @see SWT#DOUBLE_BUFFERED
      * @see Widget#getStyle
      */
-    public ButtonBar(Composite parent, int style) {
+    public ButtonBar(Composite parent, int style)
+    {
         super(parent, style);
         init(new ButtonBarLayout());
     }
@@ -139,7 +146,8 @@ public class ButtonBar extends Composite {
      * @see SWT#DOUBLE_BUFFERED
      * @see Widget#getStyle
      */
-    public ButtonBar(Composite parent, int style, boolean makeButtonsEqualWidth, boolean makeButtonsEqualHeight) {
+    public ButtonBar(Composite parent, int style, boolean makeButtonsEqualWidth, boolean makeButtonsEqualHeight)
+    {
         super(parent, style);
         init(new ButtonBarLayout(makeButtonsEqualWidth, makeButtonsEqualHeight));
     }
@@ -179,12 +187,14 @@ public class ButtonBar extends Composite {
      * @see SWT#DOUBLE_BUFFERED
      * @see Widget#getStyle
      */
-    public ButtonBar(Composite parent, int style, int alignment) {
+    public ButtonBar(Composite parent, int style, int alignment)
+    {
         super(parent, style);
         init(new ButtonBarLayout(alignment));
     }
 
-    private void init(ButtonBarLayout bbl) {
+    private void init(ButtonBarLayout bbl)
+    {
         super.setLayout(bbl);
     }
 
@@ -192,44 +202,53 @@ public class ButtonBar extends Composite {
      * does nothing
      */
     @Override
-    public void setLayout(Layout layout) {
+    public void setLayout(Layout layout)
+    {
     }
 
     @Override
-    public ButtonBarLayout getLayout() {
-        return (ButtonBarLayout) super.getLayout();
+    public ButtonBarLayout getLayout()
+    {
+        return (ButtonBarLayout)super.getLayout();
     }
 
-    public Button createButton(int id, String label) {
+    public Button createButton(int id, String label)
+    {
         return createButton(id, label, null, false, SWT.PUSH);
     }
 
-    public Button createButton(int id, String label, boolean defaultButton) {
+    public Button createButton(int id, String label, boolean defaultButton)
+    {
         return createButton(id, label, null, defaultButton, SWT.PUSH);
     }
 
-    public Button createButton(int id, String label, boolean defaultButton, int buttonStyle) {
+    public Button createButton(int id, String label, boolean defaultButton, int buttonStyle)
+    {
         return createButton(id, label, null, defaultButton, buttonStyle);
     }
 
-    public Button createButton(int id, String label, Image image, boolean defaultButton) {
+    public Button createButton(int id, String label, Image image, boolean defaultButton)
+    {
         return createButton(id, label, image, defaultButton, SWT.PUSH);
     }
 
-    public Button createButton(int id, String label, Image image, boolean defaultButton, int buttonStyle) {
-        if (buttons.containsKey(id)) {
+    public Button createButton(int id, String label, Image image, boolean defaultButton, int buttonStyle)
+    {
+        if(buttons.containsKey(id))
+        {
             throw new RuntimeException("there is already another button using this id (" + id + ")!"); //$NON-NLS-1$
         }
         Button button = new Button(this, buttonStyle);
         buttons.put(id, button);
         button.setText(label);
-        if (image != null)
-            button.setImage(image);
+        if(image != null) button.setImage(image);
         button.setData(BUTTON_ID, id);
         button.addSelectionListener(selectionListener);
-        if (defaultButton) {
+        if(defaultButton)
+        {
             Shell shell = getShell();
-            if (shell != null) {
+            if(shell != null)
+            {
                 shell.setDefaultButton(button);
             }
         }
@@ -238,44 +257,53 @@ public class ButtonBar extends Composite {
     }
 
     @Override
-    public Point computeSize(int widthHint, int heightHint, boolean changed) {
-        if (buttons.size() == 0) {
+    public Point computeSize(int widthHint, int heightHint, boolean changed)
+    {
+        if(buttons.size() == 0)
+        {
             Rectangle rect = computeTrim(0, 0, 1, 1);
             return new Point(rect.width, rect.height);
         }
         return super.computeSize(widthHint, heightHint, changed);
     }
 
-    public void addSelectionListener(SelectionListener listener) {
+    public void addSelectionListener(SelectionListener listener)
+    {
         selectionListeners.add(listener);
     }
 
-    public void removeSelectionListener(SelectionListener listener) {
+    public void removeSelectionListener(SelectionListener listener)
+    {
         selectionListeners.remove(listener);
     }
 
-    public Button getButton(int id) {
+    public Button getButton(int id)
+    {
         return buttons.get(id);
     }
 
-    public Control getControl() {
+    public Control getControl()
+    {
         return this;
     }
 
     /**
      * does nothing
      */
-    public void setMessage(int style, String message) {
+    public void setMessage(int style, String message)
+    {
     }
 
-    public void setDebug(boolean debug) {
-        ((ButtonBarLayout) getLayout()).setDebug(debug);
+    public void setDebug(boolean debug)
+    {
+        ((ButtonBarLayout)getLayout()).setDebug(debug);
     }
 
     /**
      * @return the default enabled state for newly created buttons
      */
-    public boolean isDefaultEnabled() {
+    public boolean isDefaultEnabled()
+    {
         return defaultEnabled;
     }
 
@@ -283,7 +311,8 @@ public class ButtonBar extends Composite {
      * @param defaultEnabled
      *            the default enabled state for newly created buttons
      */
-    public void setDefaultEnabled(boolean defaultEnabled) {
+    public void setDefaultEnabled(boolean defaultEnabled)
+    {
         this.defaultEnabled = defaultEnabled;
     }
 }

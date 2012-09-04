@@ -31,7 +31,8 @@ import org.eclipse.swt.widgets.Layout;
  * 
  *         $Revision: 1.4 $; $Author: tkolditz $; $Date: 2010-07-28 14:25:53 $
  */
-public class ButtonBarLayout extends Layout {
+public class ButtonBarLayout extends Layout
+{
     /**
      * makeButtonsEqualWidth specifies whether all buttons in the layout will be forced to have the same width, which
      * will be the width of the button having the largest width.
@@ -136,7 +137,8 @@ public class ButtonBarLayout extends Layout {
      * makeButtonsEqualWidth = false<br>makeButtonsEqualHeight = false
      * </pre>
      */
-    public ButtonBarLayout() {
+    public ButtonBarLayout()
+    {
     }
 
     /**
@@ -150,7 +152,8 @@ public class ButtonBarLayout extends Layout {
      * @param alignment
      *            SWT.LEAD or SWT.TRAIL for overall leading or trailing alignment if bounds are greater than needed
      */
-    public ButtonBarLayout(int alignment) {
+    public ButtonBarLayout(int alignment)
+    {
         setAlignment(alignment);
     }
 
@@ -162,7 +165,8 @@ public class ButtonBarLayout extends Layout {
      * @param makeButtonsEqualHeight
      *            whether or not the buttons will have equal height
      */
-    public ButtonBarLayout(boolean makeButtonsEqualWidth, boolean makeButtonsEqualHeight) {
+    public ButtonBarLayout(boolean makeButtonsEqualWidth, boolean makeButtonsEqualHeight)
+    {
         this.makeButtonsEqualWidth = makeButtonsEqualWidth;
         this.makeButtonsEqualHeight = makeButtonsEqualHeight;
     }
@@ -171,8 +175,9 @@ public class ButtonBarLayout extends Layout {
      * @param alignment
      *            SWT.LEAD or SWT.TRAIL for overall leading or trailing alignment if bounds are greater than needed
      */
-    public void setAlignment(int alignment) {
-        if (alignment == SWT.TRAIL)
+    public void setAlignment(int alignment)
+    {
+        if(alignment == SWT.TRAIL)
             this.alignment = SWT.TRAIL;
         else
             this.alignment = SWT.LEAD;
@@ -182,9 +187,9 @@ public class ButtonBarLayout extends Layout {
      * @see org.eclipse.swt.widgets.Layout#computeSize(org.eclipse.swt.widgets.Composite, int, int, boolean)
      */
     @Override
-    protected Point computeSize(Composite composite, int wHint, int hHint, boolean flushCache) {
-        if (flushCache)
-            flushCache();
+    protected Point computeSize(Composite composite, int wHint, int hHint, boolean flushCache)
+    {
+        if(flushCache) flushCache();
         return layout(composite, false, 0, 0, wHint, hHint);
     }
 
@@ -192,31 +197,34 @@ public class ButtonBarLayout extends Layout {
      * @see org.eclipse.swt.widgets.Layout#layout(org.eclipse.swt.widgets.Composite, boolean)
      */
     @Override
-    protected void layout(Composite composite, boolean flushCache) {
-        if (flushCache)
-            flushCache();
+    protected void layout(Composite composite, boolean flushCache)
+    {
+        if(flushCache) flushCache();
         Rectangle rect = composite.getClientArea();
         layout(composite, true, rect.x, rect.y, rect.width, rect.height);
     }
 
-    private void flushCache() {
+    private void flushCache()
+    {
         cacheHeight = SWT.DEFAULT;
         cacheWidth = SWT.DEFAULT;
         cacheGrid = null;
         cacheSize = null;
     }
 
-    private Point layout(Composite composite, boolean move, int x, int y, int width, int height) {
+    private Point layout(Composite composite, boolean move, int x, int y, int width, int height)
+    {
         Control[] children = composite.getChildren();
-        if (children.length == 0) {
+        if(children.length == 0)
+        {
             return new Point(marginLeft + marginWidth * 2 + marginRight, marginTop + marginHeight * 2 + marginBottom);
         }
 
-        if (((cacheWidth != SWT.DEFAULT) && ((width == SWT.DEFAULT) || (width == cacheWidth)))
+        if(((cacheWidth != SWT.DEFAULT) && ((width == SWT.DEFAULT) || (width == cacheWidth)))
                 && ((cacheHeight != SWT.DEFAULT) && ((height == SWT.DEFAULT) || (height == cacheHeight)))
-                && cacheGrid != null && cacheSize != null) {
-            if (move)
-                moveControles(cacheGrid, children);
+                && cacheGrid != null && cacheSize != null)
+        {
+            if(move) moveControles(cacheGrid, children);
             return cacheSize;
         }
 
@@ -228,50 +236,60 @@ public class ButtonBarLayout extends Layout {
         Point p;
 
         // get the buttons' sizes
-        for (int i = 0; i < children.length; ++i) {
+        for(int i = 0; i < children.length; ++i)
+        {
             p = children[i].computeSize(SWT.DEFAULT, SWT.DEFAULT);
             buttonAreas[i] = new Rectangle(0, 0, p.x, p.y);
         }
 
         // check for equal width. We don't need to do this with just 1 button
-        if (makeButtonsEqualWidth && (children.length > 1)) {
+        if(makeButtonsEqualWidth && (children.length > 1))
+        {
             int maxWidth = SWT.DEFAULT;
-            for (Rectangle r : buttonAreas) {
+            for(Rectangle r : buttonAreas)
+            {
                 maxWidth = Math.max(maxWidth, r.width);
             }
 
-            for (Rectangle r : buttonAreas) {
+            for(Rectangle r : buttonAreas)
+            {
                 r.width = maxWidth;
             }
         }
 
         // check for equal height. We don't need to do this with just 1 button
-        if (makeButtonsEqualHeight && (children.length > 1)) {
+        if(makeButtonsEqualHeight && (children.length > 1))
+        {
             int maxHeight = SWT.DEFAULT;
-            for (Rectangle r : buttonAreas) {
+            for(Rectangle r : buttonAreas)
+            {
                 maxHeight = Math.max(maxHeight, r.height);
             }
 
-            for (Rectangle r : buttonAreas) {
+            for(Rectangle r : buttonAreas)
+            {
                 r.height = maxHeight;
             }
         }
 
         int fullLeftMargin = marginLeft + marginWidth, fullTopMargin = marginTop + marginHeight;
-        if (debug) {
+        if(debug)
+        {
             System.out.println("horizontal margins: " + marginLeft + ":" + marginWidth + ":" + marginRight);
             System.out.println("vertical margins: " + marginTop + ":" + marginHeight + ":" + marginBottom);
         }
         int curLineWidth = fullLeftMargin, fullWidth = fullLeftMargin, curX = fullLeftMargin, numRows = 0;
         int curLineHeight = fullTopMargin, fullHeight = fullTopMargin, curY = y + fullTopMargin, curCol = 0;
         // compute locations
-        for (int i = 0; i < children.length; ++i) {
+        for(int i = 0; i < children.length; ++i)
+        {
             area = buttonAreas[i];
             curLineWidth += area.width;
 
             // if we have a constraint on the width and the buttons will overlap the line, then wrap
             // note that we will have at least one button on each line
-            if ((width != SWT.DEFAULT) && (grid[numRows][0] != null) && (curLineWidth > width)) {
+            if((width != SWT.DEFAULT) && (grid[numRows][0] != null) && (curLineWidth > width))
+            {
                 fullHeight += verticalSpacing + curLineHeight;
                 curX = x + fullLeftMargin;
                 curY += verticalSpacing + curLineHeight;
@@ -297,19 +315,22 @@ public class ButtonBarLayout extends Layout {
         fullWidth += marginWidth + marginRight;
 
         // if alignment is SWT.TRAIL and we have larger bounds than needed, realign
-        if ((width > fullWidth) && (alignment == SWT.TRAIL)) {
+        if((width > fullWidth) && (alignment == SWT.TRAIL))
+        {
             int offset = width - fullWidth;
-            for (Rectangle[] rs : grid) {
-                for (Rectangle r : rs) {
-                    if (r == null)
-                        break;
+            for(Rectangle[] rs : grid)
+            {
+                for(Rectangle r : rs)
+                {
+                    if(r == null) break;
                     r.x += offset;
                 }
             }
         }
 
         // position the buttons
-        if (move) {
+        if(move)
+        {
             moveControles(grid, children);
         }
 
@@ -318,7 +339,8 @@ public class ButtonBarLayout extends Layout {
         cacheGrid = grid;
         cacheSize = new Point(fullWidth, fullHeight);
 
-        if (debug) {
+        if(debug)
+        {
             System.out.println("x=" + x + " y=" + y + " width=" + width + " height=" + height + " | fullwidth="
                     + fullWidth + " - fullheight=" + fullHeight);
         }
@@ -326,16 +348,20 @@ public class ButtonBarLayout extends Layout {
         return new Point(fullWidth, fullHeight);
     }
 
-    private void moveControles(Rectangle[][] grid, Control[] children) {
+    private void moveControles(Rectangle[][] grid, Control[] children)
+    {
         int i = 0;
-        for (int row = 0; (row < grid.length) && (grid[row] != null); ++row) {
-            for (int col = 0; (col < grid[row].length) && (grid[row][col] != null); ++col) {
+        for(int row = 0; (row < grid.length) && (grid[row] != null); ++row)
+        {
+            for(int col = 0; (col < grid[row].length) && (grid[row][col] != null); ++col)
+            {
                 children[i++].setBounds(grid[row][col]);
             }
         }
     }
 
-    public void setDebug(boolean debug) {
+    public void setDebug(boolean debug)
+    {
         this.debug = debug;
     }
 }

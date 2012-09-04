@@ -16,7 +16,8 @@ package de.kolditz.common.ui;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public interface IValidationControl {
+public interface IValidationControl
+{
     /**
      * @return whether this control's content is valid
      */

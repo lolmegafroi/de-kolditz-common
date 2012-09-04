@@ -42,7 +42,8 @@ import de.kolditz.common.ui.ButtonBar;
  * 
  * @version $Revision: 1.1 $; $Author: sprasse $; $Date: 2012-03-30 07:11:39 $
  */
-public abstract class ButtonAction extends Action implements SelectionListener {
+public abstract class ButtonAction extends Action implements SelectionListener
+{
     /**
      * Buttons --> isAdapted?
      */
@@ -52,7 +53,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
     /**
      * 
      */
-    public ButtonAction() {
+    public ButtonAction()
+    {
         super();
         init();
     }
@@ -60,7 +62,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
     /**
      * @param text
      */
-    public ButtonAction(String text) {
+    public ButtonAction(String text)
+    {
         super(text);
         init();
     }
@@ -69,7 +72,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @param text
      * @param image
      */
-    public ButtonAction(String text, ImageDescriptor image) {
+    public ButtonAction(String text, ImageDescriptor image)
+    {
         super(text, image);
         init();
     }
@@ -78,12 +82,14 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @param text
      * @param style
      */
-    public ButtonAction(String text, int style) {
+    public ButtonAction(String text, int style)
+    {
         super(text, style);
         init();
     }
 
-    protected void init() {
+    protected void init()
+    {
         buttons = new HashMap<Button, Boolean>();
     }
 
@@ -93,7 +99,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @see #unregisterButton(Button)
      * @param button
      */
-    public void registerButton(Button button) {
+    public void registerButton(Button button)
+    {
         buttons.put(button, Boolean.FALSE);
         button.addSelectionListener(this);
     }
@@ -105,7 +112,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @see #registerButton(Button)
      * @param button
      */
-    public void unregisterButton(Button button) {
+    public void unregisterButton(Button button)
+    {
         button.removeSelectionListener(this);
         buttons.remove(button);
     }
@@ -124,7 +132,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @see #registerButton(Button)
      * @see #unregisterButton(Button)
      */
-    public Button createButton(Composite parent, int style) {
+    public Button createButton(Composite parent, int style)
+    {
         Button button = new Button(parent, style);
         adaptButton(button);
         registerButton(button);
@@ -144,7 +153,8 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @see #registerButton(Button)
      * @see #unregisterButton(Button)
      */
-    public Button createButton(ButtonBar buttonBar, int id) {
+    public Button createButton(ButtonBar buttonBar, int id)
+    {
         buttonBar.createButton(id, getText(), false);
         Button button = buttonBar.getButton(id);
         adaptButton(button);
@@ -158,19 +168,20 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * @param button
      *            the button to adapt
      */
-    public void adaptButton(Button button) {
+    public void adaptButton(Button button)
+    {
         String str = getText();
-        if (str != null)
-            button.setText(str);
+        if(str != null) button.setText(str);
         str = getToolTipText();
-        if (str != null)
-            button.setToolTipText(str);
+        if(str != null) button.setToolTipText(str);
         ImageDescriptor id = getImageDescriptor();
-        if (image == null && id != null) {
+        if(image == null && id != null)
+        {
             image = id.createImage();
         }
         button.setImage(image);
-        if (isRegisteredFor(button)) {
+        if(isRegisteredFor(button))
+        {
             buttons.put(button, Boolean.TRUE);
         }
     }
@@ -179,18 +190,23 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      * Updates the registered buttons' texts and tooltip texts with the action's accordant values. You should call
      * {@link #setText(String)} and/or {@link #setToolTipText(String)} before this function to achieve some effect.
      */
-    public void updateButtonsTexts() {
-        for (Entry<Button, Boolean> entry : buttons.entrySet()) {
+    public void updateButtonsTexts()
+    {
+        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        {
             // if the button is adapted
-            if (entry.getValue().booleanValue()) {
+            if(entry.getValue().booleanValue())
+            {
                 entry.getKey().setText(getText());
                 entry.getKey().setToolTipText(getText());
             }
         }
     }
 
-    public void setButtonsEnabled(boolean enabled) {
-        for (Entry<Button, Boolean> entry : buttons.entrySet()) {
+    public void setButtonsEnabled(boolean enabled)
+    {
+        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        {
             // enable/disable all registered buttons
             entry.getKey().setEnabled(enabled);
         }
@@ -203,42 +219,47 @@ public abstract class ButtonAction extends Action implements SelectionListener {
      *            the button
      * @return true if this action instance is a selection listener of this button
      */
-    public boolean isRegisteredFor(Button button) {
+    public boolean isRegisteredFor(Button button)
+    {
         return buttons.containsKey(button);
     }
 
-    public boolean isAdaptingButton(Button button) {
+    public boolean isAdaptingButton(Button button)
+    {
         return isRegisteredFor(button) && buttons.get(button).booleanValue() == true;
     }
 
     @Override
-    public void widgetSelected(SelectionEvent e) {
-        if (isRegisteredFor((Button) e.getSource()))
-            run();
+    public void widgetSelected(SelectionEvent e)
+    {
+        if(isRegisteredFor((Button)e.getSource())) run();
     }
 
     @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
-        if (isRegisteredFor((Button) e.getSource()))
-            run();
+    public void widgetDefaultSelected(SelectionEvent e)
+    {
+        if(isRegisteredFor((Button)e.getSource())) run();
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        if (image != null) {
+    protected void finalize() throws Throwable
+    {
+        if(image != null)
+        {
             image.dispose();
         }
         super.finalize();
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled)
+    {
         super.setEnabled(enabled);
         Button b;
-        for (Entry<Button, Boolean> entry : buttons.entrySet()) {
+        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        {
             b = entry.getKey();
-            if (!b.isDisposed())
-                b.setEnabled(enabled);
+            if(!b.isDisposed()) b.setEnabled(enabled);
         }
     }
 }

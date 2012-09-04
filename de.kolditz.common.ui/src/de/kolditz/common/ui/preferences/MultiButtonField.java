@@ -29,7 +29,8 @@ import de.kolditz.common.ui.ButtonBar;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class MultiButtonField<E> extends PreferenceField<E> {
+public class MultiButtonField<E> extends PreferenceField<E>
+{
     protected int groupStyle;
     protected int buttonStyle;
     protected String labelString;
@@ -61,7 +62,8 @@ public class MultiButtonField<E> extends PreferenceField<E> {
      *            the buttons' text labels
      */
     public MultiButtonField(PreferencesComposite parent, boolean asGroup, int groupStyle, String label,
-            int buttonStyle, int columns, E[] values, String[] labels) {
+            int buttonStyle, int columns, E[] values, String[] labels)
+    {
         super(parent, SWT.NONE);
 
         assert values != null : new IllegalArgumentException("values = null"); //$NON-NLS-1$
@@ -85,13 +87,17 @@ public class MultiButtonField<E> extends PreferenceField<E> {
     }
 
     @Override
-    protected void create() {
+    protected void create()
+    {
         Composite buttonComp;
-        if (asGroup) {
+        if(asGroup)
+        {
             group = new Group(getComposite(), groupStyle);
             group.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
             buttonComp = group;
-        } else {
+        }
+        else
+        {
             label = new Label(getComposite(), SWT.NONE);
             buttonComp = getComposite();
         }
@@ -100,7 +106,8 @@ public class MultiButtonField<E> extends PreferenceField<E> {
         buttonBar.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
         Button b;
         buttons = new Button[values.length];
-        for (int i = 0; i < values.length; ++i) {
+        for(int i = 0; i < values.length; ++i)
+        {
             b = buttonBar.createButton(i, "", false, buttonStyle);
             b.setData(values[i]);
             buttons[i] = b;
@@ -108,50 +115,68 @@ public class MultiButtonField<E> extends PreferenceField<E> {
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return asGroup ? 1 : columns + 1;
     }
 
     @Override
-    protected void setColumns(int columns) {
-        if (asGroup) {
-            ((GridData) group.getLayoutData()).horizontalSpan = columns;
-        } else {
-            ((GridData) buttonBar.getLayoutData()).horizontalSpan = columns - 1;
+    protected void setColumns(int columns)
+    {
+        if(asGroup)
+        {
+            ((GridData)group.getLayoutData()).horizontalSpan = columns;
+        }
+        else
+        {
+            ((GridData)buttonBar.getLayoutData()).horizontalSpan = columns - 1;
         }
     }
 
     @Override
-    protected void setLabels() {
-        if (labelString != null) {
-            if (asGroup) {
+    protected void setLabels()
+    {
+        if(labelString != null)
+        {
+            if(asGroup)
+            {
                 group.setText(labelString);
-            } else {
+            }
+            else
+            {
                 label.setText(labelString);
             }
         }
-        for (int i = 0; i < values.length; ++i) {
+        for(int i = 0; i < values.length; ++i)
+        {
             buttons[i].setText(labels[i]);
         }
     }
 
     @Override
-    protected void addListeners() {
-        for (int i = 0; i < values.length; ++i) {
-            buttons[i].addSelectionListener(new SelectionAdapter() {
+    protected void addListeners()
+    {
+        for(int i = 0; i < values.length; ++i)
+        {
+            buttons[i].addSelectionListener(new SelectionAdapter()
+            {
                 @SuppressWarnings("unchecked")
                 @Override
-                public void widgetSelected(SelectionEvent e) {
-                    notifyObservers((E) ((Button) e.widget).getData());
+                public void widgetSelected(SelectionEvent e)
+                {
+                    notifyObservers((E)((Button)e.widget).getData());
                 }
             });
         }
     }
 
     @Override
-    public E getValue() {
-        for (int i = 0; i < values.length; ++i) {
-            if (buttons[i].getSelection()) {
+    public E getValue()
+    {
+        for(int i = 0; i < values.length; ++i)
+        {
+            if(buttons[i].getSelection())
+            {
                 return values[i];
             }
         }
@@ -160,46 +185,60 @@ public class MultiButtonField<E> extends PreferenceField<E> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public E[] getValues() {
+    public E[] getValues()
+    {
         ArrayList<E> values = new ArrayList<E>(this.values.length);
-        for (int i = 0; i < buttons.length; ++i) {
-            if (buttons[i].getSelection()) {
-                values.add((E) buttons[i].getData());
+        for(int i = 0; i < buttons.length; ++i)
+        {
+            if(buttons[i].getSelection())
+            {
+                values.add((E)buttons[i].getData());
             }
         }
-        return values.toArray((E[]) Array.newInstance(this.values[0].getClass(), values.size()));
+        return values.toArray((E[])Array.newInstance(this.values[0].getClass(), values.size()));
     }
 
     @Override
-    public E setValue(E value, boolean doNotifyObservers) {
+    public E setValue(E value, boolean doNotifyObservers)
+    {
         E oldValue = getValue();
-        if (value == null) {
-            for (int i = 0; i < values.length; ++i) {
+        if(value == null)
+        {
+            for(int i = 0; i < values.length; ++i)
+            {
                 buttons[i].setSelection(false);
             }
-        } else {
-            for (int i = 0; i < values.length; ++i) {
+        }
+        else
+        {
+            for(int i = 0; i < values.length; ++i)
+            {
                 buttons[i].setSelection(values[i].equals(value));
             }
         }
-        if (doNotifyObservers) {
+        if(doNotifyObservers)
+        {
             notifyObservers(value);
         }
         return oldValue;
     }
 
     @SuppressWarnings("unchecked")
-    public E[] setValues(E[] values, boolean doNotifyObservers) {
+    public E[] setValues(E[] values, boolean doNotifyObservers)
+    {
         E[] oldValues = getValues();
         Button b;
         E value;
         boolean selection;
-        for (int i = 0; i < buttons.length; ++i) {
+        for(int i = 0; i < buttons.length; ++i)
+        {
             b = buttons[i];
-            value = (E) b.getData();
+            value = (E)b.getData();
             selection = false;
-            for (int j = 0; j < values.length; ++j) {
-                if (value.equals(values[j])) {
+            for(int j = 0; j < values.length; ++j)
+            {
+                if(value.equals(values[j]))
+                {
                     selection = true;
                     break;
                 }
@@ -210,9 +249,17 @@ public class MultiButtonField<E> extends PreferenceField<E> {
     };
 
     @Override
-    public void setEnabled(boolean enabled) {
-        for (Button b : buttons) {
+    public void setEnabled(boolean enabled)
+    {
+        for(Button b : buttons)
+        {
             b.setEnabled(enabled);
         }
+    }
+
+    @Override
+    public boolean isDisposed()
+    {
+        return buttonBar.isDisposed();
     }
 }

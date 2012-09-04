@@ -19,7 +19,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * @see ImagesInitializer
  * @see ImageConstant
  */
-public interface IImageDescriptorServingPlugin {
+public interface IImageDescriptorServingPlugin
+{
     /**
      * @param path
      *            the path to the image file

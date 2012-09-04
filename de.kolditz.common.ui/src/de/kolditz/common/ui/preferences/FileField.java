@@ -18,7 +18,6 @@ import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -32,13 +31,15 @@ import de.kolditz.common.util.SystemProperties;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class FileField extends TextField implements SelectionListener, ModifyListener {
+public class FileField extends TextField
+{
     private Logger log = Logger.getLogger(getClass());
     protected Button btnSet, btnClear;
     protected ControlDecoration cdFile;
     private String[] extensions, names;
     private int filterIndex;
     private boolean fileExists;
+    private SelectionListener selectionListener;
 
     /**
      * @param parent
@@ -48,7 +49,8 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
      * @param label
      *            the {@link Label}'s text
      */
-    public FileField(PreferencesComposite parent, int style, String label) {
+    public FileField(PreferencesComposite parent, int style, String label)
+    {
         this(parent, style, label, "");
     }
 
@@ -62,7 +64,8 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
      * @param null_hint
      *            the hint text that is displayed when text field is empty
      */
-    public FileField(PreferencesComposite parent, int style, String label, String null_hint) {
+    public FileField(PreferencesComposite parent, int style, String label, String null_hint)
+    {
         super(parent, style, label, null_hint);
         setFilter(null, null, -1);
     }
@@ -77,21 +80,31 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
      * @param names
      * @param index
      */
-    public void setFilter(String[] extensions, String[] names, int index) {
-        if (extensions == null) {
-            if (names != null) {
+    public void setFilter(String[] extensions, String[] names, int index)
+    {
+        if(extensions == null)
+        {
+            if(names != null)
+            {
                 log.error("No extensions but names are provided. Extensions = " + names.toString());
                 names = null;
             }
             index = -1;
-        } else if (names == null) {
+        }
+        else if(names == null)
+        {
             names = extensions;
-        } else if (names.length != extensions.length) {
+        }
+        else if(names.length != extensions.length)
+        {
             // names and extensions != null
-            if (names.length > extensions.length) {
+            if(names.length > extensions.length)
+            {
                 names = Arrays.copyOf(names, extensions.length);
                 log.warn("More names than extensions provided. Cutting off the additional names.");
-            } else {
+            }
+            else
+            {
                 int oldLength = names.length;
                 names = Arrays.copyOf(names, extensions.length);
                 System.arraycopy(extensions, oldLength, names, oldLength, extensions.length - oldLength);
@@ -104,7 +117,8 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
     }
 
     @Override
-    protected void create() {
+    protected void create()
+    {
         super.create();
         Composite comp = getComposite();
         cdFile = new ControlDecoration(text, SWT.TOP | SWT.RIGHT, comp);
@@ -117,53 +131,78 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
     }
 
     @Override
-    protected void setLabels() {
+    protected void setLabels()
+    {
         super.setLabels();
         btnSet.setText("Set");
         btnClear.setText("Clear");
     }
 
     @Override
-    protected void addListeners() {
+    protected void addListeners()
+    {
         super.addListeners();
-        btnSet.addSelectionListener(this);
-        btnClear.addSelectionListener(this);
+        selectionListener = new SelectionListener()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent e)
+            {
+                FileField.this.widgetSelected(e);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+                FileField.this.widgetDefaultSelected(e);
+            }
+        };
+        btnSet.addSelectionListener(selectionListener);
+        btnClear.addSelectionListener(selectionListener);
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return super.getColumnsRequired() + 2;
     }
 
     @Override
-    protected void setColumns(int columns) {
+    protected void setColumns(int columns)
+    {
         super.setColumns(columns - 2);
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        if (btnSet != null && !btnSet.isDisposed())
-            btnSet.setEnabled(enabled);
-        if (btnClear != null && !btnClear.isDisposed())
-            btnClear.setEnabled(enabled);
+    public void setEnabled(boolean enabled)
+    {
+        if(btnSet != null && !btnSet.isDisposed()) btnSet.setEnabled(enabled);
+        if(btnClear != null && !btnClear.isDisposed()) btnClear.setEnabled(enabled);
         super.setEnabled(enabled);
     }
 
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-        if (e.widget == btnSet) {
+    protected void widgetSelected(SelectionEvent e)
+    {
+        if(e.widget == btnSet)
+        {
             FileDialog fd = new FileDialog(text.getShell(), SWT.OPEN);
             String filterPath = text.getText();
             String fileName = "";
-            if (filterPath.equals(null_hint)) {
+            if(filterPath.equals(null_hint))
+            {
                 filterPath = SystemProperties.USER_DIR;
-            } else {
+            }
+            else
+            {
                 File file = new File(filterPath);
-                if (file.exists()) {
-                    if (file.isFile()) {
+                if(file.exists())
+                {
+                    if(file.isFile())
+                    {
                         filterPath = file.getAbsoluteFile().getParent();
                         fileName = file.getName();
-                    } else {
+                    }
+                    else
+                    {
                         filterPath = file.getAbsolutePath();
                     }
                 }
@@ -172,37 +211,50 @@ public class FileField extends TextField implements SelectionListener, ModifyLis
             fd.setFileName(fileName);
             fd.setFilterExtensions(extensions);
             fd.setFilterNames(names);
-            if (filterIndex >= 0)
-                fd.setFilterIndex(filterIndex);
+            if(filterIndex >= 0) fd.setFilterIndex(filterIndex);
             String target = fd.open();
-            if (target != null) {
+            if(target != null)
+            {
                 text.setText(target);
                 notifyObservers(target);
             }
-        } else if (e.widget == btnClear) {
+        }
+        else if(e.widget == btnClear)
+        {
             text.setText(null_hint);
         }
     }
 
-    @Override
-    public void widgetDefaultSelected(SelectionEvent e) {
+    protected void widgetDefaultSelected(SelectionEvent e)
+    {
     }
 
     @Override
-    public void modifyText(ModifyEvent e) {
-        if (e.widget == text) {
-            File file = new File(text.getText());
-            fileExists = file.exists();
-            if (fileExists) {
-                cdFile.hide();
-            } else {
-                cdFile.show();
-            }
+    protected void modifyText(ModifyEvent e)
+    {
+        if(e.widget == text)
+        {
+            validate();
         }
         super.modifyText(e);
     }
 
-    public boolean fileExists() {
+    public boolean fileExists()
+    {
         return fileExists;
+    }
+
+    public void validate()
+    {
+        File file = new File(text.getText());
+        fileExists = file.exists();
+        if(fileExists)
+        {
+            cdFile.hide();
+        }
+        else
+        {
+            cdFile.show();
+        }
     }
 }

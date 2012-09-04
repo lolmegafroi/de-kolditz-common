@@ -24,7 +24,8 @@ import de.kolditz.common.util.IObserver;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public abstract class PreferenceField<E> implements IObservable<E> {
+public abstract class PreferenceField<E> implements IObservable<E>
+{
     protected PreferencesComposite parent;
     protected IObservableBackend<E> observableBackEnd;
     protected boolean doUpdateBackEnd;
@@ -35,7 +36,8 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * @param style
      *            Composite style
      */
-    public PreferenceField(PreferencesComposite parent, int style) {
+    public PreferenceField(PreferencesComposite parent, int style)
+    {
         this.parent = parent;
         observableBackEnd = createBackend();
         parent.registerField(this);
@@ -45,7 +47,8 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * Registers an {@link IObserver} for modification events. The data object is the new text.
      */
     @Override
-    public boolean registerObserver(IObserver<E> observer) {
+    public boolean registerObserver(IObserver<E> observer)
+    {
         return observableBackEnd.registerObserver(observer);
     }
 
@@ -53,11 +56,13 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * Unregisters an {@link IObserver} from modification events.
      */
     @Override
-    public boolean unregisterObserver(IObserver<E> observer) {
+    public boolean unregisterObserver(IObserver<E> observer)
+    {
         return observableBackEnd.unregisterObserver(observer);
     }
 
-    protected void notifyObservers(E value) {
+    protected void notifyObservers(E value)
+    {
         observableBackEnd.update(value);
     }
 
@@ -70,7 +75,8 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * 
      * @return the IObservableBackend
      */
-    protected IObservableBackend<E> createBackend() {
+    protected IObservableBackend<E> createBackend()
+    {
         return new IObservableBackend<E>(this);
     }
 
@@ -108,7 +114,8 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      */
     protected abstract void setColumns(int columns);
 
-    protected Composite getComposite() {
+    protected Composite getComposite()
+    {
         return parent.getComposite();
     }
 
@@ -125,15 +132,16 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      */
     @SuppressWarnings("unchecked")
     @MultiThreaded
-    public E[] getValues() {
+    public E[] getValues()
+    {
         E value = getValue();
-        E[] result = (E[]) Array.newInstance(value.getClass(), 1);
+        E[] result = (E[])Array.newInstance(value.getClass(), 1);
         result[0] = value;
         return result;
     }
 
     /**
-     * Sets this {@link PreferenceField}'s value. Allways notifies observers about the change.
+     * Sets this {@link PreferenceField}'s value. Always notifies observers about the change.
      * 
      * @see #setValue(Object, boolean)
      * @param value
@@ -141,7 +149,8 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * @return this PreferenceField's old value
      */
     @MultiThreaded
-    public E setValue(E value) {
+    public E setValue(E value)
+    {
         return setValue(value, true);
     }
 
@@ -168,13 +177,30 @@ public abstract class PreferenceField<E> implements IObservable<E> {
      * @return this PreferenceField's old values
      */
     @MultiThreaded
-    public E[] setValues(E[] values, boolean doNotifyObservers) {
+    public E[] setValues(E[] values, boolean doNotifyObservers)
+    {
         E[] oldValues = getValues();
-        if (values == null || values.length == 0) {
+        if(values == null || values.length == 0)
+        {
             setValue(null);
-        } else {
+        }
+        else
+        {
             setValue(values[0]);
         }
         return oldValues;
     }
+
+    /**
+     * Returns <code>true</code> if the widget has been disposed,
+     * and <code>false</code> otherwise.
+     * <p>
+     * This method gets the dispose state for the widget.
+     * When a widget has been disposed, it is an error to
+     * invoke any other method (except {@link #dispose()}) using the widget.
+     * </p>
+     *
+     * @return <code>true</code> when the widget is disposed and <code>false</code> otherwise
+     */
+    public abstract boolean isDisposed();
 }

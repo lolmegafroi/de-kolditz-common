@@ -20,7 +20,8 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class LabelField extends PreferenceField<String> {
+public class LabelField extends PreferenceField<String>
+{
     protected Label label;
     protected int labelStyle;
     protected String labelText;
@@ -29,7 +30,8 @@ public class LabelField extends PreferenceField<String> {
      * @param parent
      * @param style
      */
-    public LabelField(PreferencesComposite parent, int style, int labelStyle, String labelText) {
+    public LabelField(PreferencesComposite parent, int style, int labelStyle, String labelText)
+    {
         super(parent, style);
 
         assert labelText != null : new NullPointerException("labelText"); //$NON-NLS-1$
@@ -43,46 +45,62 @@ public class LabelField extends PreferenceField<String> {
     }
 
     @Override
-    protected void create() {
+    protected void create()
+    {
         label = new Label(getComposite(), labelStyle);
         label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
     }
 
     @Override
-    protected void setLabels() {
+    protected void setLabels()
+    {
         label.setText(labelText);
     }
 
     @Override
-    protected void addListeners() {
+    protected void addListeners()
+    {
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return 1;
     }
 
     @Override
-    protected void setColumns(int columns) {
-        ((GridData) label.getLayoutData()).horizontalSpan = columns;
+    protected void setColumns(int columns)
+    {
+        ((GridData)label.getLayoutData()).horizontalSpan = columns;
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled)
+    {
     }
 
     @Override
-    public String getValue() {
+    public String getValue()
+    {
         return labelText;
     }
 
     @Override
-    public String setValue(String value, boolean doNotifyObservers) {
+    public String setValue(String value, boolean doNotifyObservers)
+    {
         String old = labelText;
         labelText = value;
-        if (doNotifyObservers) {
+        label.setText(labelText);
+        if(doNotifyObservers)
+        {
             notifyObservers(labelText);
         }
         return old;
+    }
+
+    @Override
+    public boolean isDisposed()
+    {
+        return label.isDisposed();
     }
 }

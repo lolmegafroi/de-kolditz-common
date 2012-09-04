@@ -22,19 +22,23 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Parent composite for {@link PreferenceField}s. Function {@link #updateLayout()} must be called after all widgets were
  * created or whenever widgets were added or removed dynamically.
+ * <p>It is possible to add children which are not instances of PreferenceField.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
+ * @see #registerField(PreferenceField)
  */
-public class PreferencesComposite {
+public class PreferencesComposite
+{
     private Composite comp;
     private GridLayout layout;
     private List<PreferenceField<?>> fields;
 
     /**
-     * @param parent
-     * @param style
+     * @param parent the parent Composite
+     * @param style this Composite's style
      */
-    public PreferencesComposite(Composite parent, int style) {
+    public PreferencesComposite(Composite parent, int style)
+    {
         comp = new Composite(parent, style);
         layout = new GridLayout();
         layout.marginWidth = 0;
@@ -44,39 +48,48 @@ public class PreferencesComposite {
         fields = new ArrayList<PreferenceField<?>>();
     }
 
-    public void registerField(PreferenceField<?> field) {
+    public void registerField(PreferenceField<?> field)
+    {
         fields.add(field);
     }
 
-    protected Composite getComposite() {
+    protected Composite getComposite()
+    {
         return comp;
     }
 
-    public void updateLayout() {
+    public void updateLayout()
+    {
         int columns = 0;
-        for (PreferenceField<?> field : fields) {
+        for(PreferenceField<?> field : fields)
+        {
             columns = Math.max(columns, field.getColumnsRequired());
         }
         layout.numColumns = columns;
-        for (PreferenceField<?> field : fields) {
+        for(PreferenceField<?> field : fields)
+        {
             field.setColumns(columns);
         }
         comp.layout();
     }
 
-    public int getColumns() {
-        return ((GridLayout) comp.getLayout()).numColumns;
+    public int getColumns()
+    {
+        return ((GridLayout)comp.getLayout()).numColumns;
     }
 
-    public boolean isDisposed() {
+    public boolean isDisposed()
+    {
         return comp.isDisposed();
     }
 
-    public Display getDisplay() {
+    public Display getDisplay()
+    {
         return comp.getDisplay();
     }
 
-    public void setLayoutData(Object layoutData) {
+    public void setLayoutData(Object layoutData)
+    {
         comp.setLayoutData(layoutData);
     }
 }

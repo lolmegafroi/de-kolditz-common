@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 
 /**
@@ -21,7 +22,8 @@ import org.eclipse.swt.widgets.Button;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class RunnableFileField extends FileField {
+public class RunnableFileField extends FileField
+{
     protected Button btnRun;
 
     /**
@@ -29,53 +31,81 @@ public class RunnableFileField extends FileField {
      * @param style
      * @param label
      */
-    public RunnableFileField(PreferencesComposite parent, int style, String label) {
+    public RunnableFileField(PreferencesComposite parent, int style, String label)
+    {
         super(parent, style, label);
     }
 
-    public RunnableFileField(PreferencesComposite parent, int style, String label, String null_hint) {
+    public RunnableFileField(PreferencesComposite parent, int style, String label, String null_hint)
+    {
         super(parent, style, label, null_hint);
     }
 
     @Override
-    protected void create() {
+    protected void create()
+    {
         super.create();
         btnRun = new Button(getComposite(), SWT.PUSH);
     }
 
     @Override
-    protected void setLabels() {
+    protected void setLabels()
+    {
         super.setLabels();
         btnRun.setText("Run");
     }
 
     @Override
-    protected void addListeners() {
+    protected void addListeners()
+    {
         super.addListeners();
-        btnRun.addSelectionListener(this);
+        btnRun.addSelectionListener(new SelectionListener()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent e)
+            {
+                RunnableFileField.this.widgetSelected(e);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e)
+            {
+                RunnableFileField.this.widgetDefaultSelected(e);
+            }
+        });
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return super.getColumnsRequired() + 1;
     }
 
     @Override
-    protected void setColumns(int columns) {
+    protected void setColumns(int columns)
+    {
         super.setColumns(columns - 1);
     }
 
     @Override
-    public void widgetSelected(SelectionEvent e) {
-        if (e.widget == btnRun) {
-            if (!cdFile.isVisible()) {
-                try {
+    public void widgetSelected(SelectionEvent e)
+    {
+        if(e.widget == btnRun)
+        {
+            if(!cdFile.isVisible())
+            {
+                try
+                {
                     Runtime.getRuntime().exec(text.getText());
-                } catch (IOException e1) {
+                }
+                catch(IOException e1)
+                {
                     e1.printStackTrace();
                 }
             }
-        } else {
+        }
+        else
+        {
             super.widgetSelected(e);
         }
     }

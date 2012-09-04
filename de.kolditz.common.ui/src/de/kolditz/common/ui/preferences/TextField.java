@@ -28,7 +28,8 @@ import de.kolditz.common.util.Pair;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class TextField extends PreferenceField<String> implements ModifyListener, FocusListener {
+public class TextField extends PreferenceField<String> implements FocusListener
+{
     protected Label label;
     protected Text text;
     protected String labelString;
@@ -37,6 +38,14 @@ public class TextField extends PreferenceField<String> implements ModifyListener
     protected Pair<String, String> pair;
     protected SetText setter;
     protected GetText getter;
+    protected ModifyListener modifyListener = new ModifyListener()
+    {
+        @Override
+        public void modifyText(ModifyEvent e)
+        {
+            TextField.this.modifyText(e);
+        }
+    };
 
     /**
      * @param parent
@@ -46,7 +55,8 @@ public class TextField extends PreferenceField<String> implements ModifyListener
      * @param label
      *            label text
      */
-    public TextField(PreferencesComposite parent, int style, String label) {
+    public TextField(PreferencesComposite parent, int style, String label)
+    {
         this(parent, style, label, "");
     }
 
@@ -60,7 +70,8 @@ public class TextField extends PreferenceField<String> implements ModifyListener
      * @param null_hint
      *            hint text shown when no text is entered
      */
-    public TextField(PreferencesComposite parent, int style, String label, String null_hint) {
+    public TextField(PreferencesComposite parent, int style, String label, String null_hint)
+    {
         super(parent, style);
         labelString = label;
         this.null_hint = null_hint != null ? null_hint : ""; //$NON-NLS-1$
@@ -75,68 +86,83 @@ public class TextField extends PreferenceField<String> implements ModifyListener
         getter = new GetText(text);
     }
 
-    protected void create() {
+    protected void create()
+    {
         label = new Label(getComposite(), SWT.NONE);
         text = new Text(getComposite(), SWT.BORDER);
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
-    protected void setLabels() {
+    protected void setLabels()
+    {
         doUpdateBackEnd = false;
         label.setText(labelString);
         text.setText(null_hint);
         doUpdateBackEnd = true;
     }
 
-    protected void addListeners() {
-        text.addModifyListener(this);
+    protected void addListeners()
+    {
+        text.addModifyListener(modifyListener);
         text.addFocusListener(this);
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return 2;
     }
 
     @Override
-    protected void setColumns(int columns) {
-        ((GridData) text.getLayoutData()).horizontalSpan = columns - 1;
+    protected void setColumns(int columns)
+    {
+        ((GridData)text.getLayoutData()).horizontalSpan = columns - 1;
     }
 
-    @Override
-    public void modifyText(ModifyEvent e) {
-        if (text.getText().equals(null_hint)) {
+    protected void modifyText(ModifyEvent e)
+    {
+        if(text.getText().equals(null_hint))
+        {
             text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_GRAY));
-        } else {
+        }
+        else
+        {
             text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_BLACK));
         }
-        if (doUpdateBackEnd) {
+        if(doUpdateBackEnd)
+        {
             notifyObservers(getValue());
         }
     }
 
     @Override
-    public void focusGained(FocusEvent e) {
+    public void focusGained(FocusEvent e)
+    {
         doUpdateBackEnd = false;
-        if (text.getText().equals(null_hint)) {
+        if(text.getText().equals(null_hint))
+        {
             text.setText("");
         }
         doUpdateBackEnd = true;
     }
 
     @Override
-    public void focusLost(FocusEvent e) {
+    public void focusLost(FocusEvent e)
+    {
         doUpdateBackEnd = false;
-        if (text.getText().equals("")) {
+        if(text.getText().equals(""))
+        {
             text.setText(null_hint);
         }
         doUpdateBackEnd = true;
     }
 
-    public String setValue(String value, boolean doNotifyObservers) {
+    public String setValue(String value, boolean doNotifyObservers)
+    {
         String old = getValue();
         String actualVal = value;
-        if (value == null || value.length() == 0) {
+        if(value == null || value.length() == 0)
+        {
             actualVal = null_hint;
         }
         doUpdateBackEnd = doNotifyObservers;
@@ -145,16 +171,26 @@ public class TextField extends PreferenceField<String> implements ModifyListener
         return old;
     }
 
-    public String getValue() {
+    public String getValue()
+    {
         String str = getter.get();
-        if (str.equals(null_hint)) {
+        if(str.equals(null_hint))
+        {
             return null;
         }
         return str;
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        text.setEnabled(enabled);
+    public void setEnabled(boolean enabled)
+    {
+        if(text != null && !text.isDisposed()) text.setEnabled(enabled);
+        if(label != null && !label.isDisposed()) label.setEnabled(enabled);
+    }
+
+    @Override
+    public boolean isDisposed()
+    {
+        return text.isDisposed();
     }
 }

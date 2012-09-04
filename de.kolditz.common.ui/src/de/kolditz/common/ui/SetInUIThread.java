@@ -32,7 +32,8 @@ import de.kolditz.common.util.Pair;
  * @see #value
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public abstract class SetInUIThread<E> implements Runnable {
+public abstract class SetInUIThread<E> implements Runnable
+{
     /**
      * Convenience class. Use a {@link Pair} the following way: first is the text, second is the tool tip.
      * 
@@ -41,15 +42,18 @@ public abstract class SetInUIThread<E> implements Runnable {
      * @see Pair#second(Object)
      * @author Till Kolditz - Till.Kolditz@GoogleMail.com
      */
-    public static class SetText extends SetInUIThread<Pair<String, String>> {
+    public static class SetText extends SetInUIThread<Pair<String, String>>
+    {
         private Text text;
 
-        public SetText(Text text) {
+        public SetText(Text text)
+        {
             this.text = text;
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             text.setText(value.first());
             text.setToolTipText(value.second());
         }
@@ -63,15 +67,18 @@ public abstract class SetInUIThread<E> implements Runnable {
      * 
      * @author Till Kolditz - Till.Kolditz@GoogleMail.com
      */
-    public static class SetSelection extends SetInUIThread<Boolean> {
+    public static class SetSelection extends SetInUIThread<Boolean>
+    {
         private Button button;
 
-        public SetSelection(Button button) {
+        public SetSelection(Button button)
+        {
             this.button = button;
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             button.setSelection(value);
         }
     }
@@ -88,7 +95,8 @@ public abstract class SetInUIThread<E> implements Runnable {
      * @param value
      *            the applciation-specific boolean value
      */
-    public void setValue(Display display, E value) {
+    public void setValue(Display display, E value)
+    {
         setValue(display, value, true);
     }
 
@@ -105,15 +113,20 @@ public abstract class SetInUIThread<E> implements Runnable {
      *            method. Otherwise the {@link #run()} method will be called by the display's
      *            {@link Display#asyncExec(Runnable)} method.
      */
-    public void setValue(Display display, E value, boolean async) {
-        if (display == null || display.isDisposed()) {
+    public void setValue(Display display, E value, boolean async)
+    {
+        if(display == null || display.isDisposed())
+        {
             return;
         }
         this.value = value;
-        if (display.getThread() == Thread.currentThread()) {
+        if(display.getThread() == Thread.currentThread())
+        {
             log.trace("running in UI thread");
             run();
-        } else {
+        }
+        else
+        {
             log.trace("running async");
             display.asyncExec(this);
         }

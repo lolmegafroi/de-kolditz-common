@@ -17,7 +17,8 @@ package de.kolditz.common.ui;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public interface IFillViewAware {
+public interface IFillViewAware
+{
     void setFillView(boolean isFillView);
 
     boolean isFillView();

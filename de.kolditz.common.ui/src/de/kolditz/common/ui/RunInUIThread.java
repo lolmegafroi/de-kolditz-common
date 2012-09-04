@@ -24,7 +24,8 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public abstract class RunInUIThread implements Runnable {
+public abstract class RunInUIThread implements Runnable
+{
     protected Logger log = Logger.getLogger(getClass().getSimpleName());
 
     /**
@@ -32,7 +33,8 @@ public abstract class RunInUIThread implements Runnable {
      * otherwise, asynchronously in the UI thread.
      */
     @Override
-    public final void run() {
+    public final void run()
+    {
         run(null, true);
     }
 
@@ -43,7 +45,8 @@ public abstract class RunInUIThread implements Runnable {
      * @param display
      *            the {@link Display}
      */
-    public void run(Display display) {
+    public void run(Display display)
+    {
         run(display, true);
     }
 
@@ -58,23 +61,31 @@ public abstract class RunInUIThread implements Runnable {
      *            method. Otherwise the {@link #run()} method will be called by the display's
      *            {@link Display#asyncExec(Runnable)} method.
      */
-    public void run(Display display, boolean async) {
+    public void run(Display display, boolean async)
+    {
         Display d = display;
-        if (d == null) {
+        if(d == null)
+        {
             log.trace("display is null");
             d = Display.getDefault();
         }
-        if (d.isDisposed()) {
+        if(d.isDisposed())
+        {
             log.debug("display is disposed - aborting");
             return;
         }
-        if (d.getThread() == Thread.currentThread()) {
+        if(d.getThread() == Thread.currentThread())
+        {
             log.trace("running in UI thread");
             inUIThread();
-        } else if (async) {
+        }
+        else if(async)
+        {
             log.trace("running async");
             d.asyncExec(this);
-        } else {
+        }
+        else
+        {
             log.trace("running sync");
             d.syncExec(this);
         }

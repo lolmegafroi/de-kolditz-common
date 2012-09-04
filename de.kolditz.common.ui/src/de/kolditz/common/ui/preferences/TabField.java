@@ -25,31 +25,39 @@ import org.eclipse.swt.widgets.TabItem;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class TabField<K> extends PreferenceField<K> {
-    public final class TabFieldItem {
+public class TabField<K> extends PreferenceField<K>
+{
+    public final class TabFieldItem
+    {
         private K key = null;
         private TabItem ti = null;
         private PreferencesComposite comp = null;
 
-        private TabFieldItem(K key) {
+        private TabFieldItem(K key)
+        {
             this.key = key;
             ti = new TabItem(folder, SWT.NONE);
         }
 
-        public K getKey() {
+        public K getKey()
+        {
             return key;
         }
 
-        public void setText(String text) {
+        public void setText(String text)
+        {
             ti.setText(text);
         }
 
-        public void setToolTipText(String tooltip) {
+        public void setToolTipText(String tooltip)
+        {
             ti.setToolTipText(tooltip);
         }
 
-        public PreferencesComposite getPreferencesComposite() {
-            if (comp == null) {
+        public PreferencesComposite getPreferencesComposite()
+        {
+            if(comp == null)
+            {
                 comp = new PreferencesComposite(folder, SWT.NONE);
                 ti.setControl(comp.getComposite());
             }
@@ -96,7 +104,8 @@ public class TabField<K> extends PreferenceField<K> {
      * @param labels
      *            the labels for the {@link TabItem}s
      */
-    public TabField(PreferencesComposite parent, int style, String label) {
+    public TabField(PreferencesComposite parent, int style, String label)
+    {
         this(parent, style, label, SWT.TOP);
     }
 
@@ -114,7 +123,8 @@ public class TabField<K> extends PreferenceField<K> {
      * @param tabStyle
      *            {@link SWT#TOP} or {@link SWT#BOTTOM}
      */
-    public TabField(PreferencesComposite parent, int style, String label, int tabStyle) {
+    public TabField(PreferencesComposite parent, int style, String label, int tabStyle)
+    {
         super(parent, style);
 
         assert parent != null : new IllegalArgumentException("parent = null"); //$NON-NLS-1$
@@ -129,27 +139,35 @@ public class TabField<K> extends PreferenceField<K> {
     }
 
     @Override
-    protected void create() {
+    protected void create()
+    {
         label = new Label(getComposite(), SWT.NONE);
         folder = new TabFolder(getComposite(), tabStyle);
         folder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
     }
 
     @Override
-    protected void setLabels() {
+    protected void setLabels()
+    {
         label.setText(labelString);
     }
 
     @Override
-    protected void addListeners() {
-        folder.addSelectionListener(new SelectionAdapter() {
+    protected void addListeners()
+    {
+        folder.addSelectionListener(new SelectionAdapter()
+        {
             @SuppressWarnings("unchecked")
             @Override
-            public void widgetSelected(SelectionEvent e) {
+            public void widgetSelected(SelectionEvent e)
+            {
                 int idx = folder.getSelectionIndex();
-                if (idx > -1) {
-                    setValue0((K) folder.getItem(idx).getData(), true);
-                } else {
+                if(idx > -1)
+                {
+                    setValue0((K)folder.getItem(idx).getData(), true);
+                }
+                else
+                {
                     setValue0(null, true);
                 }
             }
@@ -157,30 +175,37 @@ public class TabField<K> extends PreferenceField<K> {
     }
 
     @Override
-    protected int getColumnsRequired() {
+    protected int getColumnsRequired()
+    {
         return 2;
     }
 
     @Override
-    protected void setColumns(int columns) {
-        ((GridData) folder.getLayoutData()).horizontalSpan = columns - 1;
+    protected void setColumns(int columns)
+    {
+        ((GridData)folder.getLayoutData()).horizontalSpan = columns - 1;
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled)
+    {
     }
 
     @Override
-    public K getValue() {
+    public K getValue()
+    {
         return currentKey;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public K setValue(K value, boolean doNotifyObservers) {
+    public K setValue(K value, boolean doNotifyObservers)
+    {
         TabItem[] items = folder.getItems();
-        for (int i = 0; i < items.length; ++i) {
-            if (((K) items[i].getData()) == value) {
+        for(int i = 0; i < items.length; ++i)
+        {
+            if(((K)items[i].getData()) == value)
+            {
                 folder.setSelection(i); // no notification sent when setting programmatically
                 break;
             }
@@ -188,10 +213,12 @@ public class TabField<K> extends PreferenceField<K> {
         return setValue0(value, doNotifyObservers);
     }
 
-    private K setValue0(K value, boolean doNotifyObservers) {
+    private K setValue0(K value, boolean doNotifyObservers)
+    {
         K oldKey = currentKey;
         currentKey = value;
-        if (doNotifyObservers) {
+        if(doNotifyObservers)
+        {
             notifyObservers(currentKey);
         }
         return oldKey;
@@ -204,8 +231,10 @@ public class TabField<K> extends PreferenceField<K> {
      *            the key
      * @return the TabFieldItem
      */
-    public TabFieldItem createItem(K key) {
-        if (items == null) {
+    public TabFieldItem createItem(K key)
+    {
+        if(items == null)
+        {
             items = new HashMap<K, TabField<K>.TabFieldItem>();
         }
         TabFieldItem tfi = new TabFieldItem(key);
@@ -220,11 +249,21 @@ public class TabField<K> extends PreferenceField<K> {
      *            the key
      * @return the associated {@link TabFieldItem} or null otherwise
      */
-    public TabFieldItem getItem(K key) {
-        if (items != null) {
+    public TabFieldItem getItem(K key)
+    {
+        if(items != null)
+        {
             return items.get(key);
-        } else {
+        }
+        else
+        {
             return null;
         }
+    }
+
+    @Override
+    public boolean isDisposed()
+    {
+        return folder.isDisposed();
     }
 }

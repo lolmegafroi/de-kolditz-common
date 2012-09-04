@@ -26,7 +26,8 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public abstract class GetInUIThread<E> implements Runnable {
+public abstract class GetInUIThread<E> implements Runnable
+{
     /**
      * Convenience class for one of the following widgets:
      * <ul>
@@ -36,15 +37,18 @@ public abstract class GetInUIThread<E> implements Runnable {
      * @see GetInUIThread
      * @author Till Kolditz - Till.Kolditz@GoogleMail.com
      */
-    public static class GetText extends GetInUIThread<String> {
+    public static class GetText extends GetInUIThread<String>
+    {
         private Text text;
 
-        public GetText(Text text) {
+        public GetText(Text text)
+        {
             this.text = text;
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             value = text.getText();
         }
 
@@ -53,7 +57,8 @@ public abstract class GetInUIThread<E> implements Runnable {
          * 
          * @return the {@link Text}'s text.
          */
-        public String get() {
+        public String get()
+        {
             get(text.getDisplay());
             return value;
         }
@@ -68,15 +73,18 @@ public abstract class GetInUIThread<E> implements Runnable {
      * @see GetInUIThread
      * @author Till Kolditz - Till.Kolditz@GoogleMail.com
      */
-    public static class GetSelection extends GetInUIThread<Boolean> {
+    public static class GetSelection extends GetInUIThread<Boolean>
+    {
         private Button button;
 
-        public GetSelection(Button button) {
+        public GetSelection(Button button)
+        {
             this.button = button;
         }
 
         @Override
-        public void run() {
+        public void run()
+        {
             value = Boolean.valueOf(button.getSelection());
         }
 
@@ -85,7 +93,8 @@ public abstract class GetInUIThread<E> implements Runnable {
          * 
          * @return the {@link Button}'s text.
          */
-        public Boolean get() {
+        public Boolean get()
+        {
             get(button.getDisplay());
             return value;
         }
@@ -101,17 +110,25 @@ public abstract class GetInUIThread<E> implements Runnable {
      * @param display
      *            The {@link Display}.
      */
-    protected void get(Display display) {
-        if (display == null) {
+    protected void get(Display display)
+    {
+        if(display == null)
+        {
             log.trace("display is null");
             return;
-        } else if (display.isDisposed()) {
+        }
+        else if(display.isDisposed())
+        {
             log.trace("display is disposed");
             return;
-        } else if (display.getThread() == Thread.currentThread()) {
+        }
+        else if(display.getThread() == Thread.currentThread())
+        {
             log.trace("running in UI thread");
             run();
-        } else {
+        }
+        else
+        {
             log.trace("running sync");
             display.syncExec(this);
         }

@@ -41,153 +41,191 @@ import org.eclipse.swt.widgets.Event;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-abstract class AbstractControl {
+abstract class AbstractControl
+{
     private Control control;
 
-    public AbstractControl() {
+    public AbstractControl()
+    {
     }
 
-    protected void setControl(Control control) {
+    protected void setControl(Control control)
+    {
         this.control = control;
     }
 
-    public void update() {
+    public void update()
+    {
         control.update();
     }
 
-    public void addControlListener(ControlListener listener) {
+    public void addControlListener(ControlListener listener)
+    {
         control.addControlListener(listener);
     }
 
-    public void addDragDetectListener(DragDetectListener listener) {
+    public void addDragDetectListener(DragDetectListener listener)
+    {
         control.addDragDetectListener(listener);
     }
 
-    public void addFocusListener(FocusListener listener) {
+    public void addFocusListener(FocusListener listener)
+    {
         control.addFocusListener(listener);
     }
 
-    public void addGestureListener(GestureListener listener) {
+    public void addGestureListener(GestureListener listener)
+    {
         control.addGestureListener(listener);
     }
 
-    public void addHelpListener(HelpListener listener) {
+    public void addHelpListener(HelpListener listener)
+    {
         control.addHelpListener(listener);
     }
 
-    public void addKeyListener(KeyListener listener) {
+    public void addKeyListener(KeyListener listener)
+    {
         control.addKeyListener(listener);
     }
 
-    public void addMenuDetectListener(MenuDetectListener listener) {
+    public void addMenuDetectListener(MenuDetectListener listener)
+    {
         control.addMenuDetectListener(listener);
     }
 
-    public void addMouseListener(MouseListener listener) {
+    public void addMouseListener(MouseListener listener)
+    {
         control.addMouseListener(listener);
     }
 
-    public void addMouseTrackListener(MouseTrackListener listener) {
+    public void addMouseTrackListener(MouseTrackListener listener)
+    {
         control.addMouseTrackListener(listener);
     }
 
-    public void addMouseMoveListener(MouseMoveListener listener) {
+    public void addMouseMoveListener(MouseMoveListener listener)
+    {
         control.addMouseMoveListener(listener);
     }
 
-    public void addMouseWheelListener(MouseWheelListener listener) {
+    public void addMouseWheelListener(MouseWheelListener listener)
+    {
         control.addMouseWheelListener(listener);
     }
 
-    public void addPaintListener(PaintListener listener) {
+    public void addPaintListener(PaintListener listener)
+    {
         control.addPaintListener(listener);
     }
 
-    public void addTouchListener(TouchListener listener) {
+    public void addTouchListener(TouchListener listener)
+    {
         control.addTouchListener(listener);
     }
 
-    public void addTraverseListener(TraverseListener listener) {
+    public void addTraverseListener(TraverseListener listener)
+    {
         control.addTraverseListener(listener);
     }
 
-    public Point computeSize(int wHint, int hHint) {
+    public Point computeSize(int wHint, int hHint)
+    {
         return control.computeSize(wHint, hHint);
     }
 
-    public Point computeSize(int wHint, int hHint, boolean changed) {
+    public Point computeSize(int wHint, int hHint, boolean changed)
+    {
         return control.computeSize(wHint, hHint, changed);
     }
 
-    public boolean dragDetect(Event event) {
+    public boolean dragDetect(Event event)
+    {
         return control.dragDetect(event);
     }
 
-    public boolean dragDetect(MouseEvent event) {
+    public boolean dragDetect(MouseEvent event)
+    {
         return control.dragDetect(event);
     }
 
-    public boolean forceFocus() {
+    public boolean forceFocus()
+    {
         return control.forceFocus();
     }
 
-    public Accessible getAccessible() {
+    public Accessible getAccessible()
+    {
         return control.getAccessible();
     }
 
-    public Color getBackground() {
+    public Color getBackground()
+    {
         return control.getBackground();
     }
 
-    public Image getBackgroundImage() {
+    public Image getBackgroundImage()
+    {
         return control.getBackgroundImage();
     }
 
-    public int getBorderWidth() {
+    public int getBorderWidth()
+    {
         return control.getBorderWidth();
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getBounds()
+    {
         return control.getBounds();
     }
 
-    public Cursor getCursor() {
+    public Cursor getCursor()
+    {
         return control.getCursor();
     }
 
-    public boolean getDragDetect() {
+    public boolean getDragDetect()
+    {
         return control.getDragDetect();
     }
 
-    public boolean getEnabled() {
+    public boolean getEnabled()
+    {
         return control.getEnabled();
     }
 
-    public Font getFont() {
+    public Font getFont()
+    {
         return control.getFont();
     }
 
-    public Color getForeground() {
+    public Color getForeground()
+    {
         return control.getForeground();
     }
 
-    public Object getLayoutData() {
+    public Object getLayoutData()
+    {
         return control.getLayoutData();
     }
 
-    public void removeControlListener(ControlListener listener) {
+    public void removeControlListener(ControlListener listener)
+    {
         control.removeControlListener(listener);
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled)
+    {
         control.setEnabled(enabled);
     }
 
-    public boolean setFocus() {
+    public boolean setFocus()
+    {
         return control.setFocus();
     }
 
-    public void setLayoutData(Object layoutData) {
+    public void setLayoutData(Object layoutData)
+    {
         control.setLayoutData(layoutData);
     }
 }

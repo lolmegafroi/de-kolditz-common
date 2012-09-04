@@ -26,20 +26,28 @@ import de.kolditz.common.util.SystemProperties;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class TextAppender extends AppenderSkeleton {
-    private class AppendRunner implements Runnable {
+public class TextAppender extends AppenderSkeleton
+{
+    private class AppendRunner implements Runnable
+    {
         String text;
 
-        AppendRunner(String text) {
+        AppendRunner(String text)
+        {
             this.text = text;
         }
 
         @Override
-        public void run() {
-            if (tfLog != null && !tfLog.isDisposed()) {
-                if (text != null) {
+        public void run()
+        {
+            if(tfLog != null && !tfLog.isDisposed())
+            {
+                if(text != null)
+                {
                     tfLog.append(text);
-                } else {
+                }
+                else
+                {
                     tfLog.setText(""); //$NON-NLS-1$
                 }
             }
@@ -57,11 +65,13 @@ public class TextAppender extends AppenderSkeleton {
     private StyledText tfLog;
     private ArrayList<LoggingEvent> events;
 
-    public TextAppender() {
+    public TextAppender()
+    {
         this(null);
     }
 
-    public TextAppender(StyledText tfLog) {
+    public TextAppender(StyledText tfLog)
+    {
         this.tfLog = tfLog;
         // use the same as the BasicConfigurator sets on ConsoleAppender
         setLayout(SIMPLE_LAYOUT);
@@ -70,61 +80,79 @@ public class TextAppender extends AppenderSkeleton {
         events = new ArrayList<LoggingEvent>();
     }
 
-    public void setTfLog(StyledText tfLog) {
+    public void setTfLog(StyledText tfLog)
+    {
         this.tfLog = tfLog;
     }
 
     @Override
-    public void close() {
+    public void close()
+    {
     }
 
     @Override
-    public boolean requiresLayout() {
+    public boolean requiresLayout()
+    {
         return true;
     }
 
     @Override
-    public synchronized void doAppend(LoggingEvent event) {
+    public synchronized void doAppend(LoggingEvent event)
+    {
         events.add(event);
         super.doAppend(event);
     }
 
     @Override
-    protected synchronized void append(LoggingEvent event) {
-        if (event.getThrowableInformation() == null || getLayout() == SIMPLE_LAYOUT) {
+    protected synchronized void append(LoggingEvent event)
+    {
+        if(event.getThrowableInformation() == null || getLayout() == SIMPLE_LAYOUT)
+        {
             update(layout.format(event));
-        } else {
+        }
+        else
+        {
             StringBuilder sb = new StringBuilder(layout.format(event));
-            for (String s : event.getThrowableStrRep()) {
+            for(String s : event.getThrowableStrRep())
+            {
                 sb.append(s).append(SystemProperties.LINE_SEP);
             }
             update(sb.toString());
         }
     }
 
-    private void update(String text) {
-        if (tfLog == null || tfLog.isDisposed()) {
+    private void update(String text)
+    {
+        if(tfLog == null || tfLog.isDisposed())
+        {
             return;
         }
         tfLog.getDisplay().asyncExec(new AppendRunner(text));
     }
 
-    public void clear() {
+    public void clear()
+    {
         update(null);
         events.clear();
         System.gc();
     }
 
-    private void recreate() {
-        if (tfLog != null && !tfLog.isDisposed()) {
-            tfLog.getDisplay().asyncExec(new Runnable() {
+    private void recreate()
+    {
+        if(tfLog != null && !tfLog.isDisposed())
+        {
+            tfLog.getDisplay().asyncExec(new Runnable()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     // again check if disposed as we run "async" in display thread
-                    if (tfLog != null && !tfLog.isDisposed()) {
+                    if(tfLog != null && !tfLog.isDisposed())
+                    {
                         tfLog.setRedraw(false);
                         tfLog.setText("");
-                        for (LoggingEvent le : events) {
+                        for(LoggingEvent le : events)
+                        {
                             TextAppender.super.doAppend(le);
                         }
                         tfLog.setRedraw(true);
@@ -135,7 +163,8 @@ public class TextAppender extends AppenderSkeleton {
     }
 
     @Override
-    public void setThreshold(Priority threshold) {
+    public void setThreshold(Priority threshold)
+    {
         super.setThreshold(threshold);
         recreate();
     }
@@ -144,10 +173,14 @@ public class TextAppender extends AppenderSkeleton {
      * @param name
      *            {@link #COMPLEX_NAME} or {@link #SIMPLE_NAME}
      */
-    public void setStyle(String name) {
-        if (name.equalsIgnoreCase(COMPLEX_NAME)) {
+    public void setStyle(String name)
+    {
+        if(name.equalsIgnoreCase(COMPLEX_NAME))
+        {
             setLayout(COMPLEX_LAYOUT);
-        } else {
+        }
+        else
+        {
             setLayout(SIMPLE_LAYOUT);
         }
         recreate();
@@ -156,14 +189,18 @@ public class TextAppender extends AppenderSkeleton {
     /**
      * @return the log with the current logging level and style, or null if nothing is present
      */
-    public String getLog() {
-        if (tfLog != null && !tfLog.isDisposed()) {
+    public String getLog()
+    {
+        if(tfLog != null && !tfLog.isDisposed())
+        {
             return tfLog.getText();
-        } else if (events != null) {
+        }
+        else if(events != null)
+        {
             StringBuilder sb = new StringBuilder();
-            for (LoggingEvent le : events) {
-                if (isAsSevereAsThreshold(le.getLevel()))
-                    sb.append(layout.format(le));
+            for(LoggingEvent le : events)
+            {
+                if(isAsSevereAsThreshold(le.getLevel())) sb.append(layout.format(le));
             }
             return sb.toString();
         }

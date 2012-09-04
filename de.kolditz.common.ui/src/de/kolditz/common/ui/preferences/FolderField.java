@@ -19,14 +19,16 @@ import de.kolditz.common.util.SystemProperties;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class FolderField extends FileField {
+public class FolderField extends FileField
+{
     /**
      * @param parent
      * @param style
      * @param label
      * @param null_hint
      */
-    public FolderField(PreferencesComposite parent, int style, String label) {
+    public FolderField(PreferencesComposite parent, int style, String label)
+    {
         this(parent, style, label, "");
     }
 
@@ -36,7 +38,8 @@ public class FolderField extends FileField {
      * @param label
      * @param null_hint
      */
-    public FolderField(PreferencesComposite parent, int style, String label, String null_hint) {
+    public FolderField(PreferencesComposite parent, int style, String label, String null_hint)
+    {
         super(parent, style, label, null_hint);
     }
 
@@ -44,23 +47,29 @@ public class FolderField extends FileField {
      * Not used for {@link FolderField}
      */
     @Override
-    public void setFilter(String[] extensions, String[] names, int index) {
+    public void setFilter(String[] extensions, String[] names, int index)
+    {
     }
 
     @Override
-    public void widgetSelected(SelectionEvent e) {
-        if (e.widget == btnSet) {
+    protected void widgetSelected(SelectionEvent e)
+    {
+        if(e.widget == btnSet)
+        {
             DirectoryDialog dd = new DirectoryDialog(text.getShell());
             String str = text.getText();
             dd.setMessage(null_hint);
             dd.setFilterPath(str.equals(null_hint) ? SystemProperties.USER_DIR : str);
             String target = dd.open();
-            if (target != null) {
+            if(target != null)
+            {
                 text.setText(target);
                 notifyObservers(target);
             }
-        } else if (e.widget == btnClear) {
-            text.setText(null_hint);
+        }
+        else
+        {
+            super.widgetSelected(e);
         }
     }
 }

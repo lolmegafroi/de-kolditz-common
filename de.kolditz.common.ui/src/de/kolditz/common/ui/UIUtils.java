@@ -34,8 +34,10 @@ import de.kolditz.common.i18n.I18N;
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class UIUtils {
-    public static class ExtendedMessageDialog extends MessageDialog {
+public class UIUtils
+{
+    public static class ExtendedMessageDialog extends MessageDialog
+    {
         protected Exception e;
 
         /**
@@ -48,24 +50,28 @@ public class UIUtils {
          * @param defaultIndex
          */
         public ExtendedMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage,
-                String dialogMessage, int dialogImageType, String[] dialogButtonLabels, int defaultIndex) {
+                String dialogMessage, int dialogImageType, String[] dialogButtonLabels, int defaultIndex)
+        {
             super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels,
                     defaultIndex);
         }
 
-        public ExtendedMessageDialog(Shell parentShell, Exception e) {
+        public ExtendedMessageDialog(Shell parentShell, Exception e)
+        {
             super(parentShell, e.getClass().getSimpleName(), parentShell.getDisplay().getSystemImage(SWT.ICON_ERROR), e
-                    .getMessage(), ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
+                    .getMessage(), ERROR, new String[] {IDialogConstants.OK_LABEL}, 0);
             this.e = e;
         }
 
         @Override
-        protected boolean isResizable() {
+        protected boolean isResizable()
+        {
             return true;
         }
 
         @Override
-        protected Control createCustomArea(Composite parent) {
+        protected Control createCustomArea(Composite parent)
+        {
             ExpandableComposite comp = new ExpandableComposite(parent, SWT.NONE, ExpandableComposite.TWISTIE
                     | ExpandableComposite.CLIENT_INDENT | ExpandableComposite.NO_TITLE_FOCUS_BOX
                     | ExpandableComposite.SHORT_TITLE_BAR);
@@ -76,9 +82,11 @@ public class UIUtils {
             e.printStackTrace(new PrintWriter(sw));
             text.setText(sw.toString());
             comp.setClient(text);
-            comp.addExpansionListener(new ExpansionAdapter() {
+            comp.addExpansionListener(new ExpansionAdapter()
+            {
                 @Override
-                public void expansionStateChanged(ExpansionEvent e) {
+                public void expansionStateChanged(ExpansionEvent e)
+                {
                     ExtendedMessageDialog.this.getShell().pack();
                 }
             });
@@ -86,7 +94,8 @@ public class UIUtils {
         }
     }
 
-    public static void openError(Exception e) {
+    public static void openError(Exception e)
+    {
         new ExtendedMessageDialog(Display.getCurrent().getActiveShell(), e).open();
     }
 }
