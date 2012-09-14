@@ -56,7 +56,19 @@ public @interface ImageConstant {
      * @author Till Kolditz - Till.Kolditz@gmail.com
      */
     public enum RefType {
-        LOCAL, PLATFORM_PLUGIN
+        /**
+         * The annotated string denotes a plugin's local path. No assumptions are made.
+         */
+        LOCAL,
+        /**
+         * Reference to a plugin in the current platform. "platform:/plugin/" and the value of remotePlugin() will be
+         * prepended to the base string. Example:<br>
+         * Annotated String: <code>pin_editor.gif</code><br>
+         * remotePlugin(): <code>org.eclipse.ui</code><br>
+         * folder(): <code>icons/full/etool16</code><br>
+         * is resolved to <code>platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.gif</code>
+         */
+        PLATFORM_PLUGIN
     }
 
     /**
