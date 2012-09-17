@@ -12,9 +12,10 @@
  *******************************************************************************/
 package de.kolditz.common.osgi;
 
-import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
@@ -35,7 +36,7 @@ public abstract class EventHandlingPlugin extends Plugin
 {
     private EventAdmin eventAdmin;
     private ServiceReference<EventAdmin> srEventAdmin;
-    private List<ServiceRegistration<EventHandler>> eventHandlers;
+    private Map<EventHandler, ServiceRegistration<EventHandler>> eventHandlers;
 
     @Override
     public void start(BundleContext context) throws Exception
@@ -49,13 +50,21 @@ public abstract class EventHandlingPlugin extends Plugin
         }
         else
         {
-            eventAdmin = (EventAdmin)context.getService(srEventAdmin);
+            eventAdmin = context.getService(srEventAdmin);
         }
     }
 
     @Override
     public void stop(BundleContext context) throws Exception
     {
+        if(eventHandlers != null)
+        {
+            for(Entry<EventHandler, ServiceRegistration<EventHandler>> e : eventHandlers.entrySet())
+            {
+                e.getValue().unregister();
+            }
+            eventHandlers.clear();
+        }
         if(srEventAdmin != null)
         {
             context.ungetService(srEventAdmin);
@@ -112,11 +121,12 @@ public abstract class EventHandlingPlugin extends Plugin
         if(handler == null) return false;
         if(eventHandlers == null)
         {
-            eventHandlers = new ArrayList<ServiceRegistration<EventHandler>>();
+            eventHandlers = new HashMap<EventHandler, ServiceRegistration<EventHandler>>();
         }
         try
         {
-            eventHandlers.add(getBundle().getBundleContext().registerService(EventHandler.class, handler, properties));
+            eventHandlers.put(handler,
+                    getBundle().getBundleContext().registerService(EventHandler.class, handler, properties));
             return true;
         }
         catch(Exception e)
@@ -124,6 +134,18 @@ public abstract class EventHandlingPlugin extends Plugin
             getLog().log(
                     new Status(IStatus.ERROR, getPluginID(), "Could not register EventHandler " + handler.toString()));
             return false;
+        }
+    }
+
+    public void unregisterEventHandler(EventHandler handler)
+    {
+        if(handler != null && eventHandlers != null)
+        {
+            ServiceRegistration<EventHandler> sreg = eventHandlers.remove(handler);
+            if(sreg != null)
+            {
+                sreg.unregister();
+            }
         }
     }
 }
