@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Text;
 import de.kolditz.common.util.IValidator;
 
 /**
+ * A simple dialog for entering some String property
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */

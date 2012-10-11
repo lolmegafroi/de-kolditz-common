@@ -75,6 +75,11 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
         super.stop(context);
     }
 
+    public EventAdmin getEventAdmin()
+    {
+        return eventAdmin;
+    }
+
     /**
      * Asynchronous event posting.
      * 

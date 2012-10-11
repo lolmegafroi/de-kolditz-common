@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -127,6 +128,9 @@ public class FileField extends TextField
                 .getImage());
         cdFile.hide();
         btnSet = new Button(comp, SWT.PUSH);
+        GridData gd = new GridData();
+        gd.horizontalIndent = 10;
+        btnSet.setLayoutData(gd);
         btnClear = new Button(comp, SWT.PUSH);
     }
 

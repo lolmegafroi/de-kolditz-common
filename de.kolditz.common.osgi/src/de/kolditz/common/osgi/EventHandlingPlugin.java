@@ -74,6 +74,11 @@ public abstract class EventHandlingPlugin extends Plugin
         super.stop(context);
     }
 
+    public EventAdmin getEventAdmin()
+    {
+        return eventAdmin;
+    }
+
     /**
      * Asynchronous event posting.
      * 

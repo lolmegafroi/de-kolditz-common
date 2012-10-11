@@ -224,6 +224,16 @@ abstract class AbstractControl
         return control.setFocus();
     }
 
+    public boolean isFocusControl()
+    {
+        return control.isFocusControl();
+    }
+
+    public Control getControl()
+    {
+        return control;
+    }
+
     public void setLayoutData(Object layoutData)
     {
         control.setLayoutData(layoutData);

@@ -19,14 +19,16 @@ import org.apache.log4j.Priority;
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.swt.custom.StyledText;
 
+import de.kolditz.common.concurrent.MultiThreaded;
 import de.kolditz.common.util.SystemProperties;
 
 /**
- * An appender that logs to a text field. Does not handle Exceptions.
+ * An appender that logs to a text field. Does also handle Exceptions. Supports 2 types of patterns: {@link #SIMPLE_PATTERN}
+ * and {@link #COMPLEX_PATTERN}.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class TextAppender extends AppenderSkeleton
+public class Log4jTextAppender extends AppenderSkeleton
 {
     private class AppendRunner implements Runnable
     {
@@ -65,12 +67,20 @@ public class TextAppender extends AppenderSkeleton
     private StyledText tfLog;
     private ArrayList<LoggingEvent> events;
 
-    public TextAppender()
+    /**
+     * Supports creating the log appender for registering log events even when the log text field is not set yet.
+     */
+    public Log4jTextAppender()
     {
         this(null);
     }
 
-    public TextAppender(StyledText tfLog)
+    /**
+     * Supports creating the log appender for registering log events even when the log text field is not set yet.
+     * 
+     * @param tfLog may be null
+     */
+    public Log4jTextAppender(StyledText tfLog)
     {
         this.tfLog = tfLog;
         // use the same as the BasicConfigurator sets on ConsoleAppender
@@ -121,6 +131,7 @@ public class TextAppender extends AppenderSkeleton
         }
     }
 
+    @MultiThreaded
     private void update(String text)
     {
         if(tfLog == null || tfLog.isDisposed())
@@ -153,7 +164,7 @@ public class TextAppender extends AppenderSkeleton
                         tfLog.setText("");
                         for(LoggingEvent le : events)
                         {
-                            TextAppender.super.doAppend(le);
+                            Log4jTextAppender.super.doAppend(le);
                         }
                         tfLog.setRedraw(true);
                     }
