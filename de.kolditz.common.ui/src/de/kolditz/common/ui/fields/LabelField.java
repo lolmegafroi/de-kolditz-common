@@ -10,7 +10,7 @@
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -20,34 +20,32 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class LabelField extends PreferenceField<String>
+public class LabelField extends AbstractField<String>
 {
     protected Label label;
-    protected int labelStyle;
-    protected String labelText;
+    protected int widthHint = SWT.DEFAULT;
 
     /**
-     * @param parent
-     * @param style
+     * When you want wrapping behavior, you HAVE to set a width hint (via {@link #setWidthHint(int)}).
+     * 
+     * @param parent the parent FieldComposite
+     * @param style the {@link Label}'s style
+     * @param labelText the Label's text
      */
-    public LabelField(PreferencesComposite parent, int style, int labelStyle, String labelText)
+    public LabelField(FieldComposite parent, int style, String labelText)
     {
-        super(parent, style);
-
-        assert labelText != null : new NullPointerException("labelText"); //$NON-NLS-1$
-
-        this.labelStyle = labelStyle;
-        this.labelText = labelText;
+        super(parent, style, labelText);
 
         create();
-        setLabels();
         addListeners();
+        setLabels();
+        parent.registerField(this);
     }
 
     @Override
     protected void create()
     {
-        label = new Label(getComposite(), labelStyle);
+        label = new Label(getComposite(), style);
         label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
     }
 
@@ -102,5 +100,19 @@ public class LabelField extends PreferenceField<String>
     public boolean isDisposed()
     {
         return label.isDisposed();
+    }
+
+    /**
+     * May be SWT.DEFAULT for disabling wrapping behavior.
+     * 
+     * @param widthHint
+     */
+    public void setWidthHint(int widthHint)
+    {
+        this.widthHint = Math.max(SWT.DEFAULT, widthHint); // at least SWT.DEFAULT
+        if(label.getLayoutData() != null)
+        {
+            ((GridData)label.getLayoutData()).widthHint = this.widthHint;
+        }
     }
 }

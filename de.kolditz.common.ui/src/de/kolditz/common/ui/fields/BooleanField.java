@@ -8,13 +8,14 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Label;
 
 import de.kolditz.common.concurrent.MultiThreaded;
 import de.kolditz.common.ui.GetInUIThread.GetSelection;
@@ -25,29 +26,26 @@ import de.kolditz.common.ui.SetInUIThread.SetSelection;
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class BooleanField extends PreferenceField<Boolean>
+public class BooleanField extends AbstractField<Boolean>
 {
-    protected String label;
     protected Button button;
     protected boolean doUpdateBackEnd;
     protected GetSelection getter;
     protected SetSelection setter;
 
     /**
-     * @param parent
-     * @param style
+     * @param parent the parent {@link FieldComposite}
+     * @param style ignored for now
+     * @param labelString the {@link Label}'s text
      */
-    public BooleanField(PreferencesComposite parent, int style, String label)
+    public BooleanField(FieldComposite parent, int style, String labelString)
     {
-        super(parent, style);
-        this.label = label;
+        super(parent, style, labelString);
 
         create();
         setLabels();
         addListeners();
-
-        setter = new SetSelection(button);
-        getter = new GetSelection(button);
+        parent.registerField(this);
     }
 
     protected void create()
@@ -58,12 +56,16 @@ public class BooleanField extends PreferenceField<Boolean>
     @Override
     protected void setLabels()
     {
-        button.setText(label);
+        button.setText(labelText);
+        button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
     @Override
     protected void addListeners()
     {
+        setter = new SetSelection(button);
+        getter = new GetSelection(button);
+
         button.addSelectionListener(new SelectionListener()
         {
             @Override
@@ -89,7 +91,7 @@ public class BooleanField extends PreferenceField<Boolean>
     @Override
     protected void setColumns(int columns)
     {
-        button.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false, columns, 1));
+        ((GridData)button.getLayoutData()).horizontalSpan = columns;
     }
 
     @Override

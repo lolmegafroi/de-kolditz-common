@@ -25,6 +25,11 @@ public class I18N extends Messages
 
     public static final String DIALOGS_ERRORDIALOG_TITLE = "Dialogs.ErrorDialog.Title"; //$NON-NLS-1$
 
+    public static final String FIELDS_FILEFIELD_FILENOTSET = "Fields.FileField.FNS"; //$NON-NLS-1$
+    public static final String FIELDS_FILEFIELD_FILEDOESNOTEXIST = "Fields.FileField.FDNE"; //$NON-NLS-1$
+    public static final String FIELDS_FILEFIELD_OVERWRITEDIALOG_MSG = "Fields.FileField.OWD.Msg"; //$NON-NLS-1$
+    public static final String FIELDS_FILEFIELD_OVERWRITEDIALOG_TITLE = "Fields.FileField.OWD.Title"; //$NON-NLS-1$
+
     /**
      * the singleton instance
      */

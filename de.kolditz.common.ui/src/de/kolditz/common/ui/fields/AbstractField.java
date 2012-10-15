@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import java.lang.reflect.Array;
 
@@ -21,26 +21,57 @@ import de.kolditz.common.util.IObserver;
 
 /**
  * Abstract base class for preference fields used in custom preference environments.
+ * <p>Clients should access the {@link #labelText} field which is set in the constructor method.</p>
+ * <p>The base implementation calls the following method(s):
+ * <ul>
+ * <li>{@link #createBackend()}</li>
+ * </ul>
+ * Clients must call the following method(s) themselves:
+ * <ul>
+ * <li>{@link #create()}</li>
+ * <li>{@link #addListeners()}</li>
+ * <li>{@link #setLabels()}</li>
+ * <li>parent.register(this)</li>
+ * </ul>
+ * </p>
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public abstract class PreferenceField<E> implements IObservable<E>
+public abstract class AbstractField<E> implements IObservable<E>
 {
-    protected PreferencesComposite parent;
+    protected FieldComposite parent;
     protected IObservableBackend<E> observableBackEnd;
     protected boolean doUpdateBackEnd;
 
+    protected int style;
+    protected String labelText;
+
     /**
+     * 
+     * Clients must call the following method(s) themselves:
+     * <ul>
+     * <li>{@link #create()}</li>
+     * <li>{@link #addListeners()}</li>
+     * <li>{@link #setLabels()}</li>
+     * <li>parent.register(this)</li>
+     * </ul>
+     * 
      * @param parent
      *            parent Composite
      * @param style
      *            Composite style
+     * @param labelText
+     *            the label's text
      */
-    public PreferenceField(PreferencesComposite parent, int style)
+    public AbstractField(FieldComposite parent, int style, String labelText)
     {
+        assert parent != null : new IllegalArgumentException("parent = null"); //$NON-NLS-1$
+        assert labelText != null : new IllegalArgumentException("label = null"); //$NON-NLS-1$
+
         this.parent = parent;
+        this.style = style;
+        this.labelText = labelText;
         observableBackEnd = createBackend();
-        parent.registerField(this);
     }
 
     /**
@@ -81,32 +112,32 @@ public abstract class PreferenceField<E> implements IObservable<E>
     }
 
     /**
-     * "Protocol" method that must be called by the client. This shall ensure same method names for better code
+     * "Protocol" method called after {@link #createBackend()}. This shall ensure same method names for better code
      * readability. "this" is the Composite for adding widgets.
      */
     protected abstract void create();
 
     /**
-     * "Protocol" method that must be called by the client. This shall ensure same method names for better code
+     * "Protocol" method called after {@link #addListeners()}. This shall ensure same method names for better code
      * readability.
      */
     protected abstract void setLabels();
 
     /**
-     * "Protocol" method that must be called by the client. This shall ensure same method names for better code
+     * "Protocol" method called after {@link #create()}. This shall ensure same method names for better code
      * readability.
      */
     protected abstract void addListeners();
 
     /**
-     * This method is called by the {@link PreferencesComposite} to find out how many columns this field required.
+     * This method is called by the {@link FieldComposite} to find out how many columns this field required.
      * 
      * @return how many columns this field required
      */
     protected abstract int getColumnsRequired();
 
     /**
-     * This method is called by the {@link PreferencesComposite} to notify how many columns there will be in the layout.
+     * This method is called by the {@link FieldComposite} to notify how many columns there will be in the layout.
      * It is guaranteed to be called after {@link #create()}.
      * 
      * @param columns
@@ -122,7 +153,7 @@ public abstract class PreferenceField<E> implements IObservable<E>
     public abstract void setEnabled(boolean enabled);
 
     /**
-     * @return this PreferenceField's value
+     * @return this AbstractField's value
      */
     @MultiThreaded
     public abstract E getValue();
@@ -141,12 +172,12 @@ public abstract class PreferenceField<E> implements IObservable<E>
     }
 
     /**
-     * Sets this {@link PreferenceField}'s value. Always notifies observers about the change.
+     * Sets this {@link AbstractField}'s value. Always notifies observers about the change.
      * 
      * @see #setValue(Object, boolean)
      * @param value
-     *            this PreferenceField's new value
-     * @return this PreferenceField's old value
+     *            this AbstractField's new value
+     * @return this AbstractField's old value
      */
     @MultiThreaded
     public E setValue(E value)
@@ -158,10 +189,10 @@ public abstract class PreferenceField<E> implements IObservable<E>
      * Client code should make it possible to set <b>null</b> values!
      * 
      * @param value
-     *            this PreferenceField's new value
+     *            this AbstractField's new value
      * @param doNotifyObservers
      *            whether to notify observers or not
-     * @return this PreferenceField's old value
+     * @return this AbstractField's old value
      */
     @MultiThreaded
     public abstract E setValue(E value, boolean doNotifyObservers);
@@ -171,10 +202,10 @@ public abstract class PreferenceField<E> implements IObservable<E>
      * make it possible to set <b>null</b> values!
      * 
      * @param values
-     *            this PreferenceField's new values
+     *            this AbstractField's new values
      * @param doNotifyObservers
      *            whether to notify observers or not
-     * @return this PreferenceField's old values
+     * @return this AbstractField's old values
      */
     @MultiThreaded
     public E[] setValues(E[] values, boolean doNotifyObservers)

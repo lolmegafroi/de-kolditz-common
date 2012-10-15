@@ -17,5 +17,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: de.kolditz.common.ui,
  de.kolditz.common.ui.action,
  de.kolditz.common.ui.dialog,
- de.kolditz.common.ui.preferences,
+ de.kolditz.common.ui.fields,
  de.kolditz.common.ui.rcp

@@ -8,7 +8,7 @@
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.TabItem;
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class TabField<K> extends PreferenceField<K>
+public class TabField<K> extends AbstractField<K>
 {
     public final class TabFieldItem
     {
         private K key = null;
         private TabItem ti = null;
-        private PreferencesComposite comp = null;
+        private FieldComposite comp = null;
 
         private TabFieldItem(K key)
         {
@@ -54,11 +54,11 @@ public class TabField<K> extends PreferenceField<K>
             ti.setToolTipText(tooltip);
         }
 
-        public PreferencesComposite getPreferencesComposite()
+        public FieldComposite getPreferencesComposite()
         {
             if(comp == null)
             {
-                comp = new PreferencesComposite(folder, SWT.NONE);
+                comp = new FieldComposite(folder, SWT.NONE);
                 ti.setControl(comp.getComposite());
             }
             return comp;
@@ -74,11 +74,6 @@ public class TabField<K> extends PreferenceField<K>
      * The parent TabFolder widget
      */
     private TabFolder folder;
-
-    /**
-     * The label widget's text
-     */
-    private String labelString;
 
     /**
      * The TabFolder's style
@@ -104,7 +99,7 @@ public class TabField<K> extends PreferenceField<K>
      * @param labels
      *            the labels for the {@link TabItem}s
      */
-    public TabField(PreferencesComposite parent, int style, String label)
+    public TabField(FieldComposite parent, int style, String label)
     {
         this(parent, style, label, SWT.TOP);
     }
@@ -114,7 +109,7 @@ public class TabField<K> extends PreferenceField<K>
      *            parent Composite
      * @param style
      *            composite style
-     * @param label
+     * @param labelText
      *            label text
      * @param keys
      *            the keys for the {@link TabItem}s
@@ -123,19 +118,16 @@ public class TabField<K> extends PreferenceField<K>
      * @param tabStyle
      *            {@link SWT#TOP} or {@link SWT#BOTTOM}
      */
-    public TabField(PreferencesComposite parent, int style, String label, int tabStyle)
+    public TabField(FieldComposite parent, int style, String labelText, int tabStyle)
     {
-        super(parent, style);
+        super(parent, style, labelText);
 
-        assert parent != null : new IllegalArgumentException("parent = null"); //$NON-NLS-1$
-        assert label != null : new IllegalArgumentException("label = null"); //$NON-NLS-1$
-
-        this.labelString = label;
         this.tabStyle = tabStyle;
 
         create();
         setLabels();
         addListeners();
+        parent.registerField(this);
     }
 
     @Override
@@ -149,7 +141,7 @@ public class TabField<K> extends PreferenceField<K>
     @Override
     protected void setLabels()
     {
-        label.setText(labelString);
+        label.setText(labelText);
     }
 
     @Override
@@ -225,7 +217,7 @@ public class TabField<K> extends PreferenceField<K>
     }
 
     /**
-     * Used to create a {@link TabFieldItem} to which further {@link PreferenceField} can be added
+     * Used to create a {@link TabFieldItem} to which further {@link AbstractField} can be added
      * 
      * @param key
      *            the key

@@ -10,7 +10,7 @@
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +20,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * Parent composite for {@link PreferenceField}s. Function {@link #updateLayout()} must be called after all widgets were
- * created or whenever widgets were added or removed dynamically.
- * <p>It is possible to add children which are not instances of PreferenceField.
+ * Parent composite for {@link AbstractField}s. When creating a widget tree (whether including fields or not) clients
+ * should use Composites' {@link Composite#setLayoutDeferred(boolean)} function for reducing the drawing overhead.
+ * Whenever a field is added to this FieldComposite using {@link #registerField(AbstractField)}, the {@link #updateLayout()}
+ * method will be called. Using deferred layout will reduce the preformance impact!
+ * <p>It is possible to add children which are not instances of AbstractField.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
- * @see #registerField(PreferenceField)
+ * @see #registerField(AbstractField)
  */
-public class PreferencesComposite
+public class FieldComposite
 {
     private Composite comp;
     private GridLayout layout;
-    private List<PreferenceField<?>> fields;
+    private List<AbstractField<?>> fields;
 
     /**
      * @param parent the parent Composite
      * @param style this Composite's style
      */
-    public PreferencesComposite(Composite parent, int style)
+    public FieldComposite(Composite parent, int style)
     {
         comp = new Composite(parent, style);
         layout = new GridLayout();
@@ -45,12 +47,13 @@ public class PreferencesComposite
         layout.marginHeight = 0;
         comp.setLayout(layout);
 
-        fields = new ArrayList<PreferenceField<?>>();
+        fields = new ArrayList<AbstractField<?>>();
     }
 
-    public void registerField(PreferenceField<?> field)
+    public void registerField(AbstractField<?> field)
     {
         fields.add(field);
+        updateLayout();
     }
 
     protected Composite getComposite()
@@ -61,12 +64,12 @@ public class PreferencesComposite
     public void updateLayout()
     {
         int columns = 0;
-        for(PreferenceField<?> field : fields)
+        for(AbstractField<?> field : fields)
         {
             columns = Math.max(columns, field.getColumnsRequired());
         }
         layout.numColumns = columns;
-        for(PreferenceField<?> field : fields)
+        for(AbstractField<?> field : fields)
         {
             field.setColumns(columns);
         }

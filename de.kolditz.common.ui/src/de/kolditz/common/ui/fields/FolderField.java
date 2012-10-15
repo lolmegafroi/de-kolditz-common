@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -27,7 +27,7 @@ public class FolderField extends FileField
      * @param label
      * @param null_hint
      */
-    public FolderField(PreferencesComposite parent, int style, String label)
+    public FolderField(FieldComposite parent, int style, String label)
     {
         this(parent, style, label, "");
     }
@@ -38,7 +38,7 @@ public class FolderField extends FileField
      * @param label
      * @param null_hint
      */
-    public FolderField(PreferencesComposite parent, int style, String label, String null_hint)
+    public FolderField(FieldComposite parent, int style, String label, String null_hint)
     {
         super(parent, style, label, null_hint);
     }

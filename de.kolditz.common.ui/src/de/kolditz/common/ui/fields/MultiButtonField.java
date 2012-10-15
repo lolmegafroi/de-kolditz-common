@@ -8,7 +8,7 @@
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -25,15 +25,14 @@ import org.eclipse.swt.widgets.Label;
 import de.kolditz.common.ui.ButtonBar;
 
 /**
- * A {@link PreferenceField} containing several {@link Button}s.
+ * A {@link AbstractField} containing several {@link Button}s.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class MultiButtonField<E> extends PreferenceField<E>
+public class MultiButtonField<E> extends AbstractField<E>
 {
     protected int groupStyle;
     protected int buttonStyle;
-    protected String labelString;
     protected int columns;
     protected E[] values;
     protected String[] labels;
@@ -50,7 +49,7 @@ public class MultiButtonField<E> extends PreferenceField<E>
      *            whether this multi button field should be organized as a group or not
      * @param groupStyle
      *            this {@link Composite}'s style
-     * @param label
+     * @param labelText
      *            the label string
      * @param buttonStyle
      *            the style of the created {@link Button}s
@@ -61,10 +60,10 @@ public class MultiButtonField<E> extends PreferenceField<E>
      * @param labels
      *            the buttons' text labels
      */
-    public MultiButtonField(PreferencesComposite parent, boolean asGroup, int groupStyle, String label,
-            int buttonStyle, int columns, E[] values, String[] labels)
+    public MultiButtonField(FieldComposite parent, boolean asGroup, int groupStyle, String labelText, int buttonStyle,
+            int columns, E[] values, String[] labels)
     {
-        super(parent, SWT.NONE);
+        super(parent, SWT.NONE, labelText);
 
         assert values != null : new IllegalArgumentException("values = null"); //$NON-NLS-1$
         assert values.length > 0 : new IllegalArgumentException("values.length = 0"); //$NON-NLS-1$
@@ -76,7 +75,6 @@ public class MultiButtonField<E> extends PreferenceField<E>
 
         this.buttonStyle = buttonStyle;
 
-        this.labelString = label;
         this.columns = columns;
         this.values = values;
         this.labels = labels;
@@ -84,6 +82,7 @@ public class MultiButtonField<E> extends PreferenceField<E>
         create();
         setLabels();
         addListeners();
+        parent.registerField(this);
     }
 
     @Override
@@ -136,15 +135,15 @@ public class MultiButtonField<E> extends PreferenceField<E>
     @Override
     protected void setLabels()
     {
-        if(labelString != null)
+        if(labelText != null)
         {
             if(asGroup)
             {
-                group.setText(labelString);
+                group.setText(labelText);
             }
             else
             {
-                label.setText(labelString);
+                label.setText(labelText);
             }
         }
         for(int i = 0; i < values.length; ++i)

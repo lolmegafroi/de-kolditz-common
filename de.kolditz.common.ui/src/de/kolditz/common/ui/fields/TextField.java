@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -24,15 +24,14 @@ import de.kolditz.common.ui.SetInUIThread.SetText;
 import de.kolditz.common.util.Pair;
 
 /**
- * Preferences Text field
+ * A Text field which allows to set a hint which is shown when no text is set.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public class TextField extends PreferenceField<String> implements FocusListener
+public class TextField extends AbstractField<String> implements FocusListener
 {
     protected Label label;
     protected Text text;
-    protected String labelString;
     protected String null_hint;
     protected boolean doUpdateBackEnd;
     protected Pair<String, String> pair;
@@ -52,38 +51,37 @@ public class TextField extends PreferenceField<String> implements FocusListener
      *            parent Composite
      * @param style
      *            Composite style
-     * @param label
-     *            label text
+     * @param labelText
+     *            the label's text
      */
-    public TextField(PreferencesComposite parent, int style, String label)
+    public TextField(FieldComposite parent, int style, String labelText)
     {
-        this(parent, style, label, "");
+        this(parent, style, labelText, "");
     }
 
     /**
      * @param parent
      *            parent Composite
      * @param style
-     *            Composite style
+     *            this field's style
      * @param label
      *            label text
      * @param null_hint
      *            hint text shown when no text is entered
      */
-    public TextField(PreferencesComposite parent, int style, String label, String null_hint)
+    public TextField(FieldComposite parent, int style, String labelText, String null_hint)
     {
-        super(parent, style);
-        labelString = label;
+        super(parent, style, labelText);
+
         this.null_hint = null_hint != null ? null_hint : ""; //$NON-NLS-1$
+
+        doUpdateBackEnd = true;
+        pair = new Pair<String, String>(null, null);
 
         create();
         addListeners();
         setLabels();
-
-        doUpdateBackEnd = true;
-        pair = new Pair<String, String>(null, null);
-        setter = new SetText(text);
-        getter = new GetText(text);
+        parent.registerField(this);
     }
 
     protected void create()
@@ -96,13 +94,16 @@ public class TextField extends PreferenceField<String> implements FocusListener
     protected void setLabels()
     {
         doUpdateBackEnd = false;
-        label.setText(labelString);
+        label.setText(labelText);
         text.setText(null_hint);
         doUpdateBackEnd = true;
     }
 
     protected void addListeners()
     {
+        setter = new SetText(text);
+        getter = new GetText(text);
+
         text.addModifyListener(modifyListener);
         text.addFocusListener(this);
     }
@@ -157,6 +158,9 @@ public class TextField extends PreferenceField<String> implements FocusListener
         doUpdateBackEnd = true;
     }
 
+    /**
+     * Sets the raw string value. Subclasses may provide more convenient methods for setting subclass-specific values.
+     */
     public String setValue(String value, boolean doNotifyObservers)
     {
         String old = getValue();
@@ -171,6 +175,10 @@ public class TextField extends PreferenceField<String> implements FocusListener
         return old;
     }
 
+    /**
+     * Returns the raw string value. Subclasses may provide more convenient methods for retrieving subclass-specific
+     * values.
+     */
     public String getValue()
     {
         String str = getter.get();

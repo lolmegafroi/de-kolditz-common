@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui.preferences;
+package de.kolditz.common.ui.fields;
 
 import java.io.IOException;
 
@@ -31,12 +31,12 @@ public class RunnableFileField extends FileField
      * @param style
      * @param label
      */
-    public RunnableFileField(PreferencesComposite parent, int style, String label)
+    public RunnableFileField(FieldComposite parent, int style, String label)
     {
         super(parent, style, label);
     }
 
-    public RunnableFileField(PreferencesComposite parent, int style, String label, String null_hint)
+    public RunnableFileField(FieldComposite parent, int style, String label, String null_hint)
     {
         super(parent, style, label, null_hint);
     }
