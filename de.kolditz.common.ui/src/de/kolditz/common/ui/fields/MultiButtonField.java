@@ -10,8 +10,8 @@
  *******************************************************************************/
 package de.kolditz.common.ui.fields;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -184,7 +184,7 @@ public class MultiButtonField<E> extends AbstractField<E>
 
     @SuppressWarnings("unchecked")
     @Override
-    public E[] getValues()
+    public Collection<E> getValues()
     {
         ArrayList<E> values = new ArrayList<E>(this.values.length);
         for(int i = 0; i < buttons.length; ++i)
@@ -194,7 +194,7 @@ public class MultiButtonField<E> extends AbstractField<E>
                 values.add((E)buttons[i].getData());
             }
         }
-        return values.toArray((E[])Array.newInstance(this.values[0].getClass(), values.size()));
+        return values;
     }
 
     @Override
@@ -222,10 +222,13 @@ public class MultiButtonField<E> extends AbstractField<E>
         return oldValue;
     }
 
+    /**
+     * Updates the values for the existing buttons
+     */
     @SuppressWarnings("unchecked")
-    public E[] setValues(E[] values, boolean doNotifyObservers)
+    public Collection<E> setValues(Collection<E> values, boolean doNotifyObservers)
     {
-        E[] oldValues = getValues();
+        Collection<E> oldValues = getValues();
         Button b;
         E value;
         boolean selection;
@@ -234,9 +237,9 @@ public class MultiButtonField<E> extends AbstractField<E>
             b = buttons[i];
             value = (E)b.getData();
             selection = false;
-            for(int j = 0; j < values.length; ++j)
+            for(E e : values)
             {
-                if(value.equals(values[j]))
+                if(value.equals(e))
                 {
                     selection = true;
                     break;
@@ -254,6 +257,13 @@ public class MultiButtonField<E> extends AbstractField<E>
         {
             b.setEnabled(enabled);
         }
+        buttonBar.setEnabled(enabled);
+    }
+
+    @Override
+    public boolean getEnabled()
+    {
+        return buttonBar.getEnabled();
     }
 
     @Override

@@ -78,6 +78,12 @@ public class LabelField extends AbstractField<String>
     }
 
     @Override
+    public boolean getEnabled()
+    {
+        return true;
+    }
+
+    @Override
     public String getValue()
     {
         return labelText;
@@ -114,5 +120,15 @@ public class LabelField extends AbstractField<String>
         {
             ((GridData)label.getLayoutData()).widthHint = this.widthHint;
         }
+    }
+
+    /**
+     * Sets a layout data to this label field.
+     * 
+     * @param layoutData
+     */
+    public void setLayoutData(GridData layoutData)
+    {
+        label.setLayoutData(layoutData);
     }
 }

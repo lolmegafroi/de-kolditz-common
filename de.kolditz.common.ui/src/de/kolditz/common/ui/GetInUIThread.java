@@ -51,17 +51,6 @@ public abstract class GetInUIThread<E> implements Runnable
         {
             value = text.getText();
         }
-
-        /**
-         * Blocking call.
-         * 
-         * @return the {@link Text}'s text.
-         */
-        public String get()
-        {
-            get(text.getDisplay());
-            return value;
-        }
     }
 
     /**
@@ -87,22 +76,17 @@ public abstract class GetInUIThread<E> implements Runnable
         {
             value = Boolean.valueOf(button.getSelection());
         }
-
-        /**
-         * Blocking call.
-         * 
-         * @return the {@link Button}'s text.
-         */
-        public Boolean get()
-        {
-            get(button.getDisplay());
-            return value;
-        }
     }
 
+    protected Logger log = Logger.getLogger(getClass().getSimpleName());
     protected E value;
 
-    protected Logger log = Logger.getLogger(getClass().getSimpleName());
+    /**
+     * Subclasses must implement this method which is run in the UI thread. Set the {@link #value} variable to the
+     * value which shall be returned.
+     */
+    @Override
+    public abstract void run();
 
     /**
      * Retrieves the value for this abstract runner. This call is blocking.
@@ -110,17 +94,17 @@ public abstract class GetInUIThread<E> implements Runnable
      * @param display
      *            The {@link Display}.
      */
-    protected void get(Display display)
+    public E get(Display display)
     {
         if(display == null)
         {
             log.trace("display is null");
-            return;
+            return null;
         }
         else if(display.isDisposed())
         {
             log.trace("display is disposed");
-            return;
+            return null;
         }
         else if(display.getThread() == Thread.currentThread())
         {
@@ -132,5 +116,6 @@ public abstract class GetInUIThread<E> implements Runnable
             log.trace("running sync");
             display.syncExec(this);
         }
+        return value;
     }
 }

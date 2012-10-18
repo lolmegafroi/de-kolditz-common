@@ -100,11 +100,17 @@ public class BooleanField extends AbstractField<Boolean>
         button.setEnabled(enabled);
     }
 
+    @Override
+    public boolean getEnabled()
+    {
+        return button.getEnabled();
+    }
+
     @MultiThreaded
     @Override
     public Boolean getValue()
     {
-        return getter.get();
+        return getter.get(button.getDisplay());
     }
 
     @MultiThreaded

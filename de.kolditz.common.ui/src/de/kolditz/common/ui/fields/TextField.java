@@ -63,7 +63,7 @@ public class TextField extends AbstractField<String> implements FocusListener
      * @param parent
      *            parent Composite
      * @param style
-     *            this field's style
+     *            the text field's style
      * @param label
      *            label text
      * @param null_hint
@@ -87,7 +87,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     protected void create()
     {
         label = new Label(getComposite(), SWT.NONE);
-        text = new Text(getComposite(), SWT.BORDER);
+        text = new Text(getComposite(), style);
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
@@ -181,7 +181,7 @@ public class TextField extends AbstractField<String> implements FocusListener
      */
     public String getValue()
     {
-        String str = getter.get();
+        String str = getter.get(text.getDisplay());
         if(str.equals(null_hint))
         {
             return null;
@@ -192,8 +192,13 @@ public class TextField extends AbstractField<String> implements FocusListener
     @Override
     public void setEnabled(boolean enabled)
     {
-        if(text != null && !text.isDisposed()) text.setEnabled(enabled);
-        if(label != null && !label.isDisposed()) label.setEnabled(enabled);
+        text.setEnabled(enabled);
+    }
+
+    @Override
+    public boolean getEnabled()
+    {
+        return text.getEnabled();
     }
 
     @Override

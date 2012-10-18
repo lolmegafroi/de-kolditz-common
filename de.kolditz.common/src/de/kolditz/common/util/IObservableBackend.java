@@ -10,6 +10,7 @@
  *******************************************************************************/
 package de.kolditz.common.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,6 +63,34 @@ public class IObservableBackend<E> implements IObservable<E>
     }
 
     /**
+     * Updates all registered {@link IObserver}s.
+     * 
+     * @param data
+     *            the application-specific data object
+     */
+    public void update(E[] data)
+    {
+        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        {
+            e.getKey().update(frontEnd, data);
+        }
+    }
+
+    /**
+     * Updates all registered {@link IObserver}s.
+     * 
+     * @param data
+     *            the application-specific data object
+     */
+    public void update(Collection<E> data)
+    {
+        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        {
+            e.getKey().update(frontEnd, data);
+        }
+    }
+
+    /**
      * Updates all registered {@link IObserver}s except the one given.
      * 
      * @param data
@@ -70,6 +99,52 @@ public class IObservableBackend<E> implements IObservable<E>
      *            the observer which shall not be updated. may be null
      */
     public void update(E data, IObserver<E> notToNotify)
+    {
+        if(notToNotify == null)
+        {
+            update(data);
+        }
+        else
+        {
+            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            {
+                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
+            }
+        }
+    }
+
+    /**
+     * Updates all registered {@link IObserver}s except the one given.
+     * 
+     * @param data
+     *            the application-specific data object
+     * @param notToNotify
+     *            the observer which shall not be updated. may be null
+     */
+    public void update(E[] data, IObserver<E> notToNotify)
+    {
+        if(notToNotify == null)
+        {
+            update(data);
+        }
+        else
+        {
+            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            {
+                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
+            }
+        }
+    }
+
+    /**
+     * Updates all registered {@link IObserver}s except the one given.
+     * 
+     * @param data
+     *            the application-specific data object
+     * @param notToNotify
+     *            the observer which shall not be updated. may be null
+     */
+    public void update(Collection<E> data, IObserver<E> notToNotify)
     {
         if(notToNotify == null)
         {

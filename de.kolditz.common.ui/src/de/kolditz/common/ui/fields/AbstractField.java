@@ -10,7 +10,8 @@
  *******************************************************************************/
 package de.kolditz.common.ui.fields;
 
-import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Composite;
 
@@ -97,6 +98,16 @@ public abstract class AbstractField<E> implements IObservable<E>
         observableBackEnd.update(value);
     }
 
+    protected void notifyObservers(E[] values)
+    {
+        observableBackEnd.update(values);
+    }
+
+    protected void notifyObservers(Collection<E> values)
+    {
+        observableBackEnd.update(values);
+    }
+
     /**
      * Needed to create the generic backend. Client code should look like
      * 
@@ -152,7 +163,11 @@ public abstract class AbstractField<E> implements IObservable<E>
 
     public abstract void setEnabled(boolean enabled);
 
+    public abstract boolean getEnabled();
+
     /**
+     * Returns a single value for this field. This may of course be <code>null</code>.
+     * 
      * @return this AbstractField's value
      */
     @MultiThreaded
@@ -161,13 +176,12 @@ public abstract class AbstractField<E> implements IObservable<E>
     /**
      * @return an Array of values, for when multiple values are possible
      */
-    @SuppressWarnings("unchecked")
     @MultiThreaded
-    public E[] getValues()
+    public Collection<E> getValues()
     {
         E value = getValue();
-        E[] result = (E[])Array.newInstance(value.getClass(), 1);
-        result[0] = value;
+        Collection<E> result = new LinkedList<E>();
+        result.add(value);
         return result;
     }
 
@@ -208,16 +222,16 @@ public abstract class AbstractField<E> implements IObservable<E>
      * @return this AbstractField's old values
      */
     @MultiThreaded
-    public E[] setValues(E[] values, boolean doNotifyObservers)
+    public Collection<E> setValues(Collection<E> values, boolean doNotifyObservers)
     {
-        E[] oldValues = getValues();
-        if(values == null || values.length == 0)
+        Collection<E> oldValues = getValues();
+        if(values == null || values.size() == 0)
         {
             setValue(null);
         }
         else
         {
-            setValue(values[0]);
+            setValue(values.iterator().next());
         }
         return oldValues;
     }

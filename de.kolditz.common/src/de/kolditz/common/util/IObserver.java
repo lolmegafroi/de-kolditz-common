@@ -10,6 +10,8 @@
  *******************************************************************************/
 package de.kolditz.common.util;
 
+import java.util.Collection;
+
 /**
  * An interface for objects that want to observer other objects, being {@link #update(IObservable, Object)}d upon
  * changes in the {@link IObservable}
@@ -28,4 +30,26 @@ public interface IObserver<E>
      *            application-specific data. Clients should override this javadoc to give more detailed information.
      */
     void update(IObservable<E> source, E data);
+
+    /**
+     * Notifies observing {@link IObservable}s upon important state changes. The actual semantics are
+     * application-specific.
+     * 
+     * @param source
+     *            the {@link IObservable} that notifies the observer
+     * @param data
+     *            application-specific data. Clients should override this javadoc to give more detailed information.
+     */
+    void update(IObservable<E> source, E[] data);
+
+    /**
+     * Notifies observing {@link IObservable}s upon important state changes. The actual semantics are
+     * application-specific.
+     * 
+     * @param source
+     *            the {@link IObservable} that notifies the observer
+     * @param data
+     *            application-specific data. Clients should override this javadoc to give more detailed information.
+     */
+    void update(IObservable<E> source, Collection<E> data);
 }

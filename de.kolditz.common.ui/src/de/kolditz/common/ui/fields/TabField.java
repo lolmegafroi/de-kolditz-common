@@ -181,6 +181,13 @@ public class TabField<K> extends AbstractField<K>
     @Override
     public void setEnabled(boolean enabled)
     {
+        folder.setEnabled(enabled);
+    }
+
+    @Override
+    public boolean getEnabled()
+    {
+        return folder.getEnabled();
     }
 
     @Override

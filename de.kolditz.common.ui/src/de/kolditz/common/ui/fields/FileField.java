@@ -12,6 +12,7 @@ package de.kolditz.common.ui.fields;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -70,7 +71,7 @@ public class FileField extends TextField
      */
     public FileField(FieldComposite parent, int style, String label)
     {
-        this(parent, style, label, ""); //$NON-NLS-1$
+        this(parent, style | SWT.BORDER, label, ""); //$NON-NLS-1$
     }
 
     /**
@@ -89,7 +90,7 @@ public class FileField extends TextField
      */
     public FileField(FieldComposite parent, int style, String label, String null_hint)
     {
-        super(parent, style, label, null_hint);
+        super(parent, style | SWT.BORDER, label, null_hint);
         setFilter(null, null, -1);
     }
 
@@ -406,7 +407,7 @@ public class FileField extends TextField
      * TODO multi-file selection support
      */
     @Override
-    public String[] getValues()
+    public Collection<String> getValues()
     {
         throw new UnsupportedOperationException();
     }
