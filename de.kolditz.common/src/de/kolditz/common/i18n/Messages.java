@@ -72,7 +72,7 @@ public class Messages
      */
     public void setLocale(String baseName, Locale locale)
     {
-        synchronized(lock)
+        synchronized (lock)
         {
             ResourceBundle newRB = ResourceBundle.getBundle(baseName, locale);
             bundle = newRB;
@@ -108,7 +108,7 @@ public class Messages
         {
             return bundle.getString(key);
         }
-        catch(final MissingResourceException e)
+        catch (final MissingResourceException e)
         {
             logger.log(Level.WARN, e.getMessage(), e);
             return key;
@@ -131,7 +131,7 @@ public class Messages
         {
             return bundle.getString(key);
         }
-        catch(final MissingResourceException e)
+        catch (final MissingResourceException e)
         {
             return def;
         }
@@ -189,7 +189,7 @@ public class Messages
         final String value = this.getString(key);
         final StringTokenizer tokenizer = new StringTokenizer(value, delim);
         final List<String> list = new ArrayList<String>();
-        while(tokenizer.hasMoreElements())
+        while (tokenizer.hasMoreElements())
         {
             list.add(tokenizer.nextToken());
         }
@@ -198,9 +198,9 @@ public class Messages
 
     private void notifyResourceBundleUpdatedListeners()
     {
-        for(Object o : resourceBundleUpdatedListeners.getListeners())
+        for (Object o : resourceBundleUpdatedListeners.getListeners())
         {
-            ((ResourceBundleUpdatedListener)o).resourceBundleUpdated();
+            ((ResourceBundleUpdatedListener) o).resourceBundleUpdated();
         }
     }
 

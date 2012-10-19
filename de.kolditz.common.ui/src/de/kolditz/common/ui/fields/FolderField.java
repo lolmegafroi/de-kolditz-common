@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import de.kolditz.common.util.SystemProperties;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class FolderField extends FileField
@@ -54,14 +53,14 @@ public class FolderField extends FileField
     @Override
     protected void widgetSelected(SelectionEvent e)
     {
-        if(e.widget == btnSet)
+        if (e.widget == btnSet)
         {
             DirectoryDialog dd = new DirectoryDialog(text.getShell());
             String str = text.getText();
             dd.setMessage(null_hint);
             dd.setFilterPath(str.equals(null_hint) ? SystemProperties.USER_DIR : str);
             String target = dd.open();
-            if(target != null)
+            if (target != null)
             {
                 text.setText(target);
                 notifyObservers(target);

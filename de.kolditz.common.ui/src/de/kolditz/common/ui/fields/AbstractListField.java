@@ -23,11 +23,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * The abstract list field. Implementors MUST call the super methods! Implementors may use the field {@link #listControl}
- * for accessing the actual list control. This base implementation assumes that only one additional control is created,
- * next to the label. Subclasses which create more widgets should override {@link #getColumnsRequired()} and
- * {@link #setColumns(int)}.
- *
+ * The abstract list field. Implementors MUST call the super methods! Implementors may use the field
+ * {@link #listControl} for accessing the actual list control. This base implementation assumes that only one additional
+ * control is created, next to the label. Subclasses which create more widgets should override
+ * {@link #getColumnsRequired()} and {@link #setColumns(int)}.
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public abstract class AbstractListField<E, C extends Control> extends AbstractField<E>
@@ -38,19 +38,24 @@ public abstract class AbstractListField<E, C extends Control> extends AbstractFi
     protected ILabelProvider labelProvider;
 
     /**
-     * 
-     * @param parent the parent FieldComposite
-     * @param listStyle depends on the actual list type
-     * @param labelText the label's text
-     * @param items the items to display
-     * @param labelProvider a label provider, may be null (then a default one will be used)
+     * @param parent
+     *            the parent FieldComposite
+     * @param listStyle
+     *            depends on the actual list type
+     * @param labelText
+     *            the label's text
+     * @param items
+     *            the items to display
+     * @param labelProvider
+     *            a label provider, may be null (then a default one will be used)
      */
     public AbstractListField(FieldComposite parent, int listStyle, String labelText, ILabelProvider labelProvider,
             Collection<E> items)
     {
         super(parent, listStyle, labelText);
         backingList = new ArrayList<E>();
-        if(items != null) backingList.addAll(items);
+        if (items != null)
+            backingList.addAll(items);
         this.labelProvider = labelProvider != null ? labelProvider : new LabelProvider();
 
         create();
@@ -76,7 +81,7 @@ public abstract class AbstractListField<E, C extends Control> extends AbstractFi
         label.setText(labelText);
         String[] items = new String[backingList.size()];
         int i = 0;
-        for(E item : backingList)
+        for (E item : backingList)
         {
             items[i++] = labelProvider.getText(item);
         }
@@ -91,7 +96,7 @@ public abstract class AbstractListField<E, C extends Control> extends AbstractFi
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData)listControl.getLayoutData()).horizontalSpan = columns - 1;
+        ((GridData) listControl.getLayoutData()).horizontalSpan = columns - 1;
     }
 
     @Override
@@ -125,17 +130,18 @@ public abstract class AbstractListField<E, C extends Control> extends AbstractFi
     public void setItems(Collection<E> items)
     {
         backingList.clear();
-        if(items != null) backingList.addAll(items);
+        if (items != null)
+            backingList.addAll(items);
         updateList();
     }
 
     public void setItems(E[] items)
     {
         backingList.clear();
-        if(items != null && items.length > 0)
+        if (items != null && items.length > 0)
         {
             backingList.ensureCapacity(items.length);
-            for(E e : items)
+            for (E e : items)
                 backingList.add(e);
         }
         updateList();

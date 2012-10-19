@@ -36,7 +36,8 @@ public class TextStream extends OutputStream
         @Override
         public void run()
         {
-            if(!text.isDisposed()) text.setText(sb.toString());
+            if (!text.isDisposed())
+                text.setText(sb.toString());
         }
     };
 
@@ -48,7 +49,7 @@ public class TextStream extends OutputStream
         PrintStream p = new PrintStream(this, true);
         out = System.out;
         err = System.err;
-        if(overtakeSystemStreams)
+        if (overtakeSystemStreams)
         {
             System.setOut(p);
             System.setErr(p);
@@ -57,10 +58,10 @@ public class TextStream extends OutputStream
 
     public void write(int b)
     {
-        synchronized(sb)
+        synchronized (sb)
         {
-            sb.append((char)b);
-            if(wasLastErrorOutput)
+            sb.append((char) b);
+            if (wasLastErrorOutput)
             {
                 err.write(b);
                 wasLastErrorOutput = false;
@@ -81,7 +82,7 @@ public class TextStream extends OutputStream
     @Override
     public void flush() throws IOException
     {
-        synchronized(sb)
+        synchronized (sb)
         {
             update();
             out.flush();
@@ -91,14 +92,15 @@ public class TextStream extends OutputStream
 
     public void write(String string)
     {
-        synchronized(sb)
+        synchronized (sb)
         {
             StringBuilder sb2 = new StringBuilder();
-            if(!string.equals(NL)) sb2.append(String.format("%4d | ", Integer.valueOf(++messageNum)));
+            if (!string.equals(NL))
+                sb2.append(String.format("%4d | ", Integer.valueOf(++messageNum)));
             sb2.append(string);
             sb.append(sb2);
             update();
-            if(string.contains("Exception") || wasLastErrorOutput)
+            if (string.contains("Exception") || wasLastErrorOutput)
             {
                 err.print(sb2.toString());
                 wasLastErrorOutput = !wasLastErrorOutput;
@@ -112,14 +114,15 @@ public class TextStream extends OutputStream
 
     public void writeln(String string)
     {
-        synchronized(sb)
+        synchronized (sb)
         {
             StringBuilder sb2 = new StringBuilder();
-            if(!string.equals(NL)) sb2.append(String.format("%4d | ", Integer.valueOf(++messageNum)));
+            if (!string.equals(NL))
+                sb2.append(String.format("%4d | ", Integer.valueOf(++messageNum)));
             sb2.append(string).append(NL);
             sb.append(sb2);
             update();
-            if(string.contains("Exception") || wasLastErrorOutput)
+            if (string.contains("Exception") || wasLastErrorOutput)
             {
                 err.print(sb2.toString());
                 wasLastErrorOutput = !wasLastErrorOutput;
@@ -133,7 +136,7 @@ public class TextStream extends OutputStream
 
     private void update()
     {
-        if(text.isDisposed())
+        if (text.isDisposed())
         {
             return;
         }

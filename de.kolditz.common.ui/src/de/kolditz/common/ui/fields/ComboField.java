@@ -21,17 +21,21 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 
 /**
- *
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class ComboField<E> extends AbstractListField<E, Combo>
 {
     /**
-     * @param parent the parent FieldComposite
-     * @param comboStyle {@link SWT#DROP_DOWN}, {@link SWT#READ_ONLY}, {@link SWT#SIMPLE}
-     * @param labelText the label's text
-     * @param items the items to display
-     * @param labelProvider a label provider, may be null (then a default one will be used)
+     * @param parent
+     *            the parent FieldComposite
+     * @param comboStyle
+     *            {@link SWT#DROP_DOWN}, {@link SWT#READ_ONLY}, {@link SWT#SIMPLE}
+     * @param labelText
+     *            the label's text
+     * @param items
+     *            the items to display
+     * @param labelProvider
+     *            a label provider, may be null (then a default one will be used)
      */
     public ComboField(FieldComposite parent, int comboStyle, String labelText, Collection<E> items,
             ILabelProvider labelProvider)
@@ -75,11 +79,12 @@ public class ComboField<E> extends AbstractListField<E, Combo>
     public E setValue(E value, boolean doNotifyObservers)
     {
         E old = getValue();
-        if(value != null)
+        if (value != null)
         {
-            for(int idx = 0; idx < backingList.size(); ++idx)
+            for (int idx = 0; idx < backingList.size(); ++idx)
             {
-                if(backingList.get(idx).equals(value)) listControl.select(idx);
+                if (backingList.get(idx).equals(value))
+                    listControl.select(idx);
             }
         }
         else
@@ -94,7 +99,7 @@ public class ComboField<E> extends AbstractListField<E, Combo>
     {
         String[] items = new String[backingList.size()];
         int i = 0;
-        for(E e : backingList)
+        for (E e : backingList)
         {
             items[i] = labelProvider.getText(e);
         }

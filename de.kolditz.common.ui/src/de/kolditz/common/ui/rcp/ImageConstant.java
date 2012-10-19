@@ -22,14 +22,14 @@ import java.lang.annotation.Target;
  * When using RefType REMOTE_PLUGIN you must assign the plugin's name to {@link #remotePlugin()}.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
- * 
  * @see RefType
  */
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ImageConstant {
-    public static final String SEPERATOR = "/"; //$NON-NLS-1$
+public @interface ImageConstant
+{
+    public static final String SEPERATOR = "/";                //$NON-NLS-1$
     public static final String PLATFORM_PLUGIN_PATH = "platform:/plugin/"; //$NON-NLS-1$
 
     /**
@@ -55,7 +55,8 @@ public @interface ImageConstant {
      * 
      * @author Till Kolditz - Till.Kolditz@gmail.com
      */
-    public enum RefType {
+    public enum RefType
+    {
         /**
          * The annotated string denotes a plugin's local path. No assumptions are made.
          */

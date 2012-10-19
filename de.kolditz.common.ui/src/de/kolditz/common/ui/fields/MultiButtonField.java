@@ -89,7 +89,7 @@ public class MultiButtonField<E> extends AbstractField<E>
     protected void create()
     {
         Composite buttonComp;
-        if(asGroup)
+        if (asGroup)
         {
             group = new Group(getComposite(), groupStyle);
             group.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
@@ -105,7 +105,7 @@ public class MultiButtonField<E> extends AbstractField<E>
         buttonBar.setLayoutData(new GridData(SWT.LEAD, SWT.CENTER, false, false));
         Button b;
         buttons = new Button[values.length];
-        for(int i = 0; i < values.length; ++i)
+        for (int i = 0; i < values.length; ++i)
         {
             b = buttonBar.createButton(i, "", false, buttonStyle);
             b.setData(values[i]);
@@ -122,22 +122,22 @@ public class MultiButtonField<E> extends AbstractField<E>
     @Override
     protected void setColumns(int columns)
     {
-        if(asGroup)
+        if (asGroup)
         {
-            ((GridData)group.getLayoutData()).horizontalSpan = columns;
+            ((GridData) group.getLayoutData()).horizontalSpan = columns;
         }
         else
         {
-            ((GridData)buttonBar.getLayoutData()).horizontalSpan = columns - 1;
+            ((GridData) buttonBar.getLayoutData()).horizontalSpan = columns - 1;
         }
     }
 
     @Override
     protected void setLabels()
     {
-        if(labelText != null)
+        if (labelText != null)
         {
-            if(asGroup)
+            if (asGroup)
             {
                 group.setText(labelText);
             }
@@ -146,7 +146,7 @@ public class MultiButtonField<E> extends AbstractField<E>
                 label.setText(labelText);
             }
         }
-        for(int i = 0; i < values.length; ++i)
+        for (int i = 0; i < values.length; ++i)
         {
             buttons[i].setText(labels[i]);
         }
@@ -155,7 +155,7 @@ public class MultiButtonField<E> extends AbstractField<E>
     @Override
     protected void addListeners()
     {
-        for(int i = 0; i < values.length; ++i)
+        for (int i = 0; i < values.length; ++i)
         {
             buttons[i].addSelectionListener(new SelectionAdapter()
             {
@@ -163,7 +163,7 @@ public class MultiButtonField<E> extends AbstractField<E>
                 @Override
                 public void widgetSelected(SelectionEvent e)
                 {
-                    notifyObservers((E)((Button)e.widget).getData());
+                    notifyObservers((E) ((Button) e.widget).getData());
                 }
             });
         }
@@ -172,9 +172,9 @@ public class MultiButtonField<E> extends AbstractField<E>
     @Override
     public E getValue()
     {
-        for(int i = 0; i < values.length; ++i)
+        for (int i = 0; i < values.length; ++i)
         {
-            if(buttons[i].getSelection())
+            if (buttons[i].getSelection())
             {
                 return values[i];
             }
@@ -187,11 +187,11 @@ public class MultiButtonField<E> extends AbstractField<E>
     public Collection<E> getValues()
     {
         ArrayList<E> values = new ArrayList<E>(this.values.length);
-        for(int i = 0; i < buttons.length; ++i)
+        for (int i = 0; i < buttons.length; ++i)
         {
-            if(buttons[i].getSelection())
+            if (buttons[i].getSelection())
             {
-                values.add((E)buttons[i].getData());
+                values.add((E) buttons[i].getData());
             }
         }
         return values;
@@ -201,21 +201,21 @@ public class MultiButtonField<E> extends AbstractField<E>
     public E setValue(E value, boolean doNotifyObservers)
     {
         E oldValue = getValue();
-        if(value == null)
+        if (value == null)
         {
-            for(int i = 0; i < values.length; ++i)
+            for (int i = 0; i < values.length; ++i)
             {
                 buttons[i].setSelection(false);
             }
         }
         else
         {
-            for(int i = 0; i < values.length; ++i)
+            for (int i = 0; i < values.length; ++i)
             {
                 buttons[i].setSelection(values[i].equals(value));
             }
         }
-        if(doNotifyObservers)
+        if (doNotifyObservers)
         {
             notifyObservers(value);
         }
@@ -232,14 +232,14 @@ public class MultiButtonField<E> extends AbstractField<E>
         Button b;
         E value;
         boolean selection;
-        for(int i = 0; i < buttons.length; ++i)
+        for (int i = 0; i < buttons.length; ++i)
         {
             b = buttons[i];
-            value = (E)b.getData();
+            value = (E) b.getData();
             selection = false;
-            for(E e : values)
+            for (E e : values)
             {
-                if(value.equals(e))
+                if (value.equals(e))
                 {
                     selection = true;
                     break;
@@ -253,7 +253,7 @@ public class MultiButtonField<E> extends AbstractField<E>
     @Override
     public void setEnabled(boolean enabled)
     {
-        for(Button b : buttons)
+        for (Button b : buttons)
         {
             b.setEnabled(enabled);
         }

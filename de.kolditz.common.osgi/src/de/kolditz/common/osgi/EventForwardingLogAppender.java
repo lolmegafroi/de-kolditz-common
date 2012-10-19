@@ -25,7 +25,6 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 
 /**
- *
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class EventForwardingLogAppender extends LogEventForwarder implements Appender
@@ -35,7 +34,8 @@ public class EventForwardingLogAppender extends LogEventForwarder implements App
     /**
      * Async log event forwarding.
      * 
-     * @param eventAdmin the EventAdmin
+     * @param eventAdmin
+     *            the EventAdmin
      */
     public EventForwardingLogAppender(EventAdmin eventAdmin)
     {
@@ -43,9 +43,10 @@ public class EventForwardingLogAppender extends LogEventForwarder implements App
     }
 
     /**
-     * 
-     * @param eventAdmin the EventAdmin
-     * @param async whether or not to forward log events async
+     * @param eventAdmin
+     *            the EventAdmin
+     * @param async
+     *            whether or not to forward log events async
      */
     public EventForwardingLogAppender(EventAdmin eventAdmin, boolean async)
     {
@@ -82,7 +83,7 @@ public class EventForwardingLogAppender extends LogEventForwarder implements App
     @Override
     public void doAppend(LoggingEvent event)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(ATTR_BUNDLE_SYMBOLICNAME, event.getLoggerName());
@@ -90,14 +91,14 @@ public class EventForwardingLogAppender extends LogEventForwarder implements App
             map.put(ATTR_LEVEL_TYPE, ATTR_LEVEL_TYPE_LOG4J);
             map.put(ATTR_MESSAGE, event.getMessage());
             ThrowableInformation ti = event.getThrowableInformation();
-            if(ti != null)
+            if (ti != null)
             {
                 Throwable t = ti.getThrowable();
                 t.getStackTrace();
                 map.put(ATTR_EXCEPTION, t);
             }
             Event actualEvent = new Event(TOPIC, map);
-            if(asyncLogging)
+            if (asyncLogging)
                 eventAdmin.postEvent(actualEvent);
             else
                 eventAdmin.sendEvent(actualEvent);

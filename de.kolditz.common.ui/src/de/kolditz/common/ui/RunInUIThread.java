@@ -64,31 +64,32 @@ public abstract class RunInUIThread implements Runnable
     public void run(Display display, boolean async)
     {
         Display d = display;
-        if(d == null)
+        if (d == null)
         {
             log.trace("display is null");
             d = Display.getDefault();
         }
-        if(d.isDisposed())
+        if (d.isDisposed())
         {
             log.debug("display is disposed - aborting");
             return;
         }
-        if(d.getThread() == Thread.currentThread())
+        if (d.getThread() == Thread.currentThread())
         {
             log.trace("running in UI thread");
             inUIThread();
         }
-        else if(async)
-        {
-            log.trace("running async");
-            d.asyncExec(this);
-        }
         else
-        {
-            log.trace("running sync");
-            d.syncExec(this);
-        }
+            if (async)
+            {
+                log.trace("running async");
+                d.asyncExec(this);
+            }
+            else
+            {
+                log.trace("running sync");
+                d.syncExec(this);
+            }
     }
 
     /**

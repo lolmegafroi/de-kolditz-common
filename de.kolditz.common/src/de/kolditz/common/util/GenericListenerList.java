@@ -15,12 +15,11 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
- * The code is copied from {@link org.eclipse.core.runtime.ListenerList} using generics...
- * 
- * This class is a thread safe list that is designed for storing lists of listeners. The implementation is optimized for
- * minimal memory footprint, frequent reads and infrequent writes. Modification of the list is synchronized and
- * relatively expensive, while accessing the listeners is very fast. Readers are given access to the underlying array
- * data structure for reading, with the trust that they will not modify the underlying array.
+ * The code is copied from {@link org.eclipse.core.runtime.ListenerList} using generics... This class is a thread safe
+ * list that is designed for storing lists of listeners. The implementation is optimized for minimal memory footprint,
+ * frequent reads and infrequent writes. Modification of the list is synchronized and relatively expensive, while
+ * accessing the listeners is very fast. Readers are given access to the underlying array data structure for reading,
+ * with the trust that they will not modify the underlying array.
  * <p>
  * <a name="same">A listener list handles the <i>same</i> listener being added multiple times, and tolerates removal of
  * listeners that are the same as other listeners in the list. For this purpose, listeners can be compared with each
@@ -32,7 +31,8 @@ import java.util.Arrays;
  * 
  * <pre>
  * Object[] listeners = myListenerList.getListeners();
- * for (int i = 0; i &lt; listeners.length; ++i) {
+ * for (int i = 0; i &lt; listeners.length; ++i)
+ * {
  *     ((FooListener) listeners[i]).eventHappened(event);
  * }
  * </pre>
@@ -92,9 +92,10 @@ public class GenericListenerList<ListenerType>
     @SuppressWarnings("unchecked")
     public GenericListenerList(Class<ListenerType> clazz, int mode)
     {
-        EmptyArray = (ListenerType[])Array.newInstance(clazz, 0);
+        EmptyArray = (ListenerType[]) Array.newInstance(clazz, 0);
         listeners = EmptyArray;
-        if(mode != EQUALITY && mode != IDENTITY) throw new IllegalArgumentException();
+        if (mode != EQUALITY && mode != IDENTITY)
+            throw new IllegalArgumentException();
         this.identity = mode == IDENTITY;
     }
 
@@ -109,13 +110,15 @@ public class GenericListenerList<ListenerType>
     {
         // This method is synchronized to protect against multiple threads adding
         // or removing listeners concurrently. This does not block concurrent readers.
-        if(listener == null) throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
+        if (listener == null)
+            throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
         // check for duplicates
         final int oldSize = listeners.length;
-        for(int i = 0; i < oldSize; ++i)
+        for (int i = 0; i < oldSize; ++i)
         {
             Object listener2 = listeners[i];
-            if(identity ? listener == listener2 : listener.equals(listener2)) return;
+            if (identity ? listener == listener2 : listener.equals(listener2))
+                return;
         }
         // Thread safety: create new array to avoid affecting concurrent readers
         // atomic assignment
@@ -159,14 +162,15 @@ public class GenericListenerList<ListenerType>
     {
         // This method is synchronized to protect against multiple threads adding
         // or removing listeners concurrently. This does not block concurrent readers.
-        if(listener == null) throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
+        if (listener == null)
+            throw new IllegalArgumentException("listener == null"); //$NON-NLS-1$
         int oldSize = listeners.length;
-        for(int i = 0; i < oldSize; ++i)
+        for (int i = 0; i < oldSize; ++i)
         {
             Object listener2 = listeners[i];
-            if(identity ? listener == listener2 : listener.equals(listener2))
+            if (identity ? listener == listener2 : listener.equals(listener2))
             {
-                if(oldSize == 1)
+                if (oldSize == 1)
                 {
                     listeners = EmptyArray;
                 }

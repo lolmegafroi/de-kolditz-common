@@ -26,7 +26,7 @@ import de.kolditz.common.ui.SetInUIThread;
 
 /**
  * A list field. Clients may choose between {@link SWT#SINGLE single} and {@link SWT#MULTI multi} selection.
- *
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class ListField<E> extends AbstractListField<E, List>
@@ -37,9 +37,9 @@ public class ListField<E> extends AbstractListField<E, List>
         @Override
         public void run()
         {
-            if(value != null)
+            if (value != null)
             {
-                listControl.setSelection(new String[] {labelProvider.getText(value)});
+                listControl.setSelection(new String[] { labelProvider.getText(value) });
             }
             else
             {
@@ -52,12 +52,12 @@ public class ListField<E> extends AbstractListField<E, List>
         @Override
         public void run()
         {
-            if(value != null && value.size() == 0)
+            if (value != null && value.size() == 0)
             {
                 int size = value.size();
                 String[] strings = new String[size];
                 int i = 0;
-                for(E e : value)
+                for (E e : value)
                 {
                     strings[i++] = labelProvider.getText(e);
                 }
@@ -75,7 +75,7 @@ public class ListField<E> extends AbstractListField<E, List>
         public void run()
         {
             int idx = listControl.getSelectionIndex();
-            if(((style & SWT.MULTI) == 0 || listControl.getSelectionCount() == 1) && idx >= 0)
+            if (((style & SWT.MULTI) == 0 || listControl.getSelectionCount() == 1) && idx >= 0)
             {
                 value = backingList.get(idx);
             }
@@ -93,18 +93,22 @@ public class ListField<E> extends AbstractListField<E, List>
             int count = listControl.getSelectionCount();
             value = new ArrayList<E>(count);
             int[] indices = listControl.getSelectionIndices();
-            for(int i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
                 value.add(backingList.get(indices[i]));
         }
     };
 
     /**
-     * 
-     * @param parent the parent FieldComposite
-     * @param listStyle only one of {@link SWT#SINGLE} and {@link SWT#MULTI} may be specified
-     * @param labelText the label's text
-     * @param items the items to display
-     * @param labelProvider a label provider, may be null (then a default one will be used)
+     * @param parent
+     *            the parent FieldComposite
+     * @param listStyle
+     *            only one of {@link SWT#SINGLE} and {@link SWT#MULTI} may be specified
+     * @param labelText
+     *            the label's text
+     * @param items
+     *            the items to display
+     * @param labelProvider
+     *            a label provider, may be null (then a default one will be used)
      */
     public ListField(FieldComposite parent, int listStyle, String labelText, ILabelProvider labelProvider)
     {
@@ -112,12 +116,16 @@ public class ListField<E> extends AbstractListField<E, List>
     }
 
     /**
-     * 
-     * @param parent the parent FieldComposite
-     * @param listStyle only one of {@link SWT#SINGLE} and {@link SWT#MULTI} may be specified
-     * @param labelText the label's text
-     * @param labelProvider a label provider, may be null (then a default one will be used)
-     * @param items the items to display
+     * @param parent
+     *            the parent FieldComposite
+     * @param listStyle
+     *            only one of {@link SWT#SINGLE} and {@link SWT#MULTI} may be specified
+     * @param labelText
+     *            the label's text
+     * @param labelProvider
+     *            a label provider, may be null (then a default one will be used)
+     * @param items
+     *            the items to display
      */
     public ListField(FieldComposite parent, int listStyle, String labelText, ILabelProvider labelProvider,
             Collection<E> items)
@@ -140,7 +148,7 @@ public class ListField<E> extends AbstractListField<E, List>
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                if(singleSelection)
+                if (singleSelection)
                 {
                     notifyObservers(getValue());
                 }
@@ -180,7 +188,7 @@ public class ListField<E> extends AbstractListField<E, List>
     {
         E old = getValue();
         sSetter.setValue(listControl.getDisplay(), value, false);
-        if(doNotifyObservers)
+        if (doNotifyObservers)
         {
             notifyObservers(value);
         }
@@ -191,7 +199,7 @@ public class ListField<E> extends AbstractListField<E, List>
     {
         Collection<E> old = getValues();
         mSetter.setValue(listControl.getDisplay(), values, false);
-        if(doNotifyObservers)
+        if (doNotifyObservers)
         {
             notifyObservers(values);
         }
@@ -203,7 +211,7 @@ public class ListField<E> extends AbstractListField<E, List>
     {
         String[] items = new String[backingList.size()];
         int i = 0;
-        for(E e : backingList)
+        for (E e : backingList)
         {
             items[i++] = labelProvider.getText(e);
         }

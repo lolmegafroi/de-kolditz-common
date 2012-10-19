@@ -39,7 +39,7 @@ import de.kolditz.common.ui.i18n.I18N;
  */
 public class PortText extends AbstractControl implements IFillViewAware, IValidationControl
 {
-    private static final int MODIFY_CHECK_DELAY = 500; // in ms
+    private static final int MODIFY_CHECK_DELAY = 500;                                    // in ms
     private static final TimeUnit MOFIFY_CHECK_TU = TimeUnit.MILLISECONDS;
 
     protected Text text;
@@ -59,19 +59,20 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
                 @Override
                 public void run()
                 {
-                    if(text.isDisposed()) return;
+                    if (text.isDisposed())
+                        return;
                     try
                     {
                         int port = Integer.parseInt(text.getText());
                         portValid = port > 0 && port < 65536;
                     }
-                    catch(NumberFormatException e)
+                    catch (NumberFormatException e)
                     {
                         portValid = false;
                     }
-                    if(cd != null)
+                    if (cd != null)
                     {
-                        if(portValid)
+                        if (portValid)
                             cd.hide();
                         else
                             cd.show();
@@ -80,11 +81,11 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
                     Event e = new Event();
                     e.widget = text;
                     e.display = text.getDisplay();
-                    e.time = (int)System.currentTimeMillis();
+                    e.time = (int) System.currentTimeMillis();
                     ModifyEvent me = new ModifyEvent(e);
-                    for(Object o : modifyListeners.getListeners())
+                    for (Object o : modifyListeners.getListeners())
                     {
-                        ((ModifyListener)o).modifyText(me);
+                        ((ModifyListener) o).modifyText(me);
                     }
                 }
             });
@@ -112,19 +113,21 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
             @Override
             public void modifyText(ModifyEvent e)
             {
-                if(isFillView())
+                if (isFillView())
                 {
                     ipModifyRunner.run(null, false);
                 }
-                else if((portFuture == null) || portFuture.isCancelled() || portFuture.isDone())
-                {
-                    portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                }
                 else
-                {
-                    if(portFuture != null) portFuture.cancel(false);
-                    portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                }
+                    if ((portFuture == null) || portFuture.isCancelled() || portFuture.isDone())
+                    {
+                        portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                    }
+                    else
+                    {
+                        if (portFuture != null)
+                            portFuture.cancel(false);
+                        portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                    }
             }
         });
     }
@@ -140,7 +143,6 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
     }
 
     /**
-     * 
      * @param port
      *            a valid port
      * @throws IllegalArgumentException
@@ -163,7 +165,7 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
      */
     public void createControlDecoration(int position)
     {
-        if(cd != null)
+        if (cd != null)
         {
             cd = new ControlDecoration(text, position);
             adaptCD();
@@ -178,7 +180,7 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
      */
     public void createControlDecoration(int position, Composite drawComposite)
     {
-        if(cd != null)
+        if (cd != null)
         {
             cd = new ControlDecoration(text, position, drawComposite);
             adaptCD();

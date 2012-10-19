@@ -102,6 +102,6 @@ public class Pair<K, V> implements Entry<K, V>, Cloneable
     @Override
     public Pair<K, V> clone() throws CloneNotSupportedException
     {
-        return (Pair<K, V>)super.clone();
+        return (Pair<K, V>) super.clone();
     }
 }

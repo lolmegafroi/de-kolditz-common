@@ -58,15 +58,15 @@ public class EnterPropertyDialog extends Dialog
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        Composite dialogArea = (Composite)super.createDialogArea(parent);
+        Composite dialogArea = (Composite) super.createDialogArea(parent);
 
         new Label(dialogArea, SWT.NONE).setText("Key:"); // TODO i18n
         tfKey = new Text(parent, SWT.SINGLE | SWT.BORDER);
-        if(key != null)
+        if (key != null)
         {
             tfKey.setText(key);
         }
-        if(keyValidator != null)
+        if (keyValidator != null)
         {
             cdKey = new ControlDecoration(tfKey, SWT.TOP | SWT.LEFT, dialogArea);
             cdKey.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
@@ -78,7 +78,7 @@ public class EnterPropertyDialog extends Dialog
                 public void modifyText(ModifyEvent e)
                 {
                     String str = keyValidator.validate(tfKey.getText());
-                    if(str != null)
+                    if (str != null)
                     {
                         cdKey.setDescriptionText(str);
                         cdKey.show();
@@ -94,11 +94,11 @@ public class EnterPropertyDialog extends Dialog
 
         new Label(dialogArea, SWT.NONE).setText("Value:"); // TODO i18n
         tfValue = new Text(dialogArea, SWT.SINGLE | SWT.BORDER);
-        if(value != null)
+        if (value != null)
         {
             tfValue.setText(value);
         }
-        if(valueValidator != null)
+        if (valueValidator != null)
         {
             cdValue = new ControlDecoration(tfKey, SWT.TOP | SWT.LEFT, dialogArea);
             cdValue.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
@@ -110,7 +110,7 @@ public class EnterPropertyDialog extends Dialog
                 public void modifyText(ModifyEvent e)
                 {
                     String str = valueValidator.validate(tfValue.getText());
-                    if(str != null)
+                    if (str != null)
                     {
                         cdValue.setDescriptionText(str);
                         cdValue.show();

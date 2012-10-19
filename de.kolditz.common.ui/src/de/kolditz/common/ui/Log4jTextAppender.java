@@ -23,8 +23,8 @@ import de.kolditz.common.concurrent.MultiThreaded;
 import de.kolditz.common.util.SystemProperties;
 
 /**
- * An appender that logs to a text field. Does also handle Exceptions. Supports 2 types of patterns: {@link #SIMPLE_PATTERN}
- * and {@link #COMPLEX_PATTERN}.
+ * An appender that logs to a text field. Does also handle Exceptions. Supports 2 types of patterns:
+ * {@link #SIMPLE_PATTERN} and {@link #COMPLEX_PATTERN}.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
@@ -42,9 +42,9 @@ public class Log4jTextAppender extends AppenderSkeleton
         @Override
         public void run()
         {
-            if(tfLog != null && !tfLog.isDisposed())
+            if (tfLog != null && !tfLog.isDisposed())
             {
-                if(text != null)
+                if (text != null)
                 {
                     tfLog.append(text);
                 }
@@ -58,7 +58,7 @@ public class Log4jTextAppender extends AppenderSkeleton
 
     public static final String COMPLEX_PATTERN = "[%10r] [%t] %p %c (%C{1}:%L %M) - %m%n"; //$NON-NLS-1$
     public static final String COMPLEX_NAME = "Complex";
-    public static final String SIMPLE_PATTERN = "%-5p - %m%n"; //$NON-NLS-1$
+    public static final String SIMPLE_PATTERN = "%-5p - %m%n";                           //$NON-NLS-1$
     public static final String SIMPLE_NAME = "Simple";
 
     private final PatternLayout COMPLEX_LAYOUT = new PatternLayout(COMPLEX_PATTERN);
@@ -78,7 +78,8 @@ public class Log4jTextAppender extends AppenderSkeleton
     /**
      * Supports creating the log appender for registering log events even when the log text field is not set yet.
      * 
-     * @param tfLog may be null
+     * @param tfLog
+     *            may be null
      */
     public Log4jTextAppender(StyledText tfLog)
     {
@@ -116,14 +117,14 @@ public class Log4jTextAppender extends AppenderSkeleton
     @Override
     protected synchronized void append(LoggingEvent event)
     {
-        if(event.getThrowableInformation() == null || getLayout() == SIMPLE_LAYOUT)
+        if (event.getThrowableInformation() == null || getLayout() == SIMPLE_LAYOUT)
         {
             update(layout.format(event));
         }
         else
         {
             StringBuilder sb = new StringBuilder(layout.format(event));
-            for(String s : event.getThrowableStrRep())
+            for (String s : event.getThrowableStrRep())
             {
                 sb.append(s).append(SystemProperties.LINE_SEP);
             }
@@ -134,7 +135,7 @@ public class Log4jTextAppender extends AppenderSkeleton
     @MultiThreaded
     private void update(String text)
     {
-        if(tfLog == null || tfLog.isDisposed())
+        if (tfLog == null || tfLog.isDisposed())
         {
             return;
         }
@@ -150,7 +151,7 @@ public class Log4jTextAppender extends AppenderSkeleton
 
     private void recreate()
     {
-        if(tfLog != null && !tfLog.isDisposed())
+        if (tfLog != null && !tfLog.isDisposed())
         {
             tfLog.getDisplay().asyncExec(new Runnable()
             {
@@ -158,11 +159,11 @@ public class Log4jTextAppender extends AppenderSkeleton
                 public void run()
                 {
                     // again check if disposed as we run "async" in display thread
-                    if(tfLog != null && !tfLog.isDisposed())
+                    if (tfLog != null && !tfLog.isDisposed())
                     {
                         tfLog.setRedraw(false);
                         tfLog.setText("");
-                        for(LoggingEvent le : events)
+                        for (LoggingEvent le : events)
                         {
                             Log4jTextAppender.super.doAppend(le);
                         }
@@ -186,7 +187,7 @@ public class Log4jTextAppender extends AppenderSkeleton
      */
     public void setStyle(String name)
     {
-        if(name.equalsIgnoreCase(COMPLEX_NAME))
+        if (name.equalsIgnoreCase(COMPLEX_NAME))
         {
             setLayout(COMPLEX_LAYOUT);
         }
@@ -202,19 +203,21 @@ public class Log4jTextAppender extends AppenderSkeleton
      */
     public String getLog()
     {
-        if(tfLog != null && !tfLog.isDisposed())
+        if (tfLog != null && !tfLog.isDisposed())
         {
             return tfLog.getText();
         }
-        else if(events != null)
-        {
-            StringBuilder sb = new StringBuilder();
-            for(LoggingEvent le : events)
+        else
+            if (events != null)
             {
-                if(isAsSevereAsThreshold(le.getLevel())) sb.append(layout.format(le));
+                StringBuilder sb = new StringBuilder();
+                for (LoggingEvent le : events)
+                {
+                    if (isAsSevereAsThreshold(le.getLevel()))
+                        sb.append(layout.format(le));
+                }
+                return sb.toString();
             }
-            return sb.toString();
-        }
         return null;
     }
 }

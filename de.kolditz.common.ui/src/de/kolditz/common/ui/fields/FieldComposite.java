@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Parent composite for {@link AbstractField}s. When creating a widget tree (whether including fields or not) clients
  * should use Composites' {@link Composite#setLayoutDeferred(boolean)} function for reducing the drawing overhead.
- * Whenever a field is added to this FieldComposite using {@link #registerField(AbstractField)}, the {@link #updateLayout()}
- * method will be called. Using deferred layout will reduce the preformance impact!
- * <p>It is possible to add children which are not instances of AbstractField.
+ * Whenever a field is added to this FieldComposite using {@link #registerField(AbstractField)}, the
+ * {@link #updateLayout()} method will be called. Using deferred layout will reduce the preformance impact!
+ * <p>
+ * It is possible to add children which are not instances of AbstractField.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  * @see #registerField(AbstractField)
@@ -36,8 +37,10 @@ public class FieldComposite
     private List<AbstractField<?>> fields;
 
     /**
-     * @param parent the parent Composite
-     * @param style this Composite's style
+     * @param parent
+     *            the parent Composite
+     * @param style
+     *            this Composite's style
      */
     public FieldComposite(Composite parent, int style)
     {
@@ -64,12 +67,12 @@ public class FieldComposite
     public void updateLayout()
     {
         int columns = 0;
-        for(AbstractField<?> field : fields)
+        for (AbstractField<?> field : fields)
         {
             columns = Math.max(columns, field.getColumnsRequired());
         }
         layout.numColumns = columns;
-        for(AbstractField<?> field : fields)
+        for (AbstractField<?> field : fields)
         {
             field.setColumns(columns);
         }
@@ -78,7 +81,7 @@ public class FieldComposite
 
     public int getColumns()
     {
-        return ((GridLayout)comp.getLayout()).numColumns;
+        return ((GridLayout) comp.getLayout()).numColumns;
     }
 
     public boolean isDisposed()

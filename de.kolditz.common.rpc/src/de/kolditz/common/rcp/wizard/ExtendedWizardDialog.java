@@ -18,7 +18,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- *
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class ExtendedWizardDialog extends WizardDialog

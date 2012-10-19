@@ -115,12 +115,12 @@ public abstract class SetInUIThread<E> implements Runnable
      */
     public void setValue(Display display, E value, boolean async)
     {
-        if(display == null || display.isDisposed())
+        if (display == null || display.isDisposed())
         {
             return;
         }
         this.value = value;
-        if(display.getThread() == Thread.currentThread())
+        if (display.getThread() == Thread.currentThread())
         {
             log.trace("running in UI thread");
             run();

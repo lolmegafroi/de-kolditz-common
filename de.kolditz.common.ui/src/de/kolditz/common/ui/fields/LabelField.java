@@ -17,7 +17,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class LabelField extends AbstractField<String>
@@ -28,9 +27,12 @@ public class LabelField extends AbstractField<String>
     /**
      * When you want wrapping behavior, you HAVE to set a width hint (via {@link #setWidthHint(int)}).
      * 
-     * @param parent the parent FieldComposite
-     * @param style the {@link Label}'s style
-     * @param labelText the Label's text
+     * @param parent
+     *            the parent FieldComposite
+     * @param style
+     *            the {@link Label}'s style
+     * @param labelText
+     *            the Label's text
      */
     public LabelField(FieldComposite parent, int style, String labelText)
     {
@@ -69,7 +71,7 @@ public class LabelField extends AbstractField<String>
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData)label.getLayoutData()).horizontalSpan = columns;
+        ((GridData) label.getLayoutData()).horizontalSpan = columns;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class LabelField extends AbstractField<String>
         String old = labelText;
         labelText = value;
         label.setText(labelText);
-        if(doNotifyObservers)
+        if (doNotifyObservers)
         {
             notifyObservers(labelText);
         }
@@ -116,9 +118,9 @@ public class LabelField extends AbstractField<String>
     public void setWidthHint(int widthHint)
     {
         this.widthHint = Math.max(SWT.DEFAULT, widthHint); // at least SWT.DEFAULT
-        if(label.getLayoutData() != null)
+        if (label.getLayoutData() != null)
         {
-            ((GridData)label.getLayoutData()).widthHint = this.widthHint;
+            ((GridData) label.getLayoutData()).widthHint = this.widthHint;
         }
     }
 

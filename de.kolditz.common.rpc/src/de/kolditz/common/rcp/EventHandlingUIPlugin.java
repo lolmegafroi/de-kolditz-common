@@ -29,7 +29,6 @@ import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
@@ -44,13 +43,13 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
         super.start(context);
 
         srEventAdmin = context.getServiceReference(EventAdmin.class);
-        if(srEventAdmin == null)
+        if (srEventAdmin == null)
         {
             getLog().log(new Status(IStatus.ERROR, getPluginID(), "no event admin found")); //$NON-NLS-1$
         }
         else
         {
-            eventAdmin = (EventAdmin)context.getService(srEventAdmin);
+            eventAdmin = (EventAdmin) context.getService(srEventAdmin);
         }
     }
 
@@ -58,16 +57,16 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
     public void stop(BundleContext context) throws Exception
     {
         eventAdmin = null;
-        if(eventHandlers != null)
+        if (eventHandlers != null)
         {
-            for(Entry<EventHandler, ServiceRegistration<EventHandler>> e : eventHandlers.entrySet())
+            for (Entry<EventHandler, ServiceRegistration<EventHandler>> e : eventHandlers.entrySet())
             {
                 context.ungetService(e.getValue().getReference());
             }
             eventHandlers.clear();
             eventHandlers = null;
         }
-        if(srEventAdmin != null)
+        if (srEventAdmin != null)
         {
             context.ungetService(srEventAdmin);
             srEventAdmin = null;
@@ -88,7 +87,7 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
      */
     public void postEvent(Event event)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             eventAdmin.postEvent(event);
         }
@@ -102,7 +101,7 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
      */
     public void sendEvent(Event event)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             eventAdmin.sendEvent(event);
         }
@@ -124,8 +123,9 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
      */
     public synchronized boolean registerEventHandler(EventHandler handler, Dictionary<String, ?> properties)
     {
-        if(handler == null) return false;
-        if(eventHandlers == null)
+        if (handler == null)
+            return false;
+        if (eventHandlers == null)
         {
             eventHandlers = new HashMap<EventHandler, ServiceRegistration<EventHandler>>();
         }
@@ -135,7 +135,7 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
                     getBundle().getBundleContext().registerService(EventHandler.class, handler, properties));
             return true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             getLog().log(
                     new Status(IStatus.ERROR, getPluginID(), "Could not register EventHandler " + handler.toString()));
@@ -145,10 +145,10 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
 
     public synchronized void unregisterEventHandler(EventHandler handler)
     {
-        if(eventHandlers != null)
+        if (eventHandlers != null)
         {
             ServiceRegistration<EventHandler> sr = eventHandlers.get(handler);
-            if(sr != null)
+            if (sr != null)
             {
                 eventHandlers.remove(handler);
                 getBundle().getBundleContext().ungetService(sr.getReference());

@@ -42,7 +42,7 @@ import de.kolditz.common.util.RegExpPatterns;
  */
 public class IPText extends AbstractControl implements IFillViewAware, IValidationControl
 {
-    private static final int MODIFY_CHECK_DELAY = 500; // in ms
+    private static final int MODIFY_CHECK_DELAY = 500;                                    // in ms
     private static final TimeUnit MOFIFY_CHECK_TU = TimeUnit.MILLISECONDS;
 
     protected Text text;
@@ -64,22 +64,23 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
                 @Override
                 public void run()
                 {
-                    if(text.isDisposed()) return;
+                    if (text.isDisposed())
+                        return;
                     ipValid = pIPV4.matcher(text.getText()).find();
-                    if(!ipValid)
+                    if (!ipValid)
                     {
                         try
                         {
                             InetAddress.getByName(text.getText());
                             ipValid = true;
                         }
-                        catch(UnknownHostException e1)
+                        catch (UnknownHostException e1)
                         {
                         }
                     }
-                    if(cd != null)
+                    if (cd != null)
                     {
-                        if(ipValid)
+                        if (ipValid)
                             cd.hide();
                         else
                             cd.show();
@@ -88,11 +89,11 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
                     Event e = new Event();
                     e.widget = text;
                     e.display = text.getDisplay();
-                    e.time = (int)System.currentTimeMillis();
+                    e.time = (int) System.currentTimeMillis();
                     ModifyEvent me = new ModifyEvent(e);
-                    for(Object o : modifyListeners.getListeners())
+                    for (Object o : modifyListeners.getListeners())
                     {
-                        ((ModifyListener)o).modifyText(me);
+                        ((ModifyListener) o).modifyText(me);
                     }
                 }
             });
@@ -119,19 +120,21 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
             @Override
             public void modifyText(ModifyEvent e)
             {
-                if(isFillView())
+                if (isFillView())
                 {
                     ipModifyRunner.run(null, false);
                 }
-                else if((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone())
-                {
-                    ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                }
                 else
-                {
-                    if(ipFuture != null) ipFuture.cancel(false);
-                    ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                }
+                    if ((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone())
+                    {
+                        ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                    }
+                    else
+                    {
+                        if (ipFuture != null)
+                            ipFuture.cancel(false);
+                        ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                    }
             }
         });
     }
@@ -142,7 +145,6 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
     }
 
     /**
-     * 
      * @param ip
      *            a valid v4 IP
      * @throws IllegalArgumentException
@@ -160,7 +162,7 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      */
     public void createControlDecoration(int position)
     {
-        if(cd != null)
+        if (cd != null)
         {
             cd = new ControlDecoration(text, position);
             adaptCD();
@@ -175,7 +177,7 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
      */
     public void createControlDecoration(int position, Composite drawComposite)
     {
-        if(cd != null)
+        if (cd != null)
         {
             cd = new ControlDecoration(text, position, drawComposite);
             adaptCD();

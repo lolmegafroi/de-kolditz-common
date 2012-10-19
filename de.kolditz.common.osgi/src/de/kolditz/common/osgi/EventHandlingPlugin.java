@@ -29,7 +29,6 @@ import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public abstract class EventHandlingPlugin extends Plugin
@@ -44,7 +43,7 @@ public abstract class EventHandlingPlugin extends Plugin
         super.start(context);
 
         srEventAdmin = context.getServiceReference(EventAdmin.class);
-        if(srEventAdmin == null)
+        if (srEventAdmin == null)
         {
             getLog().log(new Status(IStatus.ERROR, getPluginID(), "no event admin found")); //$NON-NLS-1$
         }
@@ -57,15 +56,15 @@ public abstract class EventHandlingPlugin extends Plugin
     @Override
     public void stop(BundleContext context) throws Exception
     {
-        if(eventHandlers != null)
+        if (eventHandlers != null)
         {
-            for(Entry<EventHandler, ServiceRegistration<EventHandler>> e : eventHandlers.entrySet())
+            for (Entry<EventHandler, ServiceRegistration<EventHandler>> e : eventHandlers.entrySet())
             {
                 e.getValue().unregister();
             }
             eventHandlers.clear();
         }
-        if(srEventAdmin != null)
+        if (srEventAdmin != null)
         {
             context.ungetService(srEventAdmin);
         }
@@ -87,7 +86,7 @@ public abstract class EventHandlingPlugin extends Plugin
      */
     public void postEvent(Event event)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             eventAdmin.postEvent(event);
         }
@@ -101,7 +100,7 @@ public abstract class EventHandlingPlugin extends Plugin
      */
     public void sendEvent(Event event)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             eventAdmin.sendEvent(event);
         }
@@ -123,8 +122,9 @@ public abstract class EventHandlingPlugin extends Plugin
      */
     public boolean registerEventHandler(EventHandler handler, Dictionary<String, ?> properties)
     {
-        if(handler == null) return false;
-        if(eventHandlers == null)
+        if (handler == null)
+            return false;
+        if (eventHandlers == null)
         {
             eventHandlers = new HashMap<EventHandler, ServiceRegistration<EventHandler>>();
         }
@@ -134,7 +134,7 @@ public abstract class EventHandlingPlugin extends Plugin
                     getBundle().getBundleContext().registerService(EventHandler.class, handler, properties));
             return true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             getLog().log(
                     new Status(IStatus.ERROR, getPluginID(), "Could not register EventHandler " + handler.toString()));
@@ -144,10 +144,10 @@ public abstract class EventHandlingPlugin extends Plugin
 
     public void unregisterEventHandler(EventHandler handler)
     {
-        if(handler != null && eventHandlers != null)
+        if (handler != null && eventHandlers != null)
         {
             ServiceRegistration<EventHandler> sreg = eventHandlers.remove(handler);
-            if(sreg != null)
+            if (sreg != null)
             {
                 sreg.unregister();
             }

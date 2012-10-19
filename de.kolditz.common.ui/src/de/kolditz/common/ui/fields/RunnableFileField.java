@@ -90,15 +90,15 @@ public class RunnableFileField extends FileField
     @Override
     public void widgetSelected(SelectionEvent e)
     {
-        if(e.widget == btnRun)
+        if (e.widget == btnRun)
         {
-            if(!cdFile.isVisible())
+            if (!cdFile.isVisible())
             {
                 try
                 {
                     Runtime.getRuntime().exec(text.getText());
                 }
-                catch(IOException e1)
+                catch (IOException e1)
                 {
                     e1.printStackTrace();
                 }

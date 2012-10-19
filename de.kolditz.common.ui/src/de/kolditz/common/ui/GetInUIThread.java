@@ -82,8 +82,8 @@ public abstract class GetInUIThread<E> implements Runnable
     protected E value;
 
     /**
-     * Subclasses must implement this method which is run in the UI thread. Set the {@link #value} variable to the
-     * value which shall be returned.
+     * Subclasses must implement this method which is run in the UI thread. Set the {@link #value} variable to the value
+     * which shall be returned.
      */
     @Override
     public abstract void run();
@@ -96,26 +96,28 @@ public abstract class GetInUIThread<E> implements Runnable
      */
     public E get(Display display)
     {
-        if(display == null)
+        if (display == null)
         {
             log.trace("display is null");
             return null;
         }
-        else if(display.isDisposed())
-        {
-            log.trace("display is disposed");
-            return null;
-        }
-        else if(display.getThread() == Thread.currentThread())
-        {
-            log.trace("running in UI thread");
-            run();
-        }
         else
-        {
-            log.trace("running sync");
-            display.syncExec(this);
-        }
+            if (display.isDisposed())
+            {
+                log.trace("display is disposed");
+                return null;
+            }
+            else
+                if (display.getThread() == Thread.currentThread())
+                {
+                    log.trace("running in UI thread");
+                    run();
+                }
+                else
+                {
+                    log.trace("running sync");
+                    display.syncExec(this);
+                }
         return value;
     }
 }

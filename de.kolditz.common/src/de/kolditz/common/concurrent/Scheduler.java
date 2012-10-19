@@ -42,9 +42,9 @@ public final class Scheduler
     private static void checkState()
     {
         boolean recreate = false;
-        if(executor != null)
+        if (executor != null)
         {
-            if(executor.isShutdown() || executor.isTerminating() || executor.isTerminated())
+            if (executor.isShutdown() || executor.isTerminating() || executor.isTerminated())
             {
                 recreate = true;
             }
@@ -53,7 +53,7 @@ public final class Scheduler
         {
             recreate = true;
         }
-        if(recreate)
+        if (recreate)
         {
             executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
         }

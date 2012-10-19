@@ -16,7 +16,7 @@ import java.util.Collection;
 
 /**
  * A simple IObserver skeleton which does nothing.
- *
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class IObserverSkeleton<E> implements IObserver<E>

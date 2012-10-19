@@ -35,7 +35,8 @@ public class IObservableBackend<E> implements IObservable<E>
     @Override
     public boolean registerObserver(IObserver<E> observer)
     {
-        if(observer == null) throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
+        if (observer == null)
+            throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
         observables.put(observer, Integer.valueOf(0));
         return true;
     }
@@ -43,7 +44,8 @@ public class IObservableBackend<E> implements IObservable<E>
     @Override
     public boolean unregisterObserver(IObserver<E> observer)
     {
-        if(observer == null) throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
+        if (observer == null)
+            throw new IllegalArgumentException("observer is null"); //$NON-NLS-1$
         observables.remove(observer);
         return true;
     }
@@ -56,7 +58,7 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(E data)
     {
-        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        for (Entry<IObserver<E>, Integer> e : observables.entrySet())
         {
             e.getKey().update(frontEnd, data);
         }
@@ -70,7 +72,7 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(E[] data)
     {
-        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        for (Entry<IObserver<E>, Integer> e : observables.entrySet())
         {
             e.getKey().update(frontEnd, data);
         }
@@ -84,7 +86,7 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(Collection<E> data)
     {
-        for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+        for (Entry<IObserver<E>, Integer> e : observables.entrySet())
         {
             e.getKey().update(frontEnd, data);
         }
@@ -100,15 +102,16 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(E data, IObserver<E> notToNotify)
     {
-        if(notToNotify == null)
+        if (notToNotify == null)
         {
             update(data);
         }
         else
         {
-            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            for (Entry<IObserver<E>, Integer> e : observables.entrySet())
             {
-                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
+                if (e.getKey() != notToNotify)
+                    e.getKey().update(frontEnd, data);
             }
         }
     }
@@ -123,15 +126,16 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(E[] data, IObserver<E> notToNotify)
     {
-        if(notToNotify == null)
+        if (notToNotify == null)
         {
             update(data);
         }
         else
         {
-            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            for (Entry<IObserver<E>, Integer> e : observables.entrySet())
             {
-                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
+                if (e.getKey() != notToNotify)
+                    e.getKey().update(frontEnd, data);
             }
         }
     }
@@ -146,15 +150,16 @@ public class IObservableBackend<E> implements IObservable<E>
      */
     public void update(Collection<E> data, IObserver<E> notToNotify)
     {
-        if(notToNotify == null)
+        if (notToNotify == null)
         {
             update(data);
         }
         else
         {
-            for(Entry<IObserver<E>, Integer> e : observables.entrySet())
+            for (Entry<IObserver<E>, Integer> e : observables.entrySet())
             {
-                if(e.getKey() != notToNotify) e.getKey().update(frontEnd, data);
+                if (e.getKey() != notToNotify)
+                    e.getKey().update(frontEnd, data);
             }
         }
     }

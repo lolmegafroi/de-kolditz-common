@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import de.kolditz.common.i18n.Messages;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class I18N extends Messages

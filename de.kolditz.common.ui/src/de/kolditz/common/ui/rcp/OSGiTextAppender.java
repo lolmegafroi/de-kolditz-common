@@ -35,7 +35,7 @@ import de.kolditz.common.ui.Log4jTextAppender;
 /**
  * Listens to OSGi LogReaderService log events and appends them as log4j log entries. Also listens to events from the
  * {@link EventForwardingLogListener}.
- *
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class OSGiTextAppender extends Log4jTextAppender implements LogListener, EventHandler
@@ -64,14 +64,14 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
             @Override
             public void bundleChanged(BundleEvent event)
             {
-                if((event.getType() == BundleEvent.STOPPING || event.getType() == BundleEvent.STOPPED)
+                if ((event.getType() == BundleEvent.STOPPING || event.getType() == BundleEvent.STOPPED)
                         && (srvReg != null))
                 {
                     try
                     {
                         srvReg.unregister();
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                     }
                 }
@@ -95,7 +95,7 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
      */
     private Level levelFromOSGi(int osgiLevel)
     {
-        switch(osgiLevel)
+        switch (osgiLevel)
         {
             case LogService.LOG_DEBUG:
                 return Level.DEBUG;
@@ -117,20 +117,21 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
     @Override
     public void handleEvent(Event event)
     {
-        String bundleSymbName = (String)event.getProperty(LogEventForwarder.ATTR_BUNDLE_SYMBOLICNAME);
-        int level = (Integer)event.getProperty(LogEventForwarder.ATTR_LEVEL);
+        String bundleSymbName = (String) event.getProperty(LogEventForwarder.ATTR_BUNDLE_SYMBOLICNAME);
+        int level = (Integer) event.getProperty(LogEventForwarder.ATTR_LEVEL);
         Level lvl = Level.ALL;
-        String levelType = (String)event.getProperty(LogEventForwarder.ATTR_LEVEL_TYPE);
-        if(levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_OSGi))
+        String levelType = (String) event.getProperty(LogEventForwarder.ATTR_LEVEL_TYPE);
+        if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_OSGi))
         {
             lvl = levelFromOSGi(level);
         }
-        else if(levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
-        {
-            lvl = Level.toLevel(level);
-        }
-        String msg = (String)event.getProperty(LogEventForwarder.ATTR_MESSAGE);
-        Throwable t = (Throwable)event.getProperty(LogEventForwarder.ATTR_EXCEPTION);
+        else
+            if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
+            {
+                lvl = Level.toLevel(level);
+            }
+        String msg = (String) event.getProperty(LogEventForwarder.ATTR_MESSAGE);
+        Throwable t = (Throwable) event.getProperty(LogEventForwarder.ATTR_EXCEPTION);
         Logger.getLogger(bundleSymbName).log(lvl, msg, t);
     }
 }

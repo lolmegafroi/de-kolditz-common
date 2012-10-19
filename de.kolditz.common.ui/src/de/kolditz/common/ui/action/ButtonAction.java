@@ -37,9 +37,7 @@ import de.kolditz.common.ui.ButtonBar;
  * @see #createButton(NewButtonBar, int)
  * @see #isRegisteredFor(Button)
  * @see #isAdaptingButton(Button)
- * 
  * @author Till Kolditz - till.kolditz@jexam.de
- * 
  * @version $Revision: 1.1 $; $Author: sprasse $; $Date: 2012-03-30 07:11:39 $
  */
 public abstract class ButtonAction extends Action implements SelectionListener
@@ -171,16 +169,18 @@ public abstract class ButtonAction extends Action implements SelectionListener
     public void adaptButton(Button button)
     {
         String str = getText();
-        if(str != null) button.setText(str);
+        if (str != null)
+            button.setText(str);
         str = getToolTipText();
-        if(str != null) button.setToolTipText(str);
+        if (str != null)
+            button.setToolTipText(str);
         ImageDescriptor id = getImageDescriptor();
-        if(image == null && id != null)
+        if (image == null && id != null)
         {
             image = id.createImage();
         }
         button.setImage(image);
-        if(isRegisteredFor(button))
+        if (isRegisteredFor(button))
         {
             buttons.put(button, Boolean.TRUE);
         }
@@ -192,10 +192,10 @@ public abstract class ButtonAction extends Action implements SelectionListener
      */
     public void updateButtonsTexts()
     {
-        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        for (Entry<Button, Boolean> entry : buttons.entrySet())
         {
             // if the button is adapted
-            if(entry.getValue().booleanValue())
+            if (entry.getValue().booleanValue())
             {
                 entry.getKey().setText(getText());
                 entry.getKey().setToolTipText(getText());
@@ -205,7 +205,7 @@ public abstract class ButtonAction extends Action implements SelectionListener
 
     public void setButtonsEnabled(boolean enabled)
     {
-        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        for (Entry<Button, Boolean> entry : buttons.entrySet())
         {
             // enable/disable all registered buttons
             entry.getKey().setEnabled(enabled);
@@ -232,19 +232,21 @@ public abstract class ButtonAction extends Action implements SelectionListener
     @Override
     public void widgetSelected(SelectionEvent e)
     {
-        if(isRegisteredFor((Button)e.getSource())) run();
+        if (isRegisteredFor((Button) e.getSource()))
+            run();
     }
 
     @Override
     public void widgetDefaultSelected(SelectionEvent e)
     {
-        if(isRegisteredFor((Button)e.getSource())) run();
+        if (isRegisteredFor((Button) e.getSource()))
+            run();
     }
 
     @Override
     protected void finalize() throws Throwable
     {
-        if(image != null)
+        if (image != null)
         {
             image.dispose();
         }
@@ -256,10 +258,11 @@ public abstract class ButtonAction extends Action implements SelectionListener
     {
         super.setEnabled(enabled);
         Button b;
-        for(Entry<Button, Boolean> entry : buttons.entrySet())
+        for (Entry<Button, Boolean> entry : buttons.entrySet())
         {
             b = entry.getKey();
-            if(!b.isDisposed()) b.setEnabled(enabled);
+            if (!b.isDisposed())
+                b.setEnabled(enabled);
         }
     }
 }

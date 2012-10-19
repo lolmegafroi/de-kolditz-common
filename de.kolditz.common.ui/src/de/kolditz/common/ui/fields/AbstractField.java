@@ -22,8 +22,11 @@ import de.kolditz.common.util.IObserver;
 
 /**
  * Abstract base class for preference fields used in custom preference environments.
- * <p>Clients should access the {@link #labelText} field which is set in the constructor method.</p>
- * <p>The base implementation calls the following method(s):
+ * <p>
+ * Clients should access the {@link #labelText} field which is set in the constructor method.
+ * </p>
+ * <p>
+ * The base implementation calls the following method(s):
  * <ul>
  * <li>{@link #createBackend()}</li>
  * </ul>
@@ -48,7 +51,6 @@ public abstract class AbstractField<E> implements IObservable<E>
     protected String labelText;
 
     /**
-     * 
      * Clients must call the following method(s) themselves:
      * <ul>
      * <li>{@link #create()}</li>
@@ -148,8 +150,8 @@ public abstract class AbstractField<E> implements IObservable<E>
     protected abstract int getColumnsRequired();
 
     /**
-     * This method is called by the {@link FieldComposite} to notify how many columns there will be in the layout.
-     * It is guaranteed to be called after {@link #create()}.
+     * This method is called by the {@link FieldComposite} to notify how many columns there will be in the layout. It is
+     * guaranteed to be called after {@link #create()}.
      * 
      * @param columns
      *            the number of columns the parent layout will have
@@ -225,7 +227,7 @@ public abstract class AbstractField<E> implements IObservable<E>
     public Collection<E> setValues(Collection<E> values, boolean doNotifyObservers)
     {
         Collection<E> oldValues = getValues();
-        if(values == null || values.size() == 0)
+        if (values == null || values.size() == 0)
         {
             setValue(null);
         }
@@ -237,14 +239,12 @@ public abstract class AbstractField<E> implements IObservable<E>
     }
 
     /**
-     * Returns <code>true</code> if the widget has been disposed,
-     * and <code>false</code> otherwise.
+     * Returns <code>true</code> if the widget has been disposed, and <code>false</code> otherwise.
      * <p>
-     * This method gets the dispose state for the widget.
-     * When a widget has been disposed, it is an error to
-     * invoke any other method (except {@link #dispose()}) using the widget.
+     * This method gets the dispose state for the widget. When a widget has been disposed, it is an error to invoke any
+     * other method (except {@link #dispose()}) using the widget.
      * </p>
-     *
+     * 
      * @return <code>true</code> when the widget is disposed and <code>false</code> otherwise
      */
     public abstract boolean isDisposed();

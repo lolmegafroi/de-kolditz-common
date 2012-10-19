@@ -39,7 +39,6 @@ import de.kolditz.common.ui.ButtonBar;
 import de.kolditz.common.util.IValidator;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class EnterPropertiesDialog extends Dialog
@@ -56,15 +55,15 @@ public class EnterPropertiesDialog extends Dialog
         @Override
         public String validate(String object)
         {
-            if(object == null || object.isEmpty())
+            if (object == null || object.isEmpty())
             {
                 return "The key must not be empty"; // TODO i18n
             }
-            if(key.equals(object))
+            if (key.equals(object))
             {
                 return null;
             }
-            if(properties.containsKey(object))
+            if (properties.containsKey(object))
             {
                 return "This key already exists"; // TODO i18n
             }
@@ -80,11 +79,11 @@ public class EnterPropertiesDialog extends Dialog
         @Override
         public String validate(String object)
         {
-            if(object == null || object.isEmpty())
+            if (object == null || object.isEmpty())
             {
                 return "The key must not be empty"; // TODO i18n
             }
-            if(properties.containsKey(object))
+            if (properties.containsKey(object))
             {
                 return "This key already exists"; // TODO i18n
             }
@@ -96,7 +95,7 @@ public class EnterPropertiesDialog extends Dialog
         @Override
         public String validate(String object)
         {
-            if(object == null || object.isEmpty())
+            if (object == null || object.isEmpty())
             {
                 return "Value must not be null"; // TODO i18n
             }
@@ -126,7 +125,7 @@ public class EnterPropertiesDialog extends Dialog
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        Composite dialogArea = (Composite)super.createDialogArea(parent);
+        Composite dialogArea = (Composite) super.createDialogArea(parent);
 
         viewer = new TableViewer(dialogArea, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
         viewer.getTable().setHeaderVisible(true);
@@ -140,7 +139,7 @@ public class EnterPropertiesDialog extends Dialog
             @Override
             public String getText(Object element)
             {
-                return ((Entry<String, String>)element).getKey();
+                return ((Entry<String, String>) element).getKey();
             }
         });
 
@@ -152,7 +151,7 @@ public class EnterPropertiesDialog extends Dialog
             @Override
             public String getText(Object element)
             {
-                return ((Entry<String, String>)element).getValue();
+                return ((Entry<String, String>) element).getValue();
             }
         });
 
@@ -163,14 +162,14 @@ public class EnterPropertiesDialog extends Dialog
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                if(properties == null)
+                if (properties == null)
                 {
                     properties = new HashMap<String, String>();
                 }
                 EnterPropertyDialog dialog = new EnterPropertyDialog(getShell());
                 dialog.setKeyValidator(keyValidator);
                 dialog.setValueValidator(valueValidator);
-                if(dialog.open() == Window.OK)
+                if (dialog.open() == Window.OK)
                 {
                     properties.put(dialog.getKey(), dialog.getValue());
                     buttonBar.getButton(1).setEnabled(true);
@@ -185,15 +184,15 @@ public class EnterPropertiesDialog extends Dialog
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                Object o = ((IStructuredSelection)viewer.getSelection()).getFirstElement();
-                Entry<String, String> entry = (Entry<String, String>)o;
+                Object o = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+                Entry<String, String> entry = (Entry<String, String>) o;
                 EnterPropertyDialog dialog = new EnterPropertyDialog(getShell());
                 editValidator.setKey(entry.getKey());
                 dialog.setKey(entry.getKey());
                 dialog.setValue(entry.getValue());
                 dialog.setKeyValidator(editValidator);
                 dialog.setValueValidator(valueValidator);
-                if(dialog.open() == Window.OK)
+                if (dialog.open() == Window.OK)
                 {
                     properties.put(dialog.getKey(), dialog.getValue());
                 }
@@ -207,8 +206,8 @@ public class EnterPropertiesDialog extends Dialog
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                Object[] array = ((IStructuredSelection)viewer.getSelection()).toArray();
-                for(Object o : array)
+                Object[] array = ((IStructuredSelection) viewer.getSelection()).toArray();
+                for (Object o : array)
                 {
                     properties.remove(o);
                 }
@@ -228,7 +227,7 @@ public class EnterPropertiesDialog extends Dialog
             }
         });
 
-        if(properties != null)
+        if (properties != null)
         {
             viewer.setInput(properties.entrySet());
         }

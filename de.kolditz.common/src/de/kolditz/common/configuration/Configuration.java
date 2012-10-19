@@ -22,8 +22,6 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * 
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class Configuration
@@ -38,14 +36,11 @@ public class Configuration
     protected File confFile;
 
     /**
-     * 
      * @param filename
      *            the config file's name (without the file extension)
-     * 
      * @throws CreateConfigurationFileException
      * @throws FileNotFoundException
      * @throws IOException
-     * 
      * @see {@link #CONFIG_FILE_EXT}
      * @see Properties
      */
@@ -55,16 +50,13 @@ public class Configuration
     }
 
     /**
-     * 
      * @param baseName
      *            the config file's base name (without the file extension)
      * @param defaults
      *            the Properties defaults
-     * 
      * @throws CreateConfigurationFileException
      * @throws FileNotFoundException
      * @throws IOException
-     * 
      * @see {@link #CONFIG_FILE_EXT}
      * @see Properties
      */
@@ -78,7 +70,7 @@ public class Configuration
         System.out.println(currentPath);
         File appDir = new File(currentPath);
 
-        if(!appDir.exists())
+        if (!appDir.exists())
         {
             throw new RuntimeException("the environment variable \"user.dir\" does not point to a directory");
         }
@@ -94,13 +86,13 @@ public class Configuration
 
     private void checkConfFileExistence()
     {
-        if(!confFile.exists())
+        if (!confFile.exists())
         {
             try
             {
                 confFile.createNewFile();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new CreateConfigurationFileException(confFile, ex);
             }
@@ -185,7 +177,7 @@ public class Configuration
     public Map<String, String> getProperties()
     {
         Map<String, String> result = new HashMap<String, String>();
-        for(Entry<Object, Object> entry : properties.entrySet())
+        for (Entry<Object, Object> entry : properties.entrySet())
         {
             result.put(entry.getKey().toString(), entry.getValue().toString());
         }

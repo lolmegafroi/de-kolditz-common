@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class TabField<K> extends AbstractField<K>
@@ -56,7 +55,7 @@ public class TabField<K> extends AbstractField<K>
 
         public FieldComposite getPreferencesComposite()
         {
-            if(comp == null)
+            if (comp == null)
             {
                 comp = new FieldComposite(folder, SWT.NONE);
                 ti.setControl(comp.getComposite());
@@ -154,9 +153,9 @@ public class TabField<K> extends AbstractField<K>
             public void widgetSelected(SelectionEvent e)
             {
                 int idx = folder.getSelectionIndex();
-                if(idx > -1)
+                if (idx > -1)
                 {
-                    setValue0((K)folder.getItem(idx).getData(), true);
+                    setValue0((K) folder.getItem(idx).getData(), true);
                 }
                 else
                 {
@@ -175,7 +174,7 @@ public class TabField<K> extends AbstractField<K>
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData)folder.getLayoutData()).horizontalSpan = columns - 1;
+        ((GridData) folder.getLayoutData()).horizontalSpan = columns - 1;
     }
 
     @Override
@@ -201,9 +200,9 @@ public class TabField<K> extends AbstractField<K>
     public K setValue(K value, boolean doNotifyObservers)
     {
         TabItem[] items = folder.getItems();
-        for(int i = 0; i < items.length; ++i)
+        for (int i = 0; i < items.length; ++i)
         {
-            if(((K)items[i].getData()) == value)
+            if (((K) items[i].getData()) == value)
             {
                 folder.setSelection(i); // no notification sent when setting programmatically
                 break;
@@ -216,7 +215,7 @@ public class TabField<K> extends AbstractField<K>
     {
         K oldKey = currentKey;
         currentKey = value;
-        if(doNotifyObservers)
+        if (doNotifyObservers)
         {
             notifyObservers(currentKey);
         }
@@ -232,7 +231,7 @@ public class TabField<K> extends AbstractField<K>
      */
     public TabFieldItem createItem(K key)
     {
-        if(items == null)
+        if (items == null)
         {
             items = new HashMap<K, TabField<K>.TabFieldItem>();
         }
@@ -250,7 +249,7 @@ public class TabField<K> extends AbstractField<K>
      */
     public TabFieldItem getItem(K key)
     {
-        if(items != null)
+        if (items != null)
         {
             return items.get(key);
         }

@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
 /**
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 abstract class AbstractControl

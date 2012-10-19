@@ -32,7 +32,7 @@ import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Sends {@link LogEntry}s into the OSGi event bus through an {@link EventAdmin}.
- *
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class EventForwardingLogListener extends LogEventForwarder implements LogListener
@@ -43,19 +43,20 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
         {
             BundleContext bc = event.getServiceReference().getBundle().getBundleContext();
             // since we use a filter, this cast should be safe
-            LogReaderService lrs = (LogReaderService)bc.getService(event.getServiceReference());
-            if(lrs != null)
+            LogReaderService lrs = (LogReaderService) bc.getService(event.getServiceReference());
+            if (lrs != null)
             {
-                if(event.getType() == ServiceEvent.REGISTERED)
+                if (event.getType() == ServiceEvent.REGISTERED)
                 {
                     m_readers.add(lrs);
                     lrs.addLogListener(EventForwardingLogListener.this);
                 }
-                else if(event.getType() == ServiceEvent.UNREGISTERING)
-                {
-                    lrs.removeLogListener(EventForwardingLogListener.this);
-                    m_readers.remove(lrs);
-                }
+                else
+                    if (event.getType() == ServiceEvent.UNREGISTERING)
+                    {
+                        lrs.removeLogListener(EventForwardingLogListener.this);
+                        m_readers.remove(lrs);
+                    }
             }
         }
     }
@@ -65,17 +66,20 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
     private LinkedList<LogReaderService> m_readers = new LinkedList<LogReaderService>();
 
     /**
-     * We use a ServiceListener to dynamically keep track of all the LogReaderService service being registered or unregistered
-     * 
-     * <p>Taken from <a href="http://blog.kornr.net/index.php/2008/12/09/understanding-the-osgi-logging-service">
-     * http://blog.kornr.net/index.php/2008/12/09/understanding-the-osgi-logging-service</a></p>
+     * We use a ServiceListener to dynamically keep track of all the LogReaderService service being registered or
+     * unregistered
+     * <p>
+     * Taken from <a href="http://blog.kornr.net/index.php/2008/12/09/understanding-the-osgi-logging-service">
+     * http://blog.kornr.net/index.php/2008/12/09/understanding-the-osgi-logging-service</a>
+     * </p>
      */
     private ServiceListener m_servlistener;
 
     /**
      * Async log event forwarding. Does not automatically register.
      * 
-     * @param eventAdmin the EventAdmin
+     * @param eventAdmin
+     *            the EventAdmin
      * @see #register()
      * @see #unregister()
      */
@@ -87,8 +91,10 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
     /**
      * Does not automatically register.
      * 
-     * @param eventAdmin the EventAdmin
-     * @param async whether or not to forward log events async
+     * @param eventAdmin
+     *            the EventAdmin
+     * @param async
+     *            whether or not to forward log events async
      * @see #register()
      * @see #unregister()
      */
@@ -102,13 +108,13 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
     public synchronized void unregister()
     {
         context.removeServiceListener(m_servlistener);
-        for(LogReaderService lrs : m_readers)
+        for (LogReaderService lrs : m_readers)
         {
             try
             {
                 lrs.removeLogListener(this);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
             }
         }
@@ -122,11 +128,11 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
                 context, LogReaderService.class, null);
         logReaderTracker.open();
         Object[] readers = logReaderTracker.getServices();
-        if(readers != null)
+        if (readers != null)
         {
-            for(int i = 0; i < readers.length; i++)
+            for (int i = 0; i < readers.length; i++)
             {
-                LogReaderService lrs = (LogReaderService)readers[i];
+                LogReaderService lrs = (LogReaderService) readers[i];
                 m_readers.add(lrs);
                 lrs.addLogListener(this);
             }
@@ -146,7 +152,7 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
             context.addServiceListener(m_servlistener, filter);
             logservice.log(IStatus.OK, "Registered EventForwardingLogListener for OSGi log events"); //$NON-NLS-1$
         }
-        catch(InvalidSyntaxException e)
+        catch (InvalidSyntaxException e)
         {
             logservice.log(IStatus.OK, "Error while registering EventForwardingLogListener for OSGi log events", e); //$NON-NLS-1$
         }
@@ -165,7 +171,7 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
     @Override
     public void logged(LogEntry entry)
     {
-        if(eventAdmin != null)
+        if (eventAdmin != null)
         {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put(ATTR_BUNDLE_SYMBOLICNAME, entry.getBundle().getSymbolicName());
@@ -173,13 +179,13 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
             map.put(ATTR_LEVEL_TYPE, ATTR_LEVEL_TYPE_OSGi);
             map.put(ATTR_MESSAGE, entry.getMessage());
             Throwable t = entry.getException();
-            if(t != null)
+            if (t != null)
             {
                 t.getStackTrace();
                 map.put(ATTR_EXCEPTION, t);
             }
             Event event = new Event(TOPIC, map);
-            if(asyncLogging)
+            if (asyncLogging)
                 eventAdmin.postEvent(event);
             else
                 eventAdmin.sendEvent(event);

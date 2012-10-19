@@ -34,9 +34,12 @@ public class BooleanField extends AbstractField<Boolean>
     protected SetSelection setter;
 
     /**
-     * @param parent the parent {@link FieldComposite}
-     * @param style ignored for now
-     * @param labelString the {@link Label}'s text
+     * @param parent
+     *            the parent {@link FieldComposite}
+     * @param style
+     *            ignored for now
+     * @param labelString
+     *            the {@link Label}'s text
      */
     public BooleanField(FieldComposite parent, int style, String labelString)
     {
@@ -91,7 +94,7 @@ public class BooleanField extends AbstractField<Boolean>
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData)button.getLayoutData()).horizontalSpan = columns;
+        ((GridData) button.getLayoutData()).horizontalSpan = columns;
     }
 
     @Override
@@ -119,12 +122,13 @@ public class BooleanField extends AbstractField<Boolean>
     {
         Boolean old = getValue();
         Boolean actualVal = value;
-        if(actualVal == null)
+        if (actualVal == null)
         {
             actualVal = Boolean.FALSE;
         }
         setter.setValue(button.getDisplay(), actualVal);
-        if(doNotifyObservers) notifyObservers(actualVal);
+        if (doNotifyObservers)
+            notifyObservers(actualVal);
         return old;
     }
 

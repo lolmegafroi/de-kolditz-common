@@ -42,7 +42,7 @@ public class ButtonBar extends Composite
     {
         public void widgetDefaultSelected(SelectionEvent e)
         {
-            for(SelectionListener o : selectionListeners.getListeners())
+            for (SelectionListener o : selectionListeners.getListeners())
             {
                 o.widgetDefaultSelected(e);
             }
@@ -50,7 +50,7 @@ public class ButtonBar extends Composite
 
         public void widgetSelected(SelectionEvent e)
         {
-            for(SelectionListener o : selectionListeners.getListeners())
+            for (SelectionListener o : selectionListeners.getListeners())
             {
                 o.widgetSelected(e);
             }
@@ -85,7 +85,6 @@ public class ButtonBar extends Composite
      *            a widget which will be the parent of the new instance (cannot be null)
      * @param style
      *            the style of widget to construct
-     * 
      * @exception IllegalArgumentException
      *                <ul>
      *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
@@ -94,7 +93,6 @@ public class ButtonBar extends Composite
      *                <ul>
      *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
      *                </ul>
-     * 
      * @see ButtonBarLayout
      * @see SWT#NO_BACKGROUND
      * @see SWT#NO_FOCUS
@@ -127,7 +125,6 @@ public class ButtonBar extends Composite
      *            the style of widget to construct
      * @param makeButtonsEqualWidth
      * @param makeButtonsEqualHeight
-     * 
      * @exception IllegalArgumentException
      *                <ul>
      *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
@@ -136,7 +133,6 @@ public class ButtonBar extends Composite
      *                <ul>
      *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
      *                </ul>
-     * 
      * @see SWT#NO_BACKGROUND
      * @see SWT#NO_FOCUS
      * @see SWT#NO_MERGE_PAINTS
@@ -168,7 +164,6 @@ public class ButtonBar extends Composite
      *            the style of widget to construct
      * @param alignment
      *            {@link ButtonBarLayout#setAlignment(int)}
-     * 
      * @exception IllegalArgumentException
      *                <ul>
      *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
@@ -177,7 +172,6 @@ public class ButtonBar extends Composite
      *                <ul>
      *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
      *                </ul>
-     * 
      * @see SWT#NO_BACKGROUND
      * @see SWT#NO_FOCUS
      * @see SWT#NO_MERGE_PAINTS
@@ -209,7 +203,7 @@ public class ButtonBar extends Composite
     @Override
     public ButtonBarLayout getLayout()
     {
-        return (ButtonBarLayout)super.getLayout();
+        return (ButtonBarLayout) super.getLayout();
     }
 
     public Button createButton(int id, String label)
@@ -234,20 +228,21 @@ public class ButtonBar extends Composite
 
     public Button createButton(int id, String label, Image image, boolean defaultButton, int buttonStyle)
     {
-        if(buttons.containsKey(id))
+        if (buttons.containsKey(id))
         {
             throw new RuntimeException("there is already another button using this id (" + id + ")!"); //$NON-NLS-1$
         }
         Button button = new Button(this, buttonStyle);
         buttons.put(id, button);
         button.setText(label);
-        if(image != null) button.setImage(image);
+        if (image != null)
+            button.setImage(image);
         button.setData(BUTTON_ID, id);
         button.addSelectionListener(selectionListener);
-        if(defaultButton)
+        if (defaultButton)
         {
             Shell shell = getShell();
-            if(shell != null)
+            if (shell != null)
             {
                 shell.setDefaultButton(button);
             }
@@ -259,7 +254,7 @@ public class ButtonBar extends Composite
     @Override
     public Point computeSize(int widthHint, int heightHint, boolean changed)
     {
-        if(buttons.size() == 0)
+        if (buttons.size() == 0)
         {
             Rectangle rect = computeTrim(0, 0, 1, 1);
             return new Point(rect.width, rect.height);
@@ -296,7 +291,7 @@ public class ButtonBar extends Composite
 
     public void setDebug(boolean debug)
     {
-        ((ButtonBarLayout)getLayout()).setDebug(debug);
+        ((ButtonBarLayout) getLayout()).setDebug(debug);
     }
 
     /**

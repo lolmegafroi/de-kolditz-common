@@ -26,50 +26,37 @@ import org.eclipse.swt.widgets.Layout;
  * </p>
  * 
  * @see ButtonBar
- * 
- * @author Till Kolditz - till.kolditz@jexam.de
- * 
- *         $Revision: 1.4 $; $Author: tkolditz $; $Date: 2010-07-28 14:25:53 $
+ * @author Till Kolditz - till.kolditz@jexam.de $Revision: 1.4 $; $Author: tkolditz $; $Date: 2010-07-28 14:25:53 $
  */
 public class ButtonBarLayout extends Layout
 {
     /**
      * makeButtonsEqualWidth specifies whether all buttons in the layout will be forced to have the same width, which
-     * will be the width of the button having the largest width.
-     * 
-     * The default value is false.
+     * will be the width of the button having the largest width. The default value is false.
      */
     public boolean makeButtonsEqualWidth = false;
 
     /**
      * makeButtonsEqualHeight specifies whether all buttons in the layout will be forced to have the same height, which
-     * will be the height of the button having the largest height.
-     * 
-     * The default value is true.
+     * will be the height of the button having the largest height. The default value is true.
      */
     public boolean makeButtonsEqualHeight = true;
 
     /**
      * marginWidth specifies the number of pixels of horizontal margin that will be placed along the left and right
-     * edges of the layout.
-     * 
-     * The default value is 5.
+     * edges of the layout. The default value is 5.
      */
     public int marginWidth = 5;
 
     /**
      * marginHeight specifies the number of pixels of vertical margin that will be placed along the top and bottom edges
-     * of the layout.
-     * 
-     * The default value is 5.
+     * of the layout. The default value is 5.
      */
     public int marginHeight = 5;
 
     /**
      * marginLeft specifies the number of pixels of horizontal margin that will be placed along the left edge of the
-     * layout.
-     * 
-     * The default value is 0.
+     * layout. The default value is 0.
      * 
      * @since 3.1
      */
@@ -77,7 +64,6 @@ public class ButtonBarLayout extends Layout
 
     /**
      * marginTop specifies the number of pixels of vertical margin that will be placed along the top edge of the layout.
-     * 
      * The default value is 0.
      * 
      * @since 3.1
@@ -86,9 +72,7 @@ public class ButtonBarLayout extends Layout
 
     /**
      * marginRight specifies the number of pixels of horizontal margin that will be placed along the right edge of the
-     * layout.
-     * 
-     * The default value is 0.
+     * layout. The default value is 0.
      * 
      * @since 3.1
      */
@@ -96,9 +80,7 @@ public class ButtonBarLayout extends Layout
 
     /**
      * marginBottom specifies the number of pixels of vertical margin that will be placed along the bottom edge of the
-     * layout.
-     * 
-     * The default value is 0.
+     * layout. The default value is 0.
      * 
      * @since 3.1
      */
@@ -106,17 +88,13 @@ public class ButtonBarLayout extends Layout
 
     /**
      * horizontalSpacing specifies the number of pixels between the right edge of one cell and the left edge of its
-     * neighbouring cell to the right.
-     * 
-     * The default value is 10.
+     * neighbouring cell to the right. The default value is 10.
      */
     public int horizontalSpacing = 10;
 
     /**
      * verticalSpacing specifies the number of pixels between the bottom edge of one cell and the top edge of its
-     * neighbouring cell underneath.
-     * 
-     * The default value is 5.
+     * neighbouring cell underneath. The default value is 5.
      */
     public int verticalSpacing = 5;
 
@@ -177,7 +155,7 @@ public class ButtonBarLayout extends Layout
      */
     public void setAlignment(int alignment)
     {
-        if(alignment == SWT.TRAIL)
+        if (alignment == SWT.TRAIL)
             this.alignment = SWT.TRAIL;
         else
             this.alignment = SWT.LEAD;
@@ -189,7 +167,8 @@ public class ButtonBarLayout extends Layout
     @Override
     protected Point computeSize(Composite composite, int wHint, int hHint, boolean flushCache)
     {
-        if(flushCache) flushCache();
+        if (flushCache)
+            flushCache();
         return layout(composite, false, 0, 0, wHint, hHint);
     }
 
@@ -199,7 +178,8 @@ public class ButtonBarLayout extends Layout
     @Override
     protected void layout(Composite composite, boolean flushCache)
     {
-        if(flushCache) flushCache();
+        if (flushCache)
+            flushCache();
         Rectangle rect = composite.getClientArea();
         layout(composite, true, rect.x, rect.y, rect.width, rect.height);
     }
@@ -215,16 +195,17 @@ public class ButtonBarLayout extends Layout
     private Point layout(Composite composite, boolean move, int x, int y, int width, int height)
     {
         Control[] children = composite.getChildren();
-        if(children.length == 0)
+        if (children.length == 0)
         {
             return new Point(marginLeft + marginWidth * 2 + marginRight, marginTop + marginHeight * 2 + marginBottom);
         }
 
-        if(((cacheWidth != SWT.DEFAULT) && ((width == SWT.DEFAULT) || (width == cacheWidth)))
+        if (((cacheWidth != SWT.DEFAULT) && ((width == SWT.DEFAULT) || (width == cacheWidth)))
                 && ((cacheHeight != SWT.DEFAULT) && ((height == SWT.DEFAULT) || (height == cacheHeight)))
                 && cacheGrid != null && cacheSize != null)
         {
-            if(move) moveControles(cacheGrid, children);
+            if (move)
+                moveControles(cacheGrid, children);
             return cacheSize;
         }
 
@@ -236,44 +217,44 @@ public class ButtonBarLayout extends Layout
         Point p;
 
         // get the buttons' sizes
-        for(int i = 0; i < children.length; ++i)
+        for (int i = 0; i < children.length; ++i)
         {
             p = children[i].computeSize(SWT.DEFAULT, SWT.DEFAULT);
             buttonAreas[i] = new Rectangle(0, 0, p.x, p.y);
         }
 
         // check for equal width. We don't need to do this with just 1 button
-        if(makeButtonsEqualWidth && (children.length > 1))
+        if (makeButtonsEqualWidth && (children.length > 1))
         {
             int maxWidth = SWT.DEFAULT;
-            for(Rectangle r : buttonAreas)
+            for (Rectangle r : buttonAreas)
             {
                 maxWidth = Math.max(maxWidth, r.width);
             }
 
-            for(Rectangle r : buttonAreas)
+            for (Rectangle r : buttonAreas)
             {
                 r.width = maxWidth;
             }
         }
 
         // check for equal height. We don't need to do this with just 1 button
-        if(makeButtonsEqualHeight && (children.length > 1))
+        if (makeButtonsEqualHeight && (children.length > 1))
         {
             int maxHeight = SWT.DEFAULT;
-            for(Rectangle r : buttonAreas)
+            for (Rectangle r : buttonAreas)
             {
                 maxHeight = Math.max(maxHeight, r.height);
             }
 
-            for(Rectangle r : buttonAreas)
+            for (Rectangle r : buttonAreas)
             {
                 r.height = maxHeight;
             }
         }
 
         int fullLeftMargin = marginLeft + marginWidth, fullTopMargin = marginTop + marginHeight;
-        if(debug)
+        if (debug)
         {
             System.out.println("horizontal margins: " + marginLeft + ":" + marginWidth + ":" + marginRight);
             System.out.println("vertical margins: " + marginTop + ":" + marginHeight + ":" + marginBottom);
@@ -281,14 +262,14 @@ public class ButtonBarLayout extends Layout
         int curLineWidth = fullLeftMargin, fullWidth = fullLeftMargin, curX = fullLeftMargin, numRows = 0;
         int curLineHeight = fullTopMargin, fullHeight = fullTopMargin, curY = y + fullTopMargin, curCol = 0;
         // compute locations
-        for(int i = 0; i < children.length; ++i)
+        for (int i = 0; i < children.length; ++i)
         {
             area = buttonAreas[i];
             curLineWidth += area.width;
 
             // if we have a constraint on the width and the buttons will overlap the line, then wrap
             // note that we will have at least one button on each line
-            if((width != SWT.DEFAULT) && (grid[numRows][0] != null) && (curLineWidth > width))
+            if ((width != SWT.DEFAULT) && (grid[numRows][0] != null) && (curLineWidth > width))
             {
                 fullHeight += verticalSpacing + curLineHeight;
                 curX = x + fullLeftMargin;
@@ -315,21 +296,22 @@ public class ButtonBarLayout extends Layout
         fullWidth += marginWidth + marginRight;
 
         // if alignment is SWT.TRAIL and we have larger bounds than needed, realign
-        if((width > fullWidth) && (alignment == SWT.TRAIL))
+        if ((width > fullWidth) && (alignment == SWT.TRAIL))
         {
             int offset = width - fullWidth;
-            for(Rectangle[] rs : grid)
+            for (Rectangle[] rs : grid)
             {
-                for(Rectangle r : rs)
+                for (Rectangle r : rs)
                 {
-                    if(r == null) break;
+                    if (r == null)
+                        break;
                     r.x += offset;
                 }
             }
         }
 
         // position the buttons
-        if(move)
+        if (move)
         {
             moveControles(grid, children);
         }
@@ -339,7 +321,7 @@ public class ButtonBarLayout extends Layout
         cacheGrid = grid;
         cacheSize = new Point(fullWidth, fullHeight);
 
-        if(debug)
+        if (debug)
         {
             System.out.println("x=" + x + " y=" + y + " width=" + width + " height=" + height + " | fullwidth="
                     + fullWidth + " - fullheight=" + fullHeight);
@@ -351,9 +333,9 @@ public class ButtonBarLayout extends Layout
     private void moveControles(Rectangle[][] grid, Control[] children)
     {
         int i = 0;
-        for(int row = 0; (row < grid.length) && (grid[row] != null); ++row)
+        for (int row = 0; (row < grid.length) && (grid[row] != null); ++row)
         {
-            for(int col = 0; (col < grid[row].length) && (grid[row][col] != null); ++col)
+            for (int col = 0; (col < grid[row].length) && (grid[row][col] != null); ++col)
             {
                 children[i++].setBounds(grid[row][col]);
             }

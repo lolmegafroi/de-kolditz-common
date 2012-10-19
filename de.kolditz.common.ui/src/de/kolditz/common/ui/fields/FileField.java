@@ -35,7 +35,8 @@ import de.kolditz.common.util.SystemProperties;
  * A file field which allows to select an existing file, shows a control decoration and allows the file dialog's filter
  * to be set. A warning (control decoration) is shown when either the given file does not exist, or when no file is set
  * at all. The missing file warning will, however, not be shown when the style is {@link SWT#SAVE}.
- * <p>{@link SWT#MULTI} is not yet fully supported!
+ * <p>
+ * {@link SWT#MULTI} is not yet fully supported!
  * </p>
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
@@ -62,7 +63,8 @@ public class FileField extends TextField
      * @param parent
      *            the parent {@link Composite}
      * @param style
-     *            this field's style: either {@link SWT#OPEN} or {@link SWT#SAVE} (defaults to OPEN), and optionally {@link SWT#MULTI}
+     *            this field's style: either {@link SWT#OPEN} or {@link SWT#SAVE} (defaults to OPEN), and optionally
+     *            {@link SWT#MULTI}
      * @param label
      *            the {@link Label}'s text
      * @see #setFilter(String[], String[], int)
@@ -80,7 +82,8 @@ public class FileField extends TextField
      * @param parent
      *            the parent {@link Composite}
      * @param style
-     *            this field's style: either {@link SWT#OPEN} or {@link SWT#SAVE} (defaults to OPEN), and optionally {@link SWT#MULTI}
+     *            this field's style: either {@link SWT#OPEN} or {@link SWT#SAVE} (defaults to OPEN), and optionally
+     *            {@link SWT#MULTI}
      * @param label
      *            the {@link Label}'s text
      * @param null_hint
@@ -95,13 +98,11 @@ public class FileField extends TextField
     }
 
     /**
-     * Error-compensatingly set this FileField's filter extensions, names and initial index.
-     * If there are any errors (e.g. different array lengths) the implementation tries to fix these issues by using
-     * extensions as names if necessary. A wrong index will also be set to 0 or -1 depending on extensions and names.
-     * If no extensions but names are provided the method will log an error but will behave as if no names were
-     * provided.
+     * Error-compensatingly set this FileField's filter extensions, names and initial index. If there are any errors
+     * (e.g. different array lengths) the implementation tries to fix these issues by using extensions as names if
+     * necessary. A wrong index will also be set to 0 or -1 depending on extensions and names. If no extensions but
+     * names are provided the method will log an error but will behave as if no names were provided.
      * <p>
-     * 
      * TODO support for more complex extensions with more than 1 dot (e.g. "*.my.xml")
      * 
      * @param extensions
@@ -113,35 +114,37 @@ public class FileField extends TextField
      */
     public void setFilter(String[] extensions, String[] names, int index)
     {
-        if(extensions == null)
+        if (extensions == null)
         {
-            if(names != null)
+            if (names != null)
             {
                 log.error("No extensions but names are provided. Extensions = " + names.toString());
                 names = null;
             }
             index = -1;
         }
-        else if(names == null)
-        {
-            names = extensions;
-        }
-        else if(names.length != extensions.length)
-        {
-            // names and extensions != null
-            if(names.length > extensions.length)
+        else
+            if (names == null)
             {
-                names = Arrays.copyOf(names, extensions.length);
-                log.warn("More names than extensions provided. Cutting off the additional names.");
+                names = extensions;
             }
             else
-            {
-                int oldLength = names.length;
-                names = Arrays.copyOf(names, extensions.length);
-                System.arraycopy(extensions, oldLength, names, oldLength, extensions.length - oldLength);
-                log.warn("Less names than extensions provided. Using extensions as names.");
-            }
-        }
+                if (names.length != extensions.length)
+                {
+                    // names and extensions != null
+                    if (names.length > extensions.length)
+                    {
+                        names = Arrays.copyOf(names, extensions.length);
+                        log.warn("More names than extensions provided. Cutting off the additional names.");
+                    }
+                    else
+                    {
+                        int oldLength = names.length;
+                        names = Arrays.copyOf(names, extensions.length);
+                        System.arraycopy(extensions, oldLength, names, oldLength, extensions.length - oldLength);
+                        log.warn("Less names than extensions provided. Using extensions as names.");
+                    }
+                }
         this.extensions = extensions;
         this.names = names;
         this.filterIndex = index;
@@ -209,32 +212,35 @@ public class FileField extends TextField
     @Override
     public void setEnabled(boolean enabled)
     {
-        if(btnSet != null && !btnSet.isDisposed()) btnSet.setEnabled(enabled);
-        if(btnClear != null && !btnClear.isDisposed()) btnClear.setEnabled(enabled);
+        if (btnSet != null && !btnSet.isDisposed())
+            btnSet.setEnabled(enabled);
+        if (btnClear != null && !btnClear.isDisposed())
+            btnClear.setEnabled(enabled);
         super.setEnabled(enabled);
     }
 
     /**
      * TODO support for complex file filters
+     * 
      * @param e
      */
     protected void widgetSelected(SelectionEvent e)
     {
-        if(e.widget == btnSet)
+        if (e.widget == btnSet)
         {
             FileDialog fd = new FileDialog(text.getShell(), ((style & SWT.OPEN) != 0) ? SWT.OPEN : SWT.SAVE);
             String filterPath = text.getText();
             String fileName = "";
-            if(filterPath.equals(null_hint))
+            if (filterPath.equals(null_hint))
             {
                 filterPath = SystemProperties.USER_DIR;
             }
             else
             {
                 File file = new File(filterPath);
-                if(file.exists())
+                if (file.exists())
                 {
-                    if(file.isFile())
+                    if (file.isFile())
                     {
                         filterPath = file.getAbsoluteFile().getParent();
                         fileName = file.getName();
@@ -249,43 +255,44 @@ public class FileField extends TextField
             fd.setFileName(fileName);
             fd.setFilterExtensions(extensions);
             fd.setFilterNames(names);
-            if(filterIndex >= 0) fd.setFilterIndex(filterIndex);
+            if (filterIndex >= 0)
+                fd.setFilterIndex(filterIndex);
             // TODO multi-file selection support
             String target = fd.open();
             int filterIdx = fd.getFilterIndex();
-            if(target != null)
+            if (target != null)
             {
                 boolean doIt = true;
-                if(isOverwriteAsk)
+                if (isOverwriteAsk)
                 {
                     File file = new File(target);
                     fileExists = file.exists();
-                    if(fileExists)
+                    if (fileExists)
                     {
                         doIt = doOverwrite = MessageDialog.openQuestion(text.getShell(),
                                 I18N.get().getString(I18N.FIELDS_FILEFIELD_OVERWRITEDIALOG_MSG),
                                 I18N.get().getString(I18N.FIELDS_FILEFIELD_OVERWRITEDIALOG_MSG));
                     }
                 }
-                if(doIt)
+                if (doIt)
                 {
-                    if(filterIdx >= 0)
+                    if (filterIdx >= 0)
                     {
                         // get (first) extension from the set filters
                         String ext = extensions[filterIdx];
-                        if(ext.contains(";"))
+                        if (ext.contains(";"))
                         {
                             boolean extPresent = false;
                             String[] tempExtensions = ext.split(";");
-                            for(String extension : tempExtensions)
+                            for (String extension : tempExtensions)
                             {
-                                if(target.endsWith(extension.substring(extension.lastIndexOf('.'))))
+                                if (target.endsWith(extension.substring(extension.lastIndexOf('.'))))
                                 {
                                     extPresent = true;
                                     break;
                                 }
                             }
-                            if(!extPresent)
+                            if (!extPresent)
                             {
                                 target += tempExtensions[0].substring(tempExtensions[0].lastIndexOf('.'));
                             }
@@ -293,7 +300,7 @@ public class FileField extends TextField
                         else
                         {
                             ext = ext.substring(ext.lastIndexOf('.'));
-                            if(!target.endsWith(ext))
+                            if (!target.endsWith(ext))
                             {
                                 target += ext;
                             }
@@ -304,10 +311,11 @@ public class FileField extends TextField
                 }
             }
         }
-        else if(e.widget == btnClear)
-        {
-            text.setText(null_hint);
-        }
+        else
+            if (e.widget == btnClear)
+            {
+                text.setText(null_hint);
+            }
     }
 
     protected void widgetDefaultSelected(SelectionEvent e)
@@ -317,7 +325,7 @@ public class FileField extends TextField
     @Override
     protected void modifyText(ModifyEvent e)
     {
-        if(e.widget == text)
+        if (e.widget == text)
         {
             validate();
         }
@@ -331,32 +339,33 @@ public class FileField extends TextField
 
     public void validate()
     {
-        if(isShowDecoration)
+        if (isShowDecoration)
         {
             String txt = text.getText();
-            if(txt.length() == 0)
+            if (txt.length() == 0)
             {
                 cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILENOTSET));
                 cdFile.show();
             }
-            else if((style & SWT.SAVE) == 0) // only warn about non-existing files when NOT saving a file
-            {
-                File file = new File(txt);
-                fileExists = file.exists();
-                if(fileExists)
+            else
+                if ((style & SWT.SAVE) == 0) // only warn about non-existing files when NOT saving a file
                 {
-                    cdFile.hide();
+                    File file = new File(txt);
+                    fileExists = file.exists();
+                    if (fileExists)
+                    {
+                        cdFile.hide();
+                    }
+                    else
+                    {
+                        cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILEDOESNOTEXIST));
+                        cdFile.show();
+                    }
                 }
                 else
                 {
-                    cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILEDOESNOTEXIST));
-                    cdFile.show();
+                    cdFile.hide();
                 }
-            }
-            else
-            {
-                cdFile.hide();
-            }
         }
         else
         {
@@ -365,10 +374,11 @@ public class FileField extends TextField
     }
 
     /**
-     * Sets whether or not to show the text field's control decoration (standard is true).
-     * One use case is when a filename for a to-be-created file must be entered.
+     * Sets whether or not to show the text field's control decoration (standard is true). One use case is when a
+     * filename for a to-be-created file must be entered.
      * 
-     * @param isShowDecoration whether to show the control decoration or not
+     * @param isShowDecoration
+     *            whether to show the control decoration or not
      */
     public void setShowDecoration(boolean isShowDecoration)
     {
@@ -385,7 +395,8 @@ public class FileField extends TextField
      * When set to true (standard is false), then after selecting a file via the "set"-button and when this file already
      * exists, the userwill be explicitely prompted whether the file shall be overwritten or not.
      * 
-     * @param isOverwriteAsk whether to show a dialog for overwriting a file or not
+     * @param isOverwriteAsk
+     *            whether to show a dialog for overwriting a file or not
      */
     public void setOverwriteAsk(boolean isOverwriteAsk)
     {
@@ -403,8 +414,7 @@ public class FileField extends TextField
     }
 
     /**
-     * May be used when style {@link SWT#MULTI} is used.
-     * TODO multi-file selection support
+     * May be used when style {@link SWT#MULTI} is used. TODO multi-file selection support
      */
     @Override
     public Collection<String> getValues()
@@ -420,7 +430,7 @@ public class FileField extends TextField
     public File getFile()
     {
         String value = getValue();
-        if(value != null && value.length() > 0)
+        if (value != null && value.length() > 0)
         {
             File file = new File(value);
             return file;
@@ -429,9 +439,8 @@ public class FileField extends TextField
     }
 
     /**
-     * May be used when style {@link SWT#MULTI} is used.
+     * May be used when style {@link SWT#MULTI} is used. TODO multi-file selection support
      * 
-     * TODO multi-file selection support
      * @return
      */
     public File[] getFiles()

@@ -13,8 +13,6 @@ package de.kolditz.common.configuration;
 import java.io.File;
 
 /**
- * 
- * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class ConfigurationFileNotWritableException extends RuntimeException

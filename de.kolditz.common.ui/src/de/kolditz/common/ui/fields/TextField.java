@@ -117,12 +117,12 @@ public class TextField extends AbstractField<String> implements FocusListener
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData)text.getLayoutData()).horizontalSpan = columns - 1;
+        ((GridData) text.getLayoutData()).horizontalSpan = columns - 1;
     }
 
     protected void modifyText(ModifyEvent e)
     {
-        if(text.getText().equals(null_hint))
+        if (text.getText().equals(null_hint))
         {
             text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_GRAY));
         }
@@ -130,7 +130,7 @@ public class TextField extends AbstractField<String> implements FocusListener
         {
             text.setForeground(text.getDisplay().getSystemColor(SWT.COLOR_BLACK));
         }
-        if(doUpdateBackEnd)
+        if (doUpdateBackEnd)
         {
             notifyObservers(getValue());
         }
@@ -140,7 +140,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     public void focusGained(FocusEvent e)
     {
         doUpdateBackEnd = false;
-        if(text.getText().equals(null_hint))
+        if (text.getText().equals(null_hint))
         {
             text.setText("");
         }
@@ -151,7 +151,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     public void focusLost(FocusEvent e)
     {
         doUpdateBackEnd = false;
-        if(text.getText().equals(""))
+        if (text.getText().equals(""))
         {
             text.setText(null_hint);
         }
@@ -165,7 +165,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     {
         String old = getValue();
         String actualVal = value;
-        if(value == null || value.length() == 0)
+        if (value == null || value.length() == 0)
         {
             actualVal = null_hint;
         }
@@ -182,7 +182,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     public String getValue()
     {
         String str = getter.get(text.getDisplay());
-        if(str.equals(null_hint))
+        if (str.equals(null_hint))
         {
             return null;
         }

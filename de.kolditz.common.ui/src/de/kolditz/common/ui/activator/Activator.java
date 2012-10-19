@@ -5,7 +5,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- *
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class Activator extends AbstractUIPlugin
