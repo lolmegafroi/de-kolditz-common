@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Export-Package: de.kolditz.common.concurrent,
  de.kolditz.common.configuration,
  de.kolditz.common.i18n,
+ de.kolditz.common.s11n,
  de.kolditz.common.util,
  org.apache.log4j,
  org.apache.log4j.chainsaw,
