@@ -124,6 +124,7 @@ public class FileField extends TextField
             index = -1;
         }
         else
+        {
             if (names == null)
             {
                 names = extensions;
@@ -145,6 +146,7 @@ public class FileField extends TextField
                         log.warn("Less names than extensions provided. Using extensions as names.");
                     }
                 }
+        }
         this.extensions = extensions;
         this.names = names;
         this.filterIndex = index;
@@ -276,7 +278,7 @@ public class FileField extends TextField
                 }
                 if (doIt)
                 {
-                    if (filterIdx >= 0)
+                    if (filterIdx >= 0 && extensions != null && extensions.length >= filterIdx)
                     {
                         // get (first) extension from the set filters
                         String ext = extensions[filterIdx];

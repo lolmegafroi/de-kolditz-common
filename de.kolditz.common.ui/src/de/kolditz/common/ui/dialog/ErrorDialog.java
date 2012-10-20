@@ -52,8 +52,18 @@ public class ErrorDialog extends MessageDialog
 
     public ErrorDialog(Shell parentShell, Exception e)
     {
-        super(parentShell, e.getClass().getSimpleName(), parentShell.getDisplay().getSystemImage(SWT.ICON_ERROR), e
-                .getMessage(), ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
+        this(parentShell, e.getMessage(), e);
+    }
+
+    public ErrorDialog(Shell parentShell, String message, Exception e)
+    {
+        /*
+        super(parentShell, e.getClass().getSimpleName(), parentShell != null ? parentShell.getDisplay().getSystemImage(
+                SWT.ICON_ERROR) : Display.getDefault().getSystemImage(SWT.ICON_ERROR), message, ERROR,
+                new String[] { IDialogConstants.OK_LABEL }, 0);
+                */
+        super(parentShell, e.getClass().getSimpleName(), null, message, ERROR,
+                new String[] { IDialogConstants.OK_LABEL }, 0);
         this.e = e;
     }
 
