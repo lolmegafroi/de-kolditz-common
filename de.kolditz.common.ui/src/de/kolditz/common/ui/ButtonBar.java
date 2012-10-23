@@ -234,7 +234,8 @@ public class ButtonBar extends Composite
         }
         Button button = new Button(this, buttonStyle);
         buttons.put(id, button);
-        button.setText(label);
+        if (label != null)
+            button.setText(label);
         if (image != null)
             button.setImage(image);
         button.setData(BUTTON_ID, id);
