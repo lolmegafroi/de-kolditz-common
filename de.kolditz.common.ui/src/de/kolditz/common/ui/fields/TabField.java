@@ -180,6 +180,7 @@ public class TabField<K> extends AbstractField<K>
     @Override
     public void setEnabled(boolean enabled)
     {
+        label.setEnabled(enabled);
         folder.setEnabled(enabled);
     }
 

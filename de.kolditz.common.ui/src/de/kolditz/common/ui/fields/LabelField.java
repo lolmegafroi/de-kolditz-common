@@ -21,7 +21,8 @@ import org.eclipse.swt.widgets.Label;
  */
 public class LabelField extends AbstractField<String>
 {
-    protected Label label;
+    protected boolean indented = false;
+    protected Label label = null;
     protected int widthHint = SWT.DEFAULT;
 
     /**
@@ -33,11 +34,15 @@ public class LabelField extends AbstractField<String>
      *            the {@link Label}'s style
      * @param labelText
      *            the Label's text
+     * @param indented
+     *            when <code>true</code>, the text will be shown underneath other fields' widgets, otherwise the label
+     *            will stertch over the whole width
      */
-    public LabelField(FieldComposite parent, int style, String labelText)
+    public LabelField(FieldComposite parent, int style, String labelText, boolean indented)
     {
         super(parent, style, labelText);
 
+        this.indented = indented;
         create();
         addListeners();
         setLabels();
@@ -47,6 +52,8 @@ public class LabelField extends AbstractField<String>
     @Override
     protected void create()
     {
+        if (indented)
+            new Label(getComposite(), SWT.NONE);
         label = new Label(getComposite(), style);
         label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
     }
@@ -65,13 +72,13 @@ public class LabelField extends AbstractField<String>
     @Override
     protected int getColumnsRequired()
     {
-        return 1;
+        return indented ? 2 : 1;
     }
 
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData) label.getLayoutData()).horizontalSpan = columns;
+        ((GridData) label.getLayoutData()).horizontalSpan = indented ? columns - 1 : columns;
     }
 
     @Override

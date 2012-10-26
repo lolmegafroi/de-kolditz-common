@@ -253,6 +253,10 @@ public class MultiButtonField<E> extends AbstractField<E>
     @Override
     public void setEnabled(boolean enabled)
     {
+        if (asGroup)
+            group.setEnabled(enabled);
+        else
+            label.setEnabled(enabled);
         for (Button b : buttons)
         {
             b.setEnabled(enabled);

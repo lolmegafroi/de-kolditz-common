@@ -10,7 +10,12 @@
  *******************************************************************************/
 package de.kolditz.common.ui.fields;
 
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -22,16 +27,28 @@ import de.kolditz.common.ui.GetInUIThread.GetSelection;
 import de.kolditz.common.ui.SetInUIThread.SetSelection;
 
 /**
- * Preferences Boolean field
+ * Boolean button field. Allows to set a description text. If this one was created without a description text, one may
+ * still be added using {@link #setDescription(String)} in which case the description label will be added and the
+ * parent's layout updated. The description text is selectable.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
 public class BooleanField extends AbstractField<Boolean>
 {
-    protected Button button;
-    protected boolean doUpdateBackEnd;
-    protected GetSelection getter;
-    protected SetSelection setter;
+    protected SelectionListener buttonListener = null;
+
+    protected MouseListener labelListener;
+
+    protected Label label = null;
+    protected Button button = null;
+    protected boolean separateLabel = false;
+    protected boolean asControlDecoration = false;
+    protected boolean doUpdateBackEnd = false;
+    protected GetSelection getter = null;
+    protected SetSelection setter = null;
+    protected String description = null;
+    protected ControlDecoration cd = null;
+    protected Label lbDescription;
 
     /**
      * @param parent
@@ -40,10 +57,36 @@ public class BooleanField extends AbstractField<Boolean>
      *            ignored for now
      * @param labelString
      *            the {@link Label}'s text
+     * @param separateLabel
+     *            whether to create a separate label widget
      */
-    public BooleanField(FieldComposite parent, int style, String labelString)
+    public BooleanField(FieldComposite parent, int style, String labelString, boolean separateLabel)
+    {
+        this(parent, style, labelString, separateLabel, null, true);
+    }
+
+    /**
+     * @param parent
+     *            the parent {@link FieldComposite}
+     * @param style
+     *            ignored for now
+     * @param labelString
+     *            the {@link Label}'s text
+     * @param separateLabel
+     *            whether to create a separate label widget
+     * @param descriptionString
+     *            an additional description
+     * @param asControlDecoration
+     *            whether to show the description as a {@link ControlDecoration} (true) or an additional label (false)
+     */
+    public BooleanField(FieldComposite parent, int style, String labelString, boolean separateLabel,
+            String descriptionString, boolean asControlDecoration)
     {
         super(parent, style, labelString);
+
+        this.separateLabel = separateLabel;
+        description = descriptionString;
+        this.asControlDecoration = asControlDecoration;
 
         create();
         setLabels();
@@ -53,53 +96,143 @@ public class BooleanField extends AbstractField<Boolean>
 
     protected void create()
     {
-        button = new Button(getComposite(), SWT.CHECK);
+        if (button == null)
+        {
+            if (separateLabel)
+                label = new Label(getComposite(), SWT.NONE);
+            button = new Button(getComposite(), SWT.CHECK);
+            button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        }
+        if (description != null)
+        {
+            if (asControlDecoration)
+            {
+                if (cd == null)
+                {
+                    cd = new ControlDecoration(button, SWT.TOP | SWT.LEFT, button.getShell());
+                    cd.setImage(FieldDecorationRegistry.getDefault()
+                            .getFieldDecoration(FieldDecorationRegistry.DEC_INFORMATION).getImage());
+                    cd.setMarginWidth(1);
+                    cd.show();
+                }
+            }
+            else
+            {
+                if (lbDescription == null)
+                {
+                    if (!separateLabel)
+                        new Label(getComposite(), SWT.NONE);
+                    lbDescription = new Label(getComposite(), SWT.NONE);
+                    lbDescription.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+                    ((GridData) button.getLayoutData()).grabExcessHorizontalSpace = false;
+                }
+            }
+        }
     }
 
     @Override
     protected void setLabels()
     {
-        button.setText(labelText);
-        button.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        if (separateLabel)
+            label.setText(labelText);
+        else
+            button.setText(labelText);
+        if (asControlDecoration && cd != null)
+            cd.setDescriptionText(description);
+        else
+            if (lbDescription != null)
+                lbDescription.setText(description);
     }
 
     @Override
     protected void addListeners()
     {
-        setter = new SetSelection(button);
-        getter = new GetSelection(button);
+        if (setter == null)
+            setter = new SetSelection(button);
+        if (getter == null)
+            getter = new GetSelection(button);
 
-        button.addSelectionListener(new SelectionListener()
+        if (buttonListener == null)
         {
-            @Override
-            public void widgetSelected(SelectionEvent e)
+            buttonListener = new SelectionListener()
             {
-                notifyObservers(button.getSelection());
-            }
+                @Override
+                public void widgetSelected(SelectionEvent e)
+                {
+                    notifyObservers(button.getSelection());
+                }
 
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e)
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e)
+                {
+                    notifyObservers(button.getSelection());
+                }
+            };
+            button.addSelectionListener(buttonListener);
+        }
+        if (!asControlDecoration && labelListener == null)
+        {
+            labelListener = new MouseAdapter()
             {
-                notifyObservers(button.getSelection());
-            }
-        });
+                @Override
+                public void mouseUp(MouseEvent e)
+                {
+                    if (button != null && !button.isDisposed())
+                    {
+                        boolean value = getter.get(button.getDisplay());
+                        setter.setValue(button.getDisplay(), value);
+                        notifyObservers(value);
+                    }
+                }
+            };
+            lbDescription.addMouseListener(labelListener);
+        }
     }
 
     @Override
     protected int getColumnsRequired()
     {
-        return 1;
+        int columns = 1;
+        if (separateLabel)
+            ++columns;
+        if (description != null && !asControlDecoration && separateLabel)
+            ++columns;
+        return columns;
     }
 
     @Override
     protected void setColumns(int columns)
     {
-        ((GridData) button.getLayoutData()).horizontalSpan = columns;
+        int cols = separateLabel ? columns - 1 : columns;
+        if (description != null && !asControlDecoration && lbDescription != null)
+        {
+            if (separateLabel) // lbDescription is on the same line
+                --cols;
+            else
+                // lbDescription is on the full second line
+                ((GridData) lbDescription.getLayoutData()).horizontalSpan = cols;
+        }
+        ((GridData) button.getLayoutData()).horizontalSpan = cols;
     }
 
     @Override
     public void setEnabled(boolean enabled)
     {
+        if (separateLabel & label != null)
+            label.setEnabled(false);
+        if (description != null)
+        {
+            if (!asControlDecoration && lbDescription != null)
+                lbDescription.setEnabled(enabled);
+            else
+                if (asControlDecoration && cd != null)
+                {
+                    if (enabled)
+                        cd.show();
+                    else
+                        cd.hide();
+                }
+        }
         button.setEnabled(enabled);
     }
 
@@ -136,5 +269,27 @@ public class BooleanField extends AbstractField<Boolean>
     public boolean isDisposed()
     {
         return button.isDisposed();
+    }
+
+    public void setDescription(String descriptionText)
+    {
+        this.description = descriptionText;
+        if (description == null)
+        {
+            // either description is set to null or lbDescription is not yet created
+            if (cd != null) // description != null
+            {
+                cd.hide();
+            }
+        }
+        else
+        {
+            if (cd == null && lbDescription == null)
+            {
+                create();
+                addListeners();
+            }
+            setLabels();
+        }
     }
 }

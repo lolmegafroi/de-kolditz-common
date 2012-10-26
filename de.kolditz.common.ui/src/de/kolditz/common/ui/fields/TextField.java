@@ -192,6 +192,7 @@ public class TextField extends AbstractField<String> implements FocusListener
     @Override
     public void setEnabled(boolean enabled)
     {
+        label.setEnabled(enabled);
         text.setEnabled(enabled);
     }
 

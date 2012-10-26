@@ -102,6 +102,7 @@ public abstract class AbstractListField<E, C extends Control> extends AbstractFi
     @Override
     public void setEnabled(boolean enabled)
     {
+        label.setEnabled(enabled);
         listControl.setEnabled(enabled);
     }
 

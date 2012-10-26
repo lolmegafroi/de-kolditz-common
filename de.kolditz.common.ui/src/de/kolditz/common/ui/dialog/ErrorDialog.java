@@ -32,7 +32,7 @@ import de.kolditz.common.ui.i18n.I18N;
 
 public class ErrorDialog extends MessageDialog
 {
-    protected Exception e;
+    protected Throwable throwable;
 
     /**
      * @param parentShell
@@ -50,21 +50,21 @@ public class ErrorDialog extends MessageDialog
                 defaultIndex);
     }
 
-    public ErrorDialog(Shell parentShell, Exception e)
+    public ErrorDialog(Shell parentShell, Throwable throwable)
     {
-        this(parentShell, e.getMessage(), e);
+        this(parentShell, throwable.getMessage(), throwable);
     }
 
-    public ErrorDialog(Shell parentShell, String message, Exception e)
+    public ErrorDialog(Shell parentShell, String message, Throwable throwable)
     {
         /*
         super(parentShell, e.getClass().getSimpleName(), parentShell != null ? parentShell.getDisplay().getSystemImage(
                 SWT.ICON_ERROR) : Display.getDefault().getSystemImage(SWT.ICON_ERROR), message, ERROR,
                 new String[] { IDialogConstants.OK_LABEL }, 0);
                 */
-        super(parentShell, e.getClass().getSimpleName(), null, message, ERROR,
+        super(parentShell, throwable.getClass().getSimpleName(), null, message, ERROR,
                 new String[] { IDialogConstants.OK_LABEL }, 0);
-        this.e = e;
+        this.throwable = throwable;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ErrorDialog extends MessageDialog
         comp.setText(I18N.get().getString(I18N.DIALOGS_ERRORDIALOG_TITLE));
         Text text = new Text(comp, SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY | SWT.MULTI);
         StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
+        throwable.printStackTrace(new PrintWriter(sw));
         text.setText(sw.toString());
         comp.setClient(text);
         comp.addExpansionListener(new ExpansionAdapter()
