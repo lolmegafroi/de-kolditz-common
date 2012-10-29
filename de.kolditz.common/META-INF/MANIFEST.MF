@@ -29,7 +29,7 @@ Export-Package: de.kolditz.common.concurrent,
  org.apache.log4j.varia,
  org.apache.log4j.xml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0"
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.7.0,4.0.0)"
 Bundle-Vendor: Till Kolditz
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: de.kolditz.common.jar,
