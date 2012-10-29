@@ -39,7 +39,7 @@ import de.kolditz.common.ui.i18n.I18N;
  */
 public class PortText extends AbstractControl implements IFillViewAware, IValidationControl
 {
-    private static final int MODIFY_CHECK_DELAY = 500;                                    // in ms
+    private static final int MODIFY_CHECK_DELAY = 500; // in ms
     private static final TimeUnit MOFIFY_CHECK_TU = TimeUnit.MILLISECONDS;
 
     protected Text text;

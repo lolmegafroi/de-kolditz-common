@@ -42,7 +42,7 @@ import de.kolditz.common.util.RegExpPatterns;
  */
 public class IPText extends AbstractControl implements IFillViewAware, IValidationControl
 {
-    private static final int MODIFY_CHECK_DELAY = 500;                                    // in ms
+    private static final int MODIFY_CHECK_DELAY = 500; // in ms
     private static final TimeUnit MOFIFY_CHECK_TU = TimeUnit.MILLISECONDS;
 
     protected Text text;

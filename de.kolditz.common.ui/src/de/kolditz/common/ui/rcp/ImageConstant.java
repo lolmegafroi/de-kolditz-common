@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageConstant
 {
-    public static final String SEPERATOR = "/";                //$NON-NLS-1$
+    public static final String SEPERATOR = "/"; //$NON-NLS-1$
     public static final String PLATFORM_PLUGIN_PATH = "platform:/plugin/"; //$NON-NLS-1$
 
     /**

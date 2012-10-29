@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * An ant input handler for choosing a single folder.
- *
+ * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
 public class DirectoryInputHandler implements InputHandler
@@ -38,9 +38,9 @@ public class DirectoryInputHandler implements InputHandler
         StringBuilder sb = new StringBuilder("Select a directory.\n");
         String def = request.getDefaultValue();
         File file = null;
-        if(def != null)
+        if (def != null)
         {
-            if(def.length() == 0)
+            if (def.length() == 0)
             {
                 def = null;
             }
@@ -49,13 +49,13 @@ public class DirectoryInputHandler implements InputHandler
                 file = new File(def);
             }
         }
-        if(file != null)
+        if (file != null)
         {
             try
             {
                 def = file.getCanonicalPath();
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 System.err.println("[DirectoryInputHandler] given directory in defaultValue does not exist");
                 def = null;
@@ -65,7 +65,7 @@ public class DirectoryInputHandler implements InputHandler
         {
             def = null;
         }
-        if(def != null)
+        if (def != null)
         {
             sb.append("Default is: ").append(def).append("\nWhen cancelling, the default directory is used");
         }
@@ -75,13 +75,16 @@ public class DirectoryInputHandler implements InputHandler
         }
         DirectoryDialog dialog = new DirectoryDialog(shell, SWT.SHEET | SWT.SYSTEM_MODAL);
         dialog.setText("Ant Directory Selector");
-        if(def != null) dialog.setFilterPath(def);
+        if (def != null)
+            dialog.setFilterPath(def);
         dialog.setMessage(sb.toString());
         String dir = dialog.open();
         shell.dispose();
         display.dispose();
-        if(dir == null) dir = def;
-        if(dir == null) throw new BuildException("no directory selected");
+        if (dir == null)
+            dir = def;
+        if (dir == null)
+            throw new BuildException("no directory selected");
         request.setInput(dir);
     }
 }
