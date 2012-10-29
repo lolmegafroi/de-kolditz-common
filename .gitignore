@@ -1,5 +1,7 @@
 /de.kolditz.common/.settings
 /de.kolditz.common/bin
+/de.kolditz.common.ant/.settings
+/de.kolditz.common.ant/bin
 /de.kolditz.common.osgi/.settings
 /de.kolditz.common.osgi/bin
 /de.kolditz.common.rpc/.settings
