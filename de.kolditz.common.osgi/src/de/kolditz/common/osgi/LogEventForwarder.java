@@ -19,7 +19,7 @@ import org.osgi.service.event.EventAdmin;
  */
 public abstract class LogEventForwarder
 {
-    public static final String TOPIC = "org/osgi/logging";            //$NON-NLS-1$
+    public static final String TOPIC = "org/osgi/logging"; //$NON-NLS-1$
 
     /**
      * the logging bundle's symbolic name or the logger's name (String)
@@ -28,23 +28,23 @@ public abstract class LogEventForwarder
     /**
      * the level (Integer)
      */
-    public static final String ATTR_LEVEL = "logentry.level";              //$NON-NLS-1$
+    public static final String ATTR_LEVEL = "logentry.level"; //$NON-NLS-1$
 
     /**
      * The level type, log4j or OSGi
      */
-    public static final String ATTR_LEVEL_TYPE = "logentry.leveltype";          //$NON-NLS-1$
-    public static final String ATTR_LEVEL_TYPE_LOG4J = "log4j";                       //$NON-NLS-1$
-    public static final String ATTR_LEVEL_TYPE_OSGi = "OSGi";                        //$NON-NLS-1$
+    public static final String ATTR_LEVEL_TYPE = "logentry.leveltype"; //$NON-NLS-1$
+    public static final String ATTR_LEVEL_TYPE_LOG4J = "log4j"; //$NON-NLS-1$
+    public static final String ATTR_LEVEL_TYPE_OSGi = "OSGi"; //$NON-NLS-1$
 
     /**
      * the message (String)
      */
-    public static final String ATTR_MESSAGE = "logentry.message";            //$NON-NLS-1$
+    public static final String ATTR_MESSAGE = "logentry.message"; //$NON-NLS-1$
     /**
      * the exception (Throwable)
      */
-    public static final String ATTR_EXCEPTION = "logentry.exception";          //$NON-NLS-1$
+    public static final String ATTR_EXCEPTION = "logentry.exception"; //$NON-NLS-1$
 
     protected EventAdmin eventAdmin;
     protected boolean asyncLogging;
