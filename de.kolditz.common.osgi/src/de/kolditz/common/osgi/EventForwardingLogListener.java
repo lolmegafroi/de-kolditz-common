@@ -51,12 +51,11 @@ public class EventForwardingLogListener extends LogEventForwarder implements Log
                     m_readers.add(lrs);
                     lrs.addLogListener(EventForwardingLogListener.this);
                 }
-                else
-                    if (event.getType() == ServiceEvent.UNREGISTERING)
-                    {
-                        lrs.removeLogListener(EventForwardingLogListener.this);
-                        m_readers.remove(lrs);
-                    }
+                else if (event.getType() == ServiceEvent.UNREGISTERING)
+                {
+                    lrs.removeLogListener(EventForwardingLogListener.this);
+                    m_readers.remove(lrs);
+                }
             }
         }
     }

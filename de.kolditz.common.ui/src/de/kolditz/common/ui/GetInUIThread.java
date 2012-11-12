@@ -101,23 +101,21 @@ public abstract class GetInUIThread<E> implements Runnable
             log.trace("display is null");
             return null;
         }
+        else if (display.isDisposed())
+        {
+            log.trace("display is disposed");
+            return null;
+        }
+        else if (display.getThread() == Thread.currentThread())
+        {
+            log.trace("running in UI thread");
+            run();
+        }
         else
-            if (display.isDisposed())
-            {
-                log.trace("display is disposed");
-                return null;
-            }
-            else
-                if (display.getThread() == Thread.currentThread())
-                {
-                    log.trace("running in UI thread");
-                    run();
-                }
-                else
-                {
-                    log.trace("running sync");
-                    display.syncExec(this);
-                }
+        {
+            log.trace("running sync");
+            display.syncExec(this);
+        }
         return value;
     }
 }

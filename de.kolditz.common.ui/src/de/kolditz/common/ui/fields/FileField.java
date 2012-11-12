@@ -13,6 +13,7 @@ package de.kolditz.common.ui.fields;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -129,23 +130,22 @@ public class FileField extends TextField
             {
                 names = extensions;
             }
-            else
-                if (names.length != extensions.length)
+            else if (names.length != extensions.length)
+            {
+                // names and extensions != null
+                if (names.length > extensions.length)
                 {
-                    // names and extensions != null
-                    if (names.length > extensions.length)
-                    {
-                        names = Arrays.copyOf(names, extensions.length);
-                        log.warn("More names than extensions provided. Cutting off the additional names.");
-                    }
-                    else
-                    {
-                        int oldLength = names.length;
-                        names = Arrays.copyOf(names, extensions.length);
-                        System.arraycopy(extensions, oldLength, names, oldLength, extensions.length - oldLength);
-                        log.warn("Less names than extensions provided. Using extensions as names.");
-                    }
+                    names = Arrays.copyOf(names, extensions.length);
+                    log.warn("More names than extensions provided. Cutting off the additional names.");
                 }
+                else
+                {
+                    int oldLength = names.length;
+                    names = Arrays.copyOf(names, extensions.length);
+                    System.arraycopy(extensions, oldLength, names, oldLength, extensions.length - oldLength);
+                    log.warn("Less names than extensions provided. Using extensions as names.");
+                }
+            }
         }
         this.extensions = extensions;
         this.names = names;
@@ -288,7 +288,8 @@ public class FileField extends TextField
                             String[] tempExtensions = ext.split(";");
                             for (String extension : tempExtensions)
                             {
-                                if (target.endsWith(extension.substring(extension.lastIndexOf('.'))))
+                                if ((extension.contains(".") && target.endsWith(extension.substring(extension
+                                        .lastIndexOf('.')))) || Pattern.matches(extension, target))
                                 {
                                     extPresent = true;
                                     break;
@@ -299,7 +300,7 @@ public class FileField extends TextField
                                 target += tempExtensions[0].substring(tempExtensions[0].lastIndexOf('.'));
                             }
                         }
-                        else
+                        else if (ext.contains("."))
                         {
                             ext = ext.substring(ext.lastIndexOf('.'));
                             if (!target.endsWith(ext))
@@ -313,11 +314,10 @@ public class FileField extends TextField
                 }
             }
         }
-        else
-            if (e.widget == btnClear)
-            {
-                text.setText(null_hint);
-            }
+        else if (e.widget == btnClear)
+        {
+            text.setText(null_hint);
+        }
     }
 
     protected void widgetDefaultSelected(SelectionEvent e)
@@ -349,25 +349,24 @@ public class FileField extends TextField
                 cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILENOTSET));
                 cdFile.show();
             }
-            else
-                if ((style & SWT.SAVE) == 0) // only warn about non-existing files when NOT saving a file
-                {
-                    File file = new File(txt);
-                    fileExists = file.exists();
-                    if (fileExists)
-                    {
-                        cdFile.hide();
-                    }
-                    else
-                    {
-                        cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILEDOESNOTEXIST));
-                        cdFile.show();
-                    }
-                }
-                else
+            else if ((style & SWT.SAVE) == 0) // only warn about non-existing files when NOT saving a file
+            {
+                File file = new File(txt);
+                fileExists = file.exists();
+                if (fileExists)
                 {
                     cdFile.hide();
                 }
+                else
+                {
+                    cdFile.setDescriptionText(I18N.get().getString(I18N.FIELDS_FILEFIELD_FILEDOESNOTEXIST));
+                    cdFile.show();
+                }
+            }
+            else
+            {
+                cdFile.hide();
+            }
         }
         else
         {

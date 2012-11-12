@@ -124,17 +124,16 @@ public class IPText extends AbstractControl implements IFillViewAware, IValidati
                 {
                     ipModifyRunner.run(null, false);
                 }
+                else if ((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone())
+                {
+                    ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                }
                 else
-                    if ((ipFuture == null) || ipFuture.isCancelled() || ipFuture.isDone())
-                    {
-                        ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                    }
-                    else
-                    {
-                        if (ipFuture != null)
-                            ipFuture.cancel(false);
-                        ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                    }
+                {
+                    if (ipFuture != null)
+                        ipFuture.cancel(false);
+                    ipFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                }
             }
         });
     }

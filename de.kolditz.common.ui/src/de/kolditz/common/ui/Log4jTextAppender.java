@@ -207,17 +207,16 @@ public class Log4jTextAppender extends AppenderSkeleton
         {
             return tfLog.getText();
         }
-        else
-            if (events != null)
+        else if (events != null)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (LoggingEvent le : events)
             {
-                StringBuilder sb = new StringBuilder();
-                for (LoggingEvent le : events)
-                {
-                    if (isAsSevereAsThreshold(le.getLevel()))
-                        sb.append(layout.format(le));
-                }
-                return sb.toString();
+                if (isAsSevereAsThreshold(le.getLevel()))
+                    sb.append(layout.format(le));
             }
+            return sb.toString();
+        }
         return null;
     }
 }

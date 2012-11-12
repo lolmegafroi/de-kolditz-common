@@ -139,9 +139,8 @@ public class BooleanField extends AbstractField<Boolean>
             button.setText(labelText);
         if (asControlDecoration && cd != null)
             cd.setDescriptionText(description);
-        else
-            if (lbDescription != null)
-                lbDescription.setText(description);
+        else if (lbDescription != null)
+            lbDescription.setText(description);
     }
 
     @Override
@@ -224,14 +223,13 @@ public class BooleanField extends AbstractField<Boolean>
         {
             if (!asControlDecoration && lbDescription != null)
                 lbDescription.setEnabled(enabled);
-            else
-                if (asControlDecoration && cd != null)
-                {
-                    if (enabled)
-                        cd.show();
-                    else
-                        cd.hide();
-                }
+            else if (asControlDecoration && cd != null)
+            {
+                if (enabled)
+                    cd.show();
+                else
+                    cd.hide();
+            }
         }
         button.setEnabled(enabled);
     }

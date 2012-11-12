@@ -79,17 +79,16 @@ public abstract class RunInUIThread implements Runnable
             log.trace("running in UI thread");
             inUIThread();
         }
+        else if (async)
+        {
+            log.trace("running async");
+            d.asyncExec(this);
+        }
         else
-            if (async)
-            {
-                log.trace("running async");
-                d.asyncExec(this);
-            }
-            else
-            {
-                log.trace("running sync");
-                d.syncExec(this);
-            }
+        {
+            log.trace("running sync");
+            d.syncExec(this);
+        }
     }
 
     /**

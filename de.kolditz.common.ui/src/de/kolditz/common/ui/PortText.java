@@ -117,17 +117,16 @@ public class PortText extends AbstractControl implements IFillViewAware, IValida
                 {
                     ipModifyRunner.run(null, false);
                 }
+                else if ((portFuture == null) || portFuture.isCancelled() || portFuture.isDone())
+                {
+                    portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                }
                 else
-                    if ((portFuture == null) || portFuture.isCancelled() || portFuture.isDone())
-                    {
-                        portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                    }
-                    else
-                    {
-                        if (portFuture != null)
-                            portFuture.cancel(false);
-                        portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
-                    }
+                {
+                    if (portFuture != null)
+                        portFuture.cancel(false);
+                    portFuture = Scheduler.schedule(ipModifyRunner, MODIFY_CHECK_DELAY, MOFIFY_CHECK_TU);
+                }
             }
         });
     }

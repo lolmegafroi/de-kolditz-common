@@ -125,11 +125,10 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
         {
             lvl = levelFromOSGi(level);
         }
-        else
-            if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
-            {
-                lvl = Level.toLevel(level);
-            }
+        else if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
+        {
+            lvl = Level.toLevel(level);
+        }
         String msg = (String) event.getProperty(LogEventForwarder.ATTR_MESSAGE);
         Throwable t = (Throwable) event.getProperty(LogEventForwarder.ATTR_EXCEPTION);
         Logger.getLogger(bundleSymbName).log(lvl, msg, t);

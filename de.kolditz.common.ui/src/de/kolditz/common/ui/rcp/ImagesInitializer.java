@@ -84,28 +84,27 @@ public final class ImagesInitializer
                         {
                             path = refType.folder() + SystemProperties.FILE_SEP + constant;
                         }
-                        else
-                            if (refType.value() == RefType.PLATFORM_PLUGIN)
-                            {
-                                if (refType.remotePlugin().equals("")) { //$NON-NLS-1$
-                                    logger.log(Level.ERROR,
-                                            "remotePlugin parameter is not set for ImageRefType annotation for image constant \"" //$NON-NLS-1$
-                                                    + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
-                                    continue;
-                                }
-                                else
-                                {
-                                    path = ImageConstant.PLATFORM_PLUGIN_PATH + refType.remotePlugin()
-                                            + ImageConstant.SEPERATOR + refType.folder() + ImageConstant.SEPERATOR
-                                            + constant;
-                                }
+                        else if (refType.value() == RefType.PLATFORM_PLUGIN)
+                        {
+                            if (refType.remotePlugin().equals("")) { //$NON-NLS-1$
+                                logger.log(Level.ERROR,
+                                        "remotePlugin parameter is not set for ImageRefType annotation for image constant \"" //$NON-NLS-1$
+                                                + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
+                                continue;
                             }
                             else
                             {
-                                logger.log(Level.ERROR, "Unknown ImageRefType annotation for image constant \"" //$NON-NLS-1$
-                                        + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
-                                continue;
+                                path = ImageConstant.PLATFORM_PLUGIN_PATH + refType.remotePlugin()
+                                        + ImageConstant.SEPERATOR + refType.folder() + ImageConstant.SEPERATOR
+                                        + constant;
                             }
+                        }
+                        else
+                        {
+                            logger.log(Level.ERROR, "Unknown ImageRefType annotation for image constant \"" //$NON-NLS-1$
+                                    + clazz.getName() + ImageConstant.SEPERATOR + f.getName() + '"');
+                            continue;
+                        }
                         try
                         {
                             imageRegistry.put(constant, plugin.getImageDescriptor(path).createImage());
