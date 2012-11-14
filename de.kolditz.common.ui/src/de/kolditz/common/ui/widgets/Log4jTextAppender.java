@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.ui.widgets;
 
 import java.util.ArrayList;
 
@@ -56,7 +56,7 @@ public class Log4jTextAppender extends AppenderSkeleton
         }
     }
 
-    public static final String COMPLEX_PATTERN = "[%10r] [%t] %p %c (%C{1}:%L %M) - %m%n"; //$NON-NLS-1$
+    public static final String COMPLEX_PATTERN = "[%10r] [%t] %5p %c (%C{1}:%L %M) - %m%n"; //$NON-NLS-1$
     public static final String COMPLEX_NAME = "Complex";
     public static final String SIMPLE_PATTERN = "%-5p - %m%n"; //$NON-NLS-1$
     public static final String SIMPLE_NAME = "Simple";

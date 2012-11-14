@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.ui.widgets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;

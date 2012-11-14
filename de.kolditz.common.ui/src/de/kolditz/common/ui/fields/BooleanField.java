@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 
 import de.kolditz.common.concurrent.MultiThreaded;
-import de.kolditz.common.ui.GetInUIThread.GetSelection;
-import de.kolditz.common.ui.SetInUIThread.SetSelection;
+import de.kolditz.common.ui.concurrent.GetInUIThread.GetSelection;
+import de.kolditz.common.ui.concurrent.SetInUIThread.SetSelection;
 
 /**
  * Boolean button field. Allows to set a description text. If this one was created without a description text, one may

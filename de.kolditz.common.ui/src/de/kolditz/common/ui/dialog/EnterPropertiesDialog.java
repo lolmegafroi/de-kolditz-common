@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import de.kolditz.common.ui.ButtonBar;
+import de.kolditz.common.ui.widgets.ButtonBar;
 import de.kolditz.common.util.IValidator;
 
 /**

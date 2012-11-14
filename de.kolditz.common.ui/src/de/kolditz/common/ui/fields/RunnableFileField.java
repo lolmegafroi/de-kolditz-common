@@ -12,10 +12,13 @@ package de.kolditz.common.ui.fields;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
+
+import de.kolditz.common.ui.activator.Activator;
 
 /**
  * A {@link FileField} that points to an executable file and contains an additional button for running it.
@@ -24,7 +27,13 @@ import org.eclipse.swt.widgets.Button;
  */
 public class RunnableFileField extends FileField
 {
+    public static interface RunFileListener
+    {
+        void run(String filename);
+    }
+
     protected Button btnRun;
+    protected RunFileListener runFileListener = null;
 
     /**
      * @param parent
@@ -96,11 +105,18 @@ public class RunnableFileField extends FileField
             {
                 try
                 {
-                    Runtime.getRuntime().exec(text.getText());
+                    if (runFileListener != null)
+                    {
+                        runFileListener.run(getValue());
+                    }
+                    else
+                    {
+                        Runtime.getRuntime().exec(text.getText());
+                    }
                 }
                 catch (IOException e1)
                 {
-                    e1.printStackTrace();
+                    Activator.log(IStatus.ERROR, "Error", e1);
                 }
             }
         }
@@ -108,5 +124,16 @@ public class RunnableFileField extends FileField
         {
             super.widgetSelected(e);
         }
+    }
+
+    /**
+     * Only one listener may be set. Does not overwrite the old one.
+     * 
+     * @param listener
+     */
+    public void setRunFileListener(RunFileListener listener)
+    {
+        if (runFileListener == null)
+            runFileListener = listener;
     }
 }

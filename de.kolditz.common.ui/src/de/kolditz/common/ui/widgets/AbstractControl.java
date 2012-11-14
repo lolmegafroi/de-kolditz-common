@@ -10,7 +10,7 @@
  *  Contributors:
  *      Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.ui.widgets;
 
 import org.eclipse.swt.accessibility.Accessible;
 import org.eclipse.swt.events.ControlListener;
@@ -37,15 +37,30 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 
+import de.kolditz.common.ui.IFillViewAware;
+
 /**
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-abstract class AbstractControl
+abstract class AbstractControl implements IFillViewAware
 {
     private Control control;
+    private boolean isFillView = false;
 
     public AbstractControl()
     {
+    }
+
+    @Override
+    public void setFillView(boolean isFillView)
+    {
+        this.isFillView = isFillView;
+    }
+
+    @Override
+    public boolean isFillView()
+    {
+        return isFillView;
     }
 
     protected void setControl(Control control)

@@ -19,8 +19,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.kolditz.common.ui.GetInUIThread.GetText;
-import de.kolditz.common.ui.SetInUIThread.SetText;
+import de.kolditz.common.ui.concurrent.GetInUIThread.GetText;
+import de.kolditz.common.ui.concurrent.SetInUIThread.SetText;
 import de.kolditz.common.util.Pair;
 
 /**

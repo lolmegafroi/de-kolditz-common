@@ -21,8 +21,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.List;
 
-import de.kolditz.common.ui.GetInUIThread;
-import de.kolditz.common.ui.SetInUIThread;
+import de.kolditz.common.ui.concurrent.GetInUIThread;
+import de.kolditz.common.ui.concurrent.SetInUIThread;
 
 /**
  * A list field. Clients may choose between {@link SWT#SINGLE single} and {@link SWT#MULTI multi} selection.

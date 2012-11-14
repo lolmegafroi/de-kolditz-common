@@ -78,6 +78,22 @@ public abstract class EventHandlingPlugin extends Plugin
         return eventAdmin;
     }
 
+    private Event prepareEvent(String topic, String[] keys, Object[] values)
+    {
+        Map<String, Object> properties = new HashMap<String, Object>();
+        if ((keys == null) != (values == null))
+            throw new IllegalArgumentException("keys=" + (keys == null ? "null" : "not null") + " but values="
+                    + (values == null ? "null" : "not null"));
+        if (keys != null)
+        {
+            if (keys.length != values.length)
+                throw new IllegalArgumentException("keys.length=" + keys.length + " but values.lenght=" + values.length);
+            for (int i = 0; i < keys.length; ++i)
+                properties.put(keys[i], values[i]);
+        }
+        return new Event(topic, properties);
+    }
+
     /**
      * Asynchronous event posting.
      * 
@@ -93,6 +109,25 @@ public abstract class EventHandlingPlugin extends Plugin
     }
 
     /**
+     * Asynchronous event posting. <code>keys</code> and <code>values</code> must both be null or not null and have the
+     * same length.
+     * 
+     * @param topic
+     *            the event's topic
+     * @param keys
+     *            the topic properties' keys
+     * @param values
+     *            the topic properties' values
+     */
+    public void postEvent(String topic, String[] keys, Object[] values)
+    {
+        if (eventAdmin != null)
+        {
+            eventAdmin.postEvent(prepareEvent(topic, keys, values));
+        }
+    }
+
+    /**
      * Synchronous event sending.
      * 
      * @param event
@@ -103,6 +138,25 @@ public abstract class EventHandlingPlugin extends Plugin
         if (eventAdmin != null)
         {
             eventAdmin.sendEvent(event);
+        }
+    }
+
+    /**
+     * Synchronous event posting. <code>keys</code> and <code>values</code> must both be null or not null and have the
+     * same length.
+     * 
+     * @param topic
+     *            the event's topic
+     * @param keys
+     *            the topic properties' keys
+     * @param values
+     *            the topic properties' values
+     */
+    public void sendEvent(String topic, String[] keys, Object[] values)
+    {
+        if (eventAdmin != null)
+        {
+            eventAdmin.sendEvent(prepareEvent(topic, keys, values));
         }
     }
 

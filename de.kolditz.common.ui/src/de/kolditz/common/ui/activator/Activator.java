@@ -39,12 +39,18 @@ public class Activator extends AbstractUIPlugin
 
     public static void log(int severity, String message)
     {
-        plugin.getLog().log(new Status(severity, PLUGIN_ID, message));
+        if (plugin != null && plugin.getLog() != null)
+        {
+            plugin.getLog().log(new Status(severity, PLUGIN_ID, message));
+        }
     }
 
     public static void log(int severity, String message, Throwable exception)
     {
-        plugin.getLog().log(new Status(severity, PLUGIN_ID, message, exception));
+        if (plugin != null && plugin.getLog() != null)
+        {
+            plugin.getLog().log(new Status(severity, PLUGIN_ID, message, exception));
+        }
     }
 
     @Override

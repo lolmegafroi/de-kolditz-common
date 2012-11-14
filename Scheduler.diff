@@ -1,0 +1,200 @@
+ .../de/kolditz/common/concurrent/Scheduler.java    | 61 ++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
+
+diff --git a/de.kolditz.common/src/de/kolditz/common/concurrent/Scheduler.java b/de.kolditz.common/src/de/kolditz/common/concurrent/Scheduler.java
+index a1476ce..fbf70f4 100644
+--- a/de.kolditz.common/src/de/kolditz/common/concurrent/Scheduler.java
++++ b/de.kolditz.common/src/de/kolditz/common/concurrent/Scheduler.java
+@@ -14,9 +14,12 @@ import java.util.Collection;
+ import java.util.List;
+ import java.util.concurrent.Callable;
+ import java.util.concurrent.ExecutionException;
++import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Future;
++import java.util.concurrent.ScheduledExecutorService;
+ import java.util.concurrent.ScheduledFuture;
+ import java.util.concurrent.ScheduledThreadPoolExecutor;
++import java.util.concurrent.ThreadPoolExecutor;
+ import java.util.concurrent.TimeUnit;
+ import java.util.concurrent.TimeoutException;
+ 
+@@ -56,15 +59,22 @@ public final class Scheduler
+         if (recreate)
+         {
+             executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
++            executor.setKeepAliveTime(5, TimeUnit.SECONDS);
+         }
+     }
+ 
++    /**
++     * @see ExecutorService#shutdown()
++     */
+     public static void shutdown()
+     {
+         executor.shutdown();
+         checkState();
+     }
+ 
++    /**
++     * @see ExecutorService#shutdownNow()
++     */
+     public static List<Runnable> shutdownNow()
+     {
+         List<Runnable> notShutdown = executor.shutdownNow();
+@@ -73,60 +83,90 @@ public final class Scheduler
+         return notShutdown;
+     }
+ 
++    /**
++     * @see ThreadPoolExecutor#purge()
++     */
+     public static void purge()
+     {
+         checkState();
+         executor.purge();
+     }
+ 
++    /**
++     * @see ExecutorService#isShutdown()
++     */
+     public static boolean isShutdown()
+     {
+         checkState();
+         return executor.isShutdown();
+     }
+ 
++    /**
++     * @see ExecutorService#isTerminated()
++     */
+     public static boolean isTerminated()
+     {
+         checkState();
+         return executor.isTerminated();
+     }
+ 
++    /**
++     * @see ThreadPoolExecutor#isTerminated()
++     */
+     public static boolean isTerminating()
+     {
+         checkState();
+         return executor.isTerminating();
+     }
+ 
++    /**
++     * @see ExecutorService#awaitTermination(long, TimeUnit)
++     */
+     public static boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException
+     {
+         checkState();
+         return executor.awaitTermination(timeout, unit);
+     }
+ 
++    /**
++     * @see ExecutorService#submit(Callable)
++     */
+     public static <T> Future<T> submit(Callable<T> task)
+     {
+         checkState();
+         return executor.submit(task);
+     }
+ 
++    /**
++     * @see ExecutorService#submit(Runnable, Object)
++     */
+     public static <T> Future<T> submit(Runnable task, T result)
+     {
+         checkState();
+         return executor.submit(task, result);
+     }
+ 
++    /**
++     * @see ExecutorService#submit(Runnable)
++     */
+     public static Future<?> submit(Runnable task)
+     {
+         checkState();
+         return executor.submit(task);
+     }
+ 
++    /**
++     * @see ExecutorService#invokeAll(Collection)
++     */
+     public static <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) throws InterruptedException
+     {
+         checkState();
+         return executor.invokeAll(tasks);
+     }
+ 
++    /**
++     * @see ExecutorService#invokeAll(Collection, long, TimeUnit)
++     */
+     public static <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+             throws InterruptedException
+     {
+@@ -134,6 +174,9 @@ public final class Scheduler
+         return executor.invokeAll(tasks, timeout, unit);
+     }
+ 
++    /**
++     * @see ExecutorService#invokeAny(Collection)
++     */
+     public static <T> T invokeAny(Collection<? extends Callable<T>> tasks) throws InterruptedException,
+             ExecutionException
+     {
+@@ -141,6 +184,9 @@ public final class Scheduler
+         return executor.invokeAny(tasks);
+     }
+ 
++    /**
++     * @see ExecutorService#invokeAny(Collection, long, TimeUnit)
++     */
+     public static <T> T invokeAny(Collection<? extends Callable<T>> tasks, long timeout, TimeUnit unit)
+             throws InterruptedException, ExecutionException, TimeoutException
+     {
+@@ -148,30 +194,45 @@ public final class Scheduler
+         return executor.invokeAny(tasks, timeout, unit);
+     }
+ 
++    /**
++     * @see ExecutorService#execute(Runnable)
++     */
+     public static void execute(Runnable command)
+     {
+         checkState();
+         executor.execute(command);
+     }
+ 
++    /**
++     * @see ScheduledExecutorService#schedule(Runnable, long, TimeUnit)
++     */
+     public static ScheduledFuture<?> schedule(Runnable command, long delay, TimeUnit unit)
+     {
+         checkState();
+         return executor.schedule(command, delay, unit);
+     }
+ 
++    /**
++     * @see ScheduledExecutorService#schedule(Callable, long, TimeUnit)
++     */
+     public static <V> ScheduledFuture<V> schedule(Callable<V> callable, long delay, TimeUnit unit)
+     {
+         checkState();
+         return executor.schedule(callable, delay, unit);
+     }
+ 
++    /**
++     * @see ScheduledExecutorService#scheduleAtFixedRate(Runnable, long, long, TimeUnit)
++     */
+     public static ScheduledFuture<?> scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit)
+     {
+         checkState();
+         return executor.scheduleAtFixedRate(command, initialDelay, period, unit);
+     }
+ 
++    /**
++     * @see ScheduledExecutorService#scheduleWithFixedDelay(Runnable, long, long, TimeUnit)
++     */
+     public static ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay,
+             TimeUnit unit)
+     {

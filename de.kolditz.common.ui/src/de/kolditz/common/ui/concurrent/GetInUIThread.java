@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.ui.concurrent;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -82,13 +82,6 @@ public abstract class GetInUIThread<E> implements Runnable
     protected E value;
 
     /**
-     * Subclasses must implement this method which is run in the UI thread. Set the {@link #value} variable to the value
-     * which shall be returned.
-     */
-    @Override
-    public abstract void run();
-
-    /**
      * Retrieves the value for this abstract runner. This call is blocking.
      * 
      * @param display
@@ -96,17 +89,13 @@ public abstract class GetInUIThread<E> implements Runnable
      */
     public E get(Display display)
     {
-        if (display == null)
+        Display d = display;
+        if (d == null)
         {
             log.trace("display is null");
-            return null;
+            d = Display.getDefault();
         }
-        else if (display.isDisposed())
-        {
-            log.trace("display is disposed");
-            return null;
-        }
-        else if (display.getThread() == Thread.currentThread())
+        if (d.getThread() == Thread.currentThread())
         {
             log.trace("running in UI thread");
             run();
@@ -114,7 +103,7 @@ public abstract class GetInUIThread<E> implements Runnable
         else
         {
             log.trace("running sync");
-            display.syncExec(this);
+            d.syncExec(this);
         }
         return value;
     }

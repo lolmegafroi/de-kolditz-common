@@ -26,11 +26,13 @@ import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
+import org.osgi.service.log.LogReaderService;
 import org.osgi.service.log.LogService;
+import org.osgi.util.tracker.ServiceTracker;
 
 import de.kolditz.common.osgi.EventForwardingLogListener;
 import de.kolditz.common.osgi.LogEventForwarder;
-import de.kolditz.common.ui.Log4jTextAppender;
+import de.kolditz.common.ui.widgets.Log4jTextAppender;
 
 /**
  * Listens to OSGi LogReaderService log events and appends them as log4j log entries. Also listens to events from the
@@ -40,8 +42,57 @@ import de.kolditz.common.ui.Log4jTextAppender;
  */
 public class OSGiTextAppender extends Log4jTextAppender implements LogListener, EventHandler
 {
+    private BundleListener bundleListener = new BundleListener()
+    {
+        @Override
+        public void bundleChanged(BundleEvent event)
+        {
+            switch (event.getType())
+            {
+                case BundleEvent.STOPPING:
+                case BundleEvent.STOPPED:
+                    handleStopped();
+                    break;
+
+                case BundleEvent.STARTED:
+                    handleStarted();
+                    break;
+            }
+        }
+
+        private void handleStopped()
+        {
+            if (srvReg != null)
+                srvReg.unregister();
+            srvReg = null;
+            if (log != null)
+                log.removeLogListener(OSGiTextAppender.this);
+            log = null;
+        }
+
+        private void handleStarted()
+        {
+            if (srvReg == null)
+            {
+                Hashtable<String, Object> ht = new Hashtable<String, Object>();
+                ht.put(EventConstants.EVENT_TOPIC, EventForwardingLogListener.TOPIC);
+                srvReg = context.registerService(EventHandler.class, OSGiTextAppender.this, ht);
+            }
+            if (log == null)
+            {
+                log = logTracker.getService();
+                if (log != null)
+                {
+                    log.addLogListener(OSGiTextAppender.this);
+                }
+            }
+        }
+    };
+
     private BundleContext context;
     private ServiceRegistration<EventHandler> srvReg;
+    private ServiceTracker<LogReaderService, LogReaderService> logTracker;
+    private LogReaderService log;
 
     public OSGiTextAppender(BundleContext context)
     {
@@ -59,27 +110,17 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
 
     private void init()
     {
-        context.addBundleListener(new BundleListener()
-        {
-            @Override
-            public void bundleChanged(BundleEvent event)
-            {
-                if ((event.getType() == BundleEvent.STOPPING || event.getType() == BundleEvent.STOPPED)
-                        && (srvReg != null))
-                {
-                    try
-                    {
-                        srvReg.unregister();
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-            }
-        });
+        context.addBundleListener(bundleListener);
         Hashtable<String, Object> ht = new Hashtable<String, Object>();
         ht.put(EventConstants.EVENT_TOPIC, EventForwardingLogListener.TOPIC);
         srvReg = context.registerService(EventHandler.class, this, ht);
+        logTracker = new ServiceTracker<LogReaderService, LogReaderService>(context, LogReaderService.class, null);
+        logTracker.open();
+        log = logTracker.getService();
+        if (log != null)
+        {
+            log.addLogListener(this);
+        }
     }
 
     @Override
@@ -118,19 +159,22 @@ public class OSGiTextAppender extends Log4jTextAppender implements LogListener, 
     public void handleEvent(Event event)
     {
         String bundleSymbName = (String) event.getProperty(LogEventForwarder.ATTR_BUNDLE_SYMBOLICNAME);
-        int level = (Integer) event.getProperty(LogEventForwarder.ATTR_LEVEL);
-        Level lvl = Level.ALL;
-        String levelType = (String) event.getProperty(LogEventForwarder.ATTR_LEVEL_TYPE);
-        if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_OSGi))
+        if (bundleSymbName != null)
         {
-            lvl = levelFromOSGi(level);
+            int level = (Integer) event.getProperty(LogEventForwarder.ATTR_LEVEL);
+            Level lvl = Level.ALL;
+            String levelType = (String) event.getProperty(LogEventForwarder.ATTR_LEVEL_TYPE);
+            if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_OSGi))
+            {
+                lvl = levelFromOSGi(level);
+            }
+            else if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
+            {
+                lvl = Level.toLevel(level);
+            }
+            String msg = (String) event.getProperty(LogEventForwarder.ATTR_MESSAGE);
+            Throwable t = (Throwable) event.getProperty(LogEventForwarder.ATTR_EXCEPTION);
+            Logger.getLogger(bundleSymbName).log(lvl, msg, t);
         }
-        else if (levelType.equals(LogEventForwarder.ATTR_LEVEL_TYPE_LOG4J))
-        {
-            lvl = Level.toLevel(level);
-        }
-        String msg = (String) event.getProperty(LogEventForwarder.ATTR_MESSAGE);
-        Throwable t = (Throwable) event.getProperty(LogEventForwarder.ATTR_EXCEPTION);
-        Logger.getLogger(bundleSymbName).log(lvl, msg, t);
     }
 }

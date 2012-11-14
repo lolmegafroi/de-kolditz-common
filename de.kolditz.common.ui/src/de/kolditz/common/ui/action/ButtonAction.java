@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-import de.kolditz.common.ui.ButtonBar;
+import de.kolditz.common.ui.widgets.ButtonBar;
 
 /**
  * Further abstraction of an {@link Action} that allows to create {@link Button}s on {@link Composite}s and

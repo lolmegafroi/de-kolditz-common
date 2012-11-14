@@ -8,7 +8,7 @@
  *  Contributors:
  *     Till Kolditz
  *******************************************************************************/
-package de.kolditz.common.ui;
+package de.kolditz.common.ui.concurrent;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swt.SWT;
@@ -101,8 +101,8 @@ public abstract class SetInUIThread<E> implements Runnable
     }
 
     /**
-     * Sets the value for this abstract runner. The run method will either be called directly when the current thread is
-     * the UI thread or, otherwise, depending on async in the UI thread.
+     * Sets the value for this abstract runner. The run method will be called (a)synchronously depending on async. When
+     * async is false: When running in the UI thread, the method is called directly.
      * 
      * @param display
      *            The {@link Display}.
@@ -115,20 +115,26 @@ public abstract class SetInUIThread<E> implements Runnable
      */
     public void setValue(Display display, E value, boolean async)
     {
-        if (display == null || display.isDisposed())
-        {
-            return;
-        }
         this.value = value;
-        if (display.getThread() == Thread.currentThread())
+        Display d = display;
+        if (d == null)
+        {
+            log.trace("display is null");
+            d = Display.getDefault();
+        }
+        if (async)
+        {
+            log.trace("running async");
+            d.asyncExec(this);
+        }
+        else if (d.getThread() == Thread.currentThread())
         {
             log.trace("running in UI thread");
             run();
         }
         else
         {
-            log.trace("running async");
-            display.asyncExec(this);
+            d.syncExec(this);
         }
     }
 }

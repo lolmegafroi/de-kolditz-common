@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import org.eclipse.swt.widgets.Composite;
 
 import de.kolditz.common.concurrent.MultiThreaded;
+import de.kolditz.common.ui.IFillViewAware;
 import de.kolditz.common.util.IObservable;
 import de.kolditz.common.util.IObservableBackend;
 import de.kolditz.common.util.IObserver;
@@ -41,11 +42,12 @@ import de.kolditz.common.util.IObserver;
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
-public abstract class AbstractField<E> implements IObservable<E>
+public abstract class AbstractField<E> implements IObservable<E>, IFillViewAware
 {
     protected FieldComposite parent;
     protected IObservableBackend<E> observableBackEnd;
     protected boolean doUpdateBackEnd;
+    private boolean isFillView;
 
     protected int style;
     protected String labelText;
@@ -75,6 +77,18 @@ public abstract class AbstractField<E> implements IObservable<E>
         this.style = style;
         this.labelText = labelText;
         observableBackEnd = createBackend();
+    }
+
+    @Override
+    public boolean isFillView()
+    {
+        return isFillView;
+    }
+
+    @Override
+    public void setFillView(boolean isFillView)
+    {
+        this.isFillView = isFillView;
     }
 
     /**
@@ -206,7 +220,7 @@ public abstract class AbstractField<E> implements IObservable<E>
      * 
      * @param value
      *            this AbstractField's new value
-     * @param doNotifyObservers
+     * @param doNotifyListeners
      *            whether to notify observers or not
      * @return this AbstractField's old value
      */
@@ -219,7 +233,7 @@ public abstract class AbstractField<E> implements IObservable<E>
      * 
      * @param values
      *            this AbstractField's new values
-     * @param doNotifyObservers
+     * @param doNotifyListeners
      *            whether to notify observers or not
      * @return this AbstractField's old values
      */

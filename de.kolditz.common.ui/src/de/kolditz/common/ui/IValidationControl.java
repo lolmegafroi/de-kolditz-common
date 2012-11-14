@@ -21,4 +21,18 @@ public interface IValidationControl
      * @return whether this control's content is valid
      */
     boolean isValid();
+
+    /**
+     * Adds the given listener to the collection of {@link IValidationListener}s (if it is not yet present).
+     * 
+     * @param listener
+     */
+    void addValidationListener(IValidationListener listener);
+
+    /**
+     * Removes the given listener from the collection of {@link IValidationListener}s (if it was present).
+     * 
+     * @param listener
+     */
+    void removeValidationListener(IValidationListener listener);
 }

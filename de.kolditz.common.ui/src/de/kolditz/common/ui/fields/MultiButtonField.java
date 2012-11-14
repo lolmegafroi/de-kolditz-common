@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import de.kolditz.common.ui.ButtonBar;
+import de.kolditz.common.ui.widgets.ButtonBar;
 
 /**
  * A {@link AbstractField} containing several {@link Button}s.

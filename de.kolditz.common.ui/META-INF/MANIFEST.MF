@@ -16,6 +16,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: de.kolditz.common.ui,
  de.kolditz.common.ui.action,
+ de.kolditz.common.ui.concurrent,
  de.kolditz.common.ui.dialog,
  de.kolditz.common.ui.fields,
- de.kolditz.common.ui.rcp
+ de.kolditz.common.ui.rcp,
+ de.kolditz.common.ui.widgets
