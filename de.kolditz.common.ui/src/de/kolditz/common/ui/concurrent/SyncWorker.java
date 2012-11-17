@@ -21,7 +21,11 @@ import de.kolditz.common.concurrent.Scheduler;
 
 /**
  * An abstract utility class whose {@link #sync()} method will be called in the UI thread. Unlike {@link ASyncWorker},
- * the start methods will not return a Future object.
+ * the start methods will not return a Future object, and there are 2 start methods:
+ * <ul>
+ * <li>{@link #start(boolean)} with <code>false</code> allows to block the calling thread when necessary</li>
+ * <li>{@link #start(long, TimeUnit)} will always call sync asynchronously</li>
+ * </ul>
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
@@ -47,6 +51,7 @@ public abstract class SyncWorker
 
     private Object transfer = null;
     private Future<?> future = null;
+    private boolean sync = false;
 
     /**
      * Creates a new SyncWorker which starts an asynchronous thread e.g. for better UI responsiveness.
@@ -85,17 +90,23 @@ public abstract class SyncWorker
     public final synchronized void start(boolean async)
     {
         future = null;
-        Display d = Display.getCurrent();
-        if (d != null) // we ARE in the UI thread
+        if (async)
         {
-            if (async)
-                d.asyncExec(new SyncRunnable());
-            else
-                sync();
+            sync = false;
+            future = Scheduler.submit(new ASyncRunnable());
         }
         else
         {
-            future = Scheduler.submit(new ASyncRunnable());
+            sync = true;
+            Display d = Display.getCurrent();
+            if (d != null) // we ARE in the UI thread
+            {
+                sync();
+            }
+            else
+            {
+                Display.getDefault().syncExec(new SyncRunnable());
+            }
         }
     }
 
@@ -105,30 +116,31 @@ public abstract class SyncWorker
      */
     public final synchronized void start(long delay, TimeUnit timeUnit)
     {
+        sync = false;
         future = Scheduler.schedule(new ASyncRunnable(), delay, timeUnit);
     }
 
     /**
-     * @return true when this worker was not started yet or is really done, false otherwise.
+     * @return whether this worker was started and is really done
      */
     public final synchronized boolean isDone()
     {
-        return future != null && future.isDone();
+        return sync || (future != null && future.isDone());
     }
 
     /**
-     * @return true when this worker was not started yet or is really canceled, false otherwise.
+     * @return whether this worker was started and is really canceled
      */
     public final synchronized boolean isCanceled()
     {
-        return future != null && future.isCancelled();
+        return (!sync) && future != null && future.isCancelled();
     }
 
     /**
-     * @return true when this worker was not started yet or is really running, false otherwise.
+     * @return whether this worker was started and is really running
      */
     public final synchronized boolean isRunning()
     {
-        return future != null && future != null && !future.isDone();
+        return (!sync) && future != null && future != null && !future.isDone();
     }
 }
