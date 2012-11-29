@@ -19,12 +19,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A simple non thread-safe object serializer. For de-/serializing arrays or collections use {@link ArraySerializer} and
- * {@link ArrayDeserializer}.
+ * A light-weight, non thread-safe object serializer. For de-/serializing arrays or collections use
+ * {@link ArraySerializer} and {@link ArrayDeserializer}.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class ObjectSerializer extends DeSerializer
+public abstract class ObjectSerializer extends DeSerializer
 {
     /**
      * Clients must know the order of serialized fields for deserialization. Expects unescaped strings, since this

@@ -16,11 +16,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A non thread-safe serializer for whole arrays / collections. Does currently not support nested arrays.
+ * A light-weight, non thread-safe serializer for whole arrays / collections. Does currently not support nested arrays.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class ArrayDeserializer extends DeSerializer
+public abstract class ArrayDeserializer extends DeSerializer
 {
     /**
      * Tries to deserialize a whole array of objects which was serialized by an {@link ArraySerializer}. This should be

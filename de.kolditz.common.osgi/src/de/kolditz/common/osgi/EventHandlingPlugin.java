@@ -33,6 +33,7 @@ import org.osgi.service.event.EventHandler;
  */
 public abstract class EventHandlingPlugin extends Plugin
 {
+    private BundleContext bundleContext;
     private EventAdmin eventAdmin;
     private ServiceReference<EventAdmin> srEventAdmin;
     private Map<EventHandler, ServiceRegistration<EventHandler>> eventHandlers;
@@ -41,6 +42,7 @@ public abstract class EventHandlingPlugin extends Plugin
     public void start(BundleContext context) throws Exception
     {
         super.start(context);
+        bundleContext = context;
 
         srEventAdmin = context.getServiceReference(EventAdmin.class);
         if (srEventAdmin == null)
@@ -68,9 +70,15 @@ public abstract class EventHandlingPlugin extends Plugin
         {
             context.ungetService(srEventAdmin);
         }
+        bundleContext = null;
         eventAdmin = null;
         srEventAdmin = null;
         super.stop(context);
+    }
+
+    public BundleContext getBundleContext()
+    {
+        return bundleContext;
     }
 
     public EventAdmin getEventAdmin()

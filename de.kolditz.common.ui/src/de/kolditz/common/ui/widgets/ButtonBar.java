@@ -11,6 +11,7 @@
 package de.kolditz.common.ui.widgets;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -261,6 +262,16 @@ public class ButtonBar extends Composite
             return new Point(rect.width, rect.height);
         }
         return super.computeSize(widthHint, heightHint, changed);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        for (Entry<Integer, Button> e : buttons.entrySet())
+        {
+            e.getValue().setEnabled(enabled);
+        }
+        super.setEnabled(enabled);
     }
 
     public void addSelectionListener(SelectionListener listener)

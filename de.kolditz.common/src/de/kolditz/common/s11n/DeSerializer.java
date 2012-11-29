@@ -13,7 +13,7 @@
 package de.kolditz.common.s11n;
 
 /**
- * Abstract base utility class for de-/serialization.
+ * Abstract base utility class for light-weight de-/serialization.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */

@@ -17,12 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A simple non thread-safe object deserializer. For de-/serializing arrays or collections use {@link ArraySerializer}
- * and {@link ArrayDeserializer}.
+ * A light-weight, non thread-safe object deserializer. For de-/serializing arrays or collections use
+ * {@link ArraySerializer} and {@link ArrayDeserializer}.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */
-public class ObjectDeserializer extends DeSerializer
+public abstract class ObjectDeserializer extends DeSerializer
 {
     /**
      * Tries to deserialize a single object which was serialized by the {@link ObjectSerializer#serialize(String...)} or

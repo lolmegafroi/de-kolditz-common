@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * A non thread-safe serializer for whole arrays / collections. Does currently not support nested arrays.
+ * A light-weight, non thread-safe serializer for whole arrays / collections. Does currently not support nested arrays.
  * 
  * @author Till Kolditz - Till.Kolditz@GoogleMail.com
  */

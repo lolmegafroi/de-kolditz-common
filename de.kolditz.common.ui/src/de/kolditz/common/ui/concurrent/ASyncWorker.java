@@ -21,8 +21,9 @@ import de.kolditz.common.concurrent.MultiThreaded;
 import de.kolditz.common.concurrent.Scheduler;
 
 /**
- * An abstract utility class which enforces the protocol that first {@link #async()} is called in a separate thread. It
- * returns a {@link Future} object so that clients may even
+ * An abstract utility class which enforces the protocol that first {@link #async()} is called in a separate thread, and
+ * afterwards {@link #sync()} is called in the SWT UI thread. It returns a {@link Future} object so that clients may
+ * even test for completion.
  * 
  * @author Till Kolditz - Till.Kolditz@gmail.com
  */
@@ -42,7 +43,14 @@ public abstract class ASyncWorker
         @Override
         public void run()
         {
-            async();
+            try
+            {
+                async();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
             Display.getDefault().syncExec(new SyncRunnable());
         }
     }
