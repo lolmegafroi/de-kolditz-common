@@ -85,5 +85,5 @@ public @interface ImageConstant
     /**
      * @return the plugin-relative folder (need not contain a starting path seperator)
      */
-    String folder() default ""; //$NON-NLS-1$
+    String folder(); //$NON-NLS-1$
 }
