@@ -19,6 +19,7 @@ import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -59,9 +60,10 @@ public class EnterPropertyDialog extends Dialog
     protected Control createDialogArea(Composite parent)
     {
         Composite dialogArea = (Composite) super.createDialogArea(parent);
+        ((GridLayout) dialogArea.getLayout()).numColumns = 2;
 
         new Label(dialogArea, SWT.NONE).setText("Key:"); // TODO i18n
-        tfKey = new Text(parent, SWT.SINGLE | SWT.BORDER);
+        tfKey = new Text(dialogArea, SWT.SINGLE | SWT.BORDER);
         if (key != null)
         {
             tfKey.setText(key);
@@ -88,6 +90,17 @@ public class EnterPropertyDialog extends Dialog
                         cdKey.hide();
                     }
                     key = str;
+                }
+            });
+        }
+        else
+        {
+            tfKey.addModifyListener(new ModifyListener()
+            {
+                @Override
+                public void modifyText(ModifyEvent e)
+                {
+                    key = tfKey.getText();
                 }
             });
         }
@@ -120,6 +133,17 @@ public class EnterPropertyDialog extends Dialog
                         cdValue.hide();
                     }
                     value = str;
+                }
+            });
+        }
+        else
+        {
+            tfValue.addModifyListener(new ModifyListener()
+            {
+                @Override
+                public void modifyText(ModifyEvent e)
+                {
+                    value = tfValue.getText();
                 }
             });
         }

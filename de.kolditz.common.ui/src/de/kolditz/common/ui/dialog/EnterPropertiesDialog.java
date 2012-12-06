@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -34,6 +36,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 
 import de.kolditz.common.ui.widgets.ButtonBar;
 import de.kolditz.common.util.IValidator;
@@ -123,16 +127,30 @@ public class EnterPropertiesDialog extends Dialog
     }
 
     @Override
+    protected boolean isResizable()
+    {
+        return true;
+    }
+
+    @Override
     protected Control createDialogArea(Composite parent)
     {
         Composite dialogArea = (Composite) super.createDialogArea(parent);
 
-        viewer = new TableViewer(dialogArea, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-        viewer.getTable().setHeaderVisible(true);
-        viewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        Composite viewerComp = new Composite(dialogArea, SWT.NONE);
+        TableColumnLayout tableLayout = new TableColumnLayout();
+        viewerComp.setLayout(tableLayout);
+        viewerComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        viewer = new TableViewer(viewerComp, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+        Table table = viewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         viewer.setContentProvider(new ArrayContentProvider());
 
         TableViewerColumn col = new TableViewerColumn(viewer, SWT.LEAD);
+        TableColumn tc = col.getColumn();
+        tc.setText("Key");
+        tableLayout.setColumnData(tc, new ColumnWeightData(50, true));
         col.setLabelProvider(new ColumnLabelProvider()
         {
             @SuppressWarnings("unchecked")
@@ -144,6 +162,9 @@ public class EnterPropertiesDialog extends Dialog
         });
 
         col = new TableViewerColumn(viewer, SWT.LEAD);
+        tc = col.getColumn();
+        tc.setText("Value");
+        tableLayout.setColumnData(tc, new ColumnWeightData(50, true));
         col.setLabelProvider(new ColumnLabelProvider());
         col.setLabelProvider(new ColumnLabelProvider()
         {
@@ -156,6 +177,8 @@ public class EnterPropertiesDialog extends Dialog
         });
 
         buttonBar = new ButtonBar(dialogArea, SWT.NONE);
+        buttonBar.setLayoutData(new GridData(SWT.TRAIL, SWT.TOP, true, false));
+        buttonBar.getLayout().marginWidth = 0;
         Button b = buttonBar.createButton(0, "Add"); // TODO i18n
         b.addSelectionListener(new SelectionAdapter()
         {
@@ -172,6 +195,7 @@ public class EnterPropertiesDialog extends Dialog
                 if (dialog.open() == Window.OK)
                 {
                     properties.put(dialog.getKey(), dialog.getValue());
+                    viewer.setInput(properties.entrySet());
                     buttonBar.getButton(1).setEnabled(true);
                 }
             }
@@ -209,7 +233,7 @@ public class EnterPropertiesDialog extends Dialog
                 Object[] array = ((IStructuredSelection) viewer.getSelection()).toArray();
                 for (Object o : array)
                 {
-                    properties.remove(o);
+                    properties.remove(((Entry<?, ?>) o).getKey());
                 }
                 viewer.remove(array);
             }

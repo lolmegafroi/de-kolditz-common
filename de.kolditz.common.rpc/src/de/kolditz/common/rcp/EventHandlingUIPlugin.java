@@ -14,6 +14,7 @@ package de.kolditz.common.rcp;
 
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -120,6 +121,7 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
      * @see EventConstants#EVENT_TOPIC
      * @see EventConstants#EVENT_FILTER
      * @see EventConstants#EVENT_DELIVERY
+     * @see #registerEventHandler(EventHandler, String)
      */
     public synchronized boolean registerEventHandler(EventHandler handler, Dictionary<String, ?> properties)
     {
@@ -143,6 +145,23 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
         }
     }
 
+    /**
+     * Registers an {@link EventHandler} for the given event topic.
+     * 
+     * @param handler
+     *            the EventHandler
+     * @param eventTopic
+     *            the event topic
+     * @return whether registration was successful or not (e.g. when handler is null or some exception was caught)
+     * @see #registerEventHandler(EventHandler, Dictionary)
+     */
+    public synchronized boolean registerEventHandler(EventHandler handler, String eventTopic)
+    {
+        Hashtable<String, Object> ht = new Hashtable<String, Object>();
+        ht.put(EventConstants.EVENT_TOPIC, eventTopic);
+        return registerEventHandler(handler, ht);
+    }
+
     public synchronized void unregisterEventHandler(EventHandler handler)
     {
         if (eventHandlers != null)
@@ -150,8 +169,8 @@ public abstract class EventHandlingUIPlugin extends AbstractUIPlugin
             ServiceRegistration<EventHandler> sr = eventHandlers.get(handler);
             if (sr != null)
             {
+                sr.unregister();
                 eventHandlers.remove(handler);
-                getBundle().getBundleContext().ungetService(sr.getReference());
             }
         }
     }
