@@ -53,6 +53,7 @@ public final class Scheduler
         {
             if (executor.isShutdown() || executor.isTerminating() || executor.isTerminated())
             {
+                executor = null;
                 recreate = true;
             }
         }
@@ -66,9 +67,9 @@ public final class Scheduler
             {
                 if (executor == null)
                 {
-                    // fix to allow termination when neither shutdown() nor shutdownNow() were called
-                    executor = new ScheduledThreadPoolExecutor(0);
-                    executor.setKeepAliveTime(10, TimeUnit.SECONDS);
+                    // (hopefully) fix to allow termination when neither shutdown() nor shutdownNow() were called
+                    executor = new ScheduledThreadPoolExecutor(16); // Maximum of 16 threads
+                    executor.setKeepAliveTime(30, TimeUnit.SECONDS);
                     executor.allowCoreThreadTimeOut(true);
                 }
             }
