@@ -1,0 +1,8 @@
+.deps/
+.libs/
+Makefile
+Makefile.in
+full_search.la
+full_search.lo
+strmap.c
+strmap.h
